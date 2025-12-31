@@ -1,0 +1,609 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block title %}Administration - Gujarat University Online Education{% endblock %}
+{% block content %}
+
+
+
+
+<main class="main">
+
+    <!-- Page Title -->
+    <div class="page-title light-background">
+        <div class="container d-lg-flex justify-content-between align-items-center">
+            <h1 class="mb-2 mb-lg-0">Administration</h1>
+            <nav class="breadcrumbs">
+                <ol>
+                    <li><a href="index.html">Home</a></li>
+                    <li class="current">Administration Profile</li>
+                </ol>
+            </nav>
+        </div>
+    </div><!-- End Page Title -->
+
+    <!-- Instructor Profile Section -->
+    <section id="instructor-profile" class="instructor-profile section">
+
+        <div class="container" data-aos="fade-up" data-aos-delay="100">
+
+            <div class="row">
+
+                <div class="col-lg-12">
+                    <div class="instructor-hero-banner" data-aos="zoom-out" data-aos-delay="200">
+                        <div class="hero-background">
+                            <img src="{% static 'img/university.png' %}" alt="Background" class="img-fluid">
+                            <div class="hero-overlay"></div>
+                        </div>
+                        <div class="hero-content">
+                            <div class="instructor-avatar">
+                                <img src="{% static 'img/education/nirja_gupta.png' %}" alt="Instructor"
+                                    class="img-fluid">
+                               
+                            </div>
+                            <div class="instructor-info">
+                                <h2>Dr. Neerja A Gupta</h2>
+                                <p class="title">Vice Chancellor</p>
+                                <div class="credentials">
+                                    <span class="credential">Ph.D. MIT</span>
+                                    <span class="credential">10+ Years</span>
+                                    <span class="credential">15,247 Students</span>
+                                </div>
+                                <div class="rating-overview">
+                                    <div class="stars">
+                                        <i class="bi bi-star-fill"></i>
+                                        <i class="bi bi-star-fill"></i>
+                                        <i class="bi bi-star-fill"></i>
+                                        <i class="bi bi-star-fill"></i>
+                                        <i class="bi bi-star-half"></i>
+                                    </div>
+                                    
+                                </div>
+                                <div class="contact-actions">
+                                    <a href="#" class="btn-contact">
+                                        <i class="bi bi-envelope"></i>
+                                        vc@gujaratuniversity.ac.<br>
+
+                                        <i class="bi bi-telephone"></i>
+                                        079-26301919
+
+                                    </a>
+                                    <div class="social-media">
+                                        <a href="#"><i class="bi bi-linkedin"></i></a>
+                                        <a href="#"><i class="bi bi-twitter-x"></i></a>
+                                        <a href="#"><i class="bi bi-youtube"></i></a>
+                                    </div>
+                                    
+                                </div>
+                                <div class="d-flex gap-4 justify-content-center" data-aos="fade-up" data-aos-delay="500"
+                                    style="margin-top: 30px;">
+
+                                    <a href="https://neerjaguptaa.in/" class="btn btn-primary">View Profile</a>
+                                    <a href="https://www.gujaratuniversity.ac.in/vicechancellor" class="btn btn-primary">GU Profile</a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+
+            <div class="row gy-5 mt-4">
+
+                <div class="col-lg-8">
+                    <div class="content-tabs" data-aos="fade-right" data-aos-delay="300">
+
+                        <ul class="nav nav-tabs custom-tabs" role="tablist">
+                            <li class="nav-item" role="presentation">
+                                <button class="nav-link active" data-bs-toggle="tab"
+                                    data-bs-target="#instructor-profile-about" type="button" role="tab">
+                                    <i class="bi bi-person"></i>
+                                    About
+                                </button>
+                            </li>
+                            <li class="nav-item" role="presentation">
+                                <button class="nav-link" data-bs-toggle="tab"
+                                    data-bs-target="#instructor-profile-experience" type="button" role="tab">
+                                    <i class="bi bi-briefcase"></i>
+                                    Experience
+                                </button>
+                            </li>
+
+                            <li class="nav-item" role="presentation">
+                                <button class="nav-link" data-bs-toggle="tab"
+                                    data-bs-target="#instructor-profile-reviews" type="button" role="tab">
+                                    <i class="bi bi-star"></i>
+                                    Reviews
+                                </button>
+                            </li>
+                        </ul>
+
+                        <div class="tab-content custom-tab-content">
+
+                            <div class="tab-pane fade show active" id="instructor-profile-about" role="tabpanel">
+                                <div class="about-content">
+                                    <div class="bio-section">
+                                        <h4>Professional Biography</h4>
+                                        <h5>Dr. Neerja A. Gupta is the Vice-Chancellor of Gujarat University,
+                                            Ahmedabad. She has previously served as Vice-Chancellor of Sanchi
+                                            University of Buddhist-Indic Studies, M.P., and Principal of Bhavan’s
+                                            College, Gujarat, where she helped develop the Department of Foreign
+                                            Studies. With a Ph.D. in English, Dr. Gupta has 36 years of experience
+                                            in academia, research, and administration. She is the Chief Editor of
+                                            the international journal Bharatiya Manyaprad and proficient in multiple
+                                            languages, including Russian, Greek, and nine Indian languages. She has
+                                            authored 22 books and over 60 publications, guided 27 Ph.D. students,
+                                            and led various research projects funded by national and international
+                                            agencies.
+                                            Her expertise spans literature, Indology, Gandhian thought, Indian
+                                            culture, and classical dance (Kathak). She played a significant role as
+                                            Principal Director in the Ministry of Home Affairs' study on Jammu and
+                                            Kashmir, contributing to the abrogation of Article 370. Dr. Gupta has
+                                            traveled to 42 countries for academic work, participated in over 400
+                                            conferences, and delivered numerous invited talks worldwide.
+                                            Recognized for her contributions, she has received several awards,
+                                            including the Bharat Kirtiman Padak 2023, Aaj Ka Karmveer Award 2022,
+                                            and Shiksha Bharati Puruskar 2011. She has also been actively involved
+                                            in disaster relief efforts and has represented India in educational
+                                            delegations globally. Her theme paper on G-20 was notably mentioned by
+                                            Prime Minister Modi in Mann Ki Baat in 2023.</h5>
+                                    </div>
+
+
+
+                                </div>
+                            </div>
+
+                            <div class="tab-pane fade" id="instructor-profile-experience" role="tabpanel">
+                                <div class="experience-grid">
+                                    <div class="experience-card">
+                                        <div class="timeline-marker">JUN,2023</div>
+                                        <div class="experience-details">
+                                            <h5>Vice Chancellor</h5>
+                                            <p class="institution">Sanchi University of Buddhist-Indic Studies</p>
+                                        </div>
+                                    </div>
+
+                                    <div class="experience-card">
+                                        <div class="timeline-marker">Jun, 2021 - May, 2023</div>
+                                        <div class="experience-details">
+                                            <h5>Vice Chancellor</h5>
+                                            <p class="institution">Sanchi University of Buddhist-Indic Studies</p>
+                                        </div>
+                                    </div>
+
+
+                                    <div class="experience-card">
+                                        <div class="timeline-marker">Jun, 1998 - Jul, 2021</div>
+                                        <div class="experience-details">
+                                            <h5>Principal</h5>
+                                            <p class="institution">Bhartiya Vidya Bhavan's College of Arts and
+                                                Commerce</p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="tab-pane fade" id="instructor-profile-reviews" role="tabpanel">
+                                <div class="reviews-container">
+                                    <div class="review-card">
+                                        <div class="review-header">
+                                            <img src="{% static 'img/person/person-f-12.webp' %}" alt="Student"
+                                                class="reviewer-avatar">
+                                            <div class="reviewer-info">
+                                                <h6>Sarah Williams</h6>
+                                                <p>Data Scientist at Amazon</p>
+                                                <div class="review-rating">
+                                                    <i class="bi bi-star-fill"></i>
+                                                    <i class="bi bi-star-fill"></i>
+                                                    <i class="bi bi-star-fill"></i>
+                                                    <i class="bi bi-star-fill"></i>
+                                                    <i class="bi bi-star-fill"></i>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <p>"Excepteur sint occaecat cupidatat non proident, sunt in culpa qui
+                                            officia deserunt mollitia animi. The hands-on approach and real-world
+                                            projects made all the difference."</p>
+                                    </div>
+
+                                    <div class="review-card">
+                                        <div class="review-header">
+                                            <img src="{% static 'img/person/person-m-8.webp' %}" alt="Student"
+                                                class="reviewer-avatar">
+                                            <div class="reviewer-info">
+                                                <h6>David Martinez</h6>
+                                                <p>ML Engineer at Tesla</p>
+                                                <div class="review-rating">
+                                                    <i class="bi bi-star-fill"></i>
+                                                    <i class="bi bi-star-fill"></i>
+                                                    <i class="bi bi-star-fill"></i>
+                                                    <i class="bi bi-star-fill"></i>
+                                                    <i class="bi bi-star-fill"></i>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <p>"Quis autem vel eum iure reprehenderit qui in ea voluptate velit esse
+                                            quam nihil molestiae consequatur. Professor Chen's expertise is
+                                            unmatched."</p>
+                                    </div>
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-lg-4">
+                    <div class="sidebar-widgets" data-aos="fade-left" data-aos-delay="300">
+
+
+
+                        <div class="achievements-widget">
+                            <h4>Recognition &amp; Awards</h4>
+                            <div class="achievement-list">
+                                <div class="achievement-item">
+                                    <i class="bi bi-trophy"></i>
+                                    <div class="achievement-text">
+                                        <h6>GSIRF Ranking</h6>
+                                        <p>Ministry of Education, Government of Gujarat</p>
+                                    </div>
+                                </div>
+                                <div class="achievement-item">
+                                    <i class="bi bi-patch-check"></i>
+                                    <div class="achievement-text">
+                                        <h6>NIRF Ranking</h6>
+                                        <p>Ministry of Education, Government of India</p>
+                                    </div>
+                                </div>
+                                <div class="achievement-item">
+                                    <i class="bi bi-mortarboard"></i>
+                                    <div class="achievement-text">
+                                        <h6>OUTLOOK ICARE RANKINGS-2024</h6>
+                                        <p>ICARE</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="contact-widget">
+                            <h4>Get in Touch</h4>
+                            <div class="contact-info">
+                                <div class="contact-item">
+                                    <i class="bi bi-envelope"></i>
+                                    <span>drneerjaarun@gmail.com</span>
+                                </div>
+                                <div class="contact-item">
+                                    <i class="bi bi-telephone"></i>
+                                    <span>079-26301919</span>
+                                </div>
+                                <div class="contact-item">
+                                    <i class="bi bi-geo-alt"></i>
+                                    <span>Gujarat University</span>
+                                </div>
+                            </div>
+                            <div class="office-hours">
+                                <h6>Office Hours</h6>
+                                <p>Monaday &amp; Saturday<br>11:00 PM - 6:00 PM</p>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+
+            </div>
+
+        </div>
+
+    </section><!-- /Instructor Profile Section -->
+    <section id="instructor-profile" class="instructor-profile section">
+
+        <div class="container" data-aos="fade-up" data-aos-delay="100">
+
+            <div class="row">
+
+                <div class="col-lg-12">
+                    <div class="instructor-hero-banner" data-aos="zoom-out" data-aos-delay="200">
+                        <div class="hero-background">
+                            <img src="{% static 'img/university.png' %}" alt="Background" class="img-fluid">
+                            <div class="hero-overlay"></div>
+                        </div>
+                        <div class="hero-content">
+                            <div class="instructor-avatar">
+                                <img src="{% static 'img/education/jagdish_joshi.png' %}" alt="Instructor"
+                                    class="img-fluid">
+
+                            </div>
+
+
+                            <div class="instructor-info">
+                                <h2>PROF. JAGDISH S. JOSHI</h2>
+                                <p class="title">Director</p>
+                                <p>Centre for Distance & Online Education</p>
+                                <div class="credentials">
+                                    <span class="credential">Ph D,M.A,M.A,B.A</span>
+                                    <span class="credential">10+ Years</span>
+                                    <span class="credential">15,247 Students</span>
+                                </div>
+                                <div class="rating-overview">
+                                    <div class="stars">
+                                        <i class="bi bi-star-fill"></i>
+                                        <i class="bi bi-star-fill"></i>
+                                        <i class="bi bi-star-fill"></i>
+                                        <i class="bi bi-star-fill"></i>
+                                        <i class="bi bi-star-half"></i>
+                                    </div>
+
+
+                                </div>
+
+                                <div class="contact-actions">
+                                    <a href="#" class="btn-contact">
+                                        <i class="bi bi-envelope"></i>
+                                        vc@gujaratuniversity.ac.<br>
+
+                                        <i class="bi bi-telephone"></i>
+                                        079-26301919
+
+                                    </a>
+                                    <div class="social-media">
+                                        <a href="#"><i class="bi bi-linkedin"></i></a>
+                                        <a href="#"><i class="bi bi-twitter-x"></i></a>
+                                        <a href="#"><i class="bi bi-youtube"></i></a>
+                                    </div>
+
+
+                                </div>
+                                <div class="d-flex gap-4 justify-content-center" data-aos="fade-up" data-aos-delay="500"
+                                    style="margin-top: 30px;">
+
+                                    <a href="https://gu.irins.org/profile/53027" class="btn btn-primary">Vidwan Profile</a>
+                                    <a href="https://www.researchgate.net/profile/Jagdish-Joshi-3" class="btn btn-primary">Research Gate Courses</a>
+                                    <a href="https://www.gujaratuniversity.ac.in/Faculty/profile?userid=384" class="btn btn-primary">GU Profile</a>
+                                </div>
+
+
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+
+            <div class="row gy-5 mt-4">
+
+                <div class="col-lg-8">
+                    <div class="content-tabs" data-aos="fade-right" data-aos-delay="300">
+
+                        <ul class="nav nav-tabs custom-tabs" role="tablist">
+                            <li class="nav-item" role="presentation">
+                                <button class="nav-link active" data-bs-toggle="tab"
+                                    data-bs-target="#instructor1-profile-about" type="button" role="tab">
+                                    <i class="bi bi-person"></i>
+                                    About
+                                </button>
+                            </li>
+                            <li class="nav-item" role="presentation">
+                                <button class="nav-link" data-bs-toggle="tab"
+                                    data-bs-target="#instructor1-profile-experience" type="button" role="tab">
+                                    <i class="bi bi-briefcase"></i>
+                                    Experience
+                                </button>
+                            </li>
+
+                            <li class="nav-item" role="presentation">
+                                <button class="nav-link" data-bs-toggle="tab"
+                                    data-bs-target="#instructor1-profile-reviews" type="button" role="tab">
+                                    <i class="bi bi-star"></i>
+                                    Reviews
+                                </button>
+                            </li>
+                        </ul>
+
+                        <div class="tab-content custom-tab-content">
+
+                            <div class="tab-pane fade show active" id="instructor1-profile-about" role="tabpanel">
+                                <div class="about-content">
+                                    <div class="bio-section">
+                                        <h4>Professional Biography</h4>
+                                        <h5>Dr. Jagdish S. Joshi, Ex. Officiating Vice Chancellor of Gujarat University,
+                                            is a Professor & Director at UGC-Malaviya Mission Teacher Training Centre
+                                            (UGC-MMTTC), James Reaney Canadian Centre, Online Teaching-Learning &
+                                            Communication Cell, Director of Centre for Distance and Online Education,
+                                            Office for International Affairs & Head of Department of Linguistics of
+                                            Gujarat University, Ahmedabad. He is the Chairperson (Nominated by Hon.
+                                            Governor of M.P.) of the Search Committee for the appointment of the
+                                            Ombudsperson (Lokpal) of M P Government. He is the president of Indian
+                                            Association for Canadian Studies. He is a Coordinator of MHRD-ARPIT (Annual
+                                            Refresher Programme in English Language Teaching) and National Testing
+                                            Agency, MoE. He is closely associated with various national and
+                                            international professional bodies and actively engaged in teaching,
+                                            training, research, e- content development, translation, editing,
+                                            compilation, consultancy, and social activities.
+
+                                            Dr Joshi has been imparting professional training to college and university
+                                            teachers, administrative officers of universities and colleges, research
+                                            scholars, principals etc. since 2005. He was felicitated with National Award
+                                            for Education by United Nations Organization (UNO) in 2006. He visited about
+                                            21 countries namely US, Canada, China, Germany, UK, South Korea, Austria,
+                                            Netherlands, France, Switzerland, Kazakhstan, Russia, Dubai, UAE, Muscat,
+                                            Thailand, Nepal, Hongkong, Mauritius, Vietnam etc. for various academic
+                                            assignments.</h5>
+                                    </div>
+
+
+
+                                </div>
+                            </div>
+
+                            <div class="tab-pane fade" id="instructor1-profile-experience" role="tabpanel">
+                                <div class="experience-grid">
+                                    <div class="experience-card">
+                                        <div class="timeline-marker">2011</div>
+                                        <div class="experience-details">
+                                            <h5>Professor Director & HOD</h5>
+                                            <p class="institution">UGC-Malaviya Mission Teacher Training Center</p>
+                                        </div>
+                                    </div>
+
+                                    <div class="experience-card">
+                                        <div class="timeline-marker">2008</div>
+                                        <div class="experience-details">
+                                            <h5>Associate Professor</h5>
+                                            <p class="institution">UGC-Academic Staff College</p>
+                                        </div>
+                                    </div>
+
+
+                                    <div class="experience-card">
+                                        <div class="timeline-marker">2005</div>
+                                        <div class="experience-details">
+                                            <h5>Reader
+                                            </h5>
+                                            <p class="institution">UGC-Academic Staff College</p>
+                                        </div>
+                                    </div>
+
+                                </div>
+                            </div>
+
+                            <div class="tab-pane fade" id="instructor1-profile-reviews" role="tabpanel">
+                                <div class="reviews-container">
+                                    <div class="review-card">
+                                        <div class="review-header">
+                                            <img src="{% static 'img/person/person-f-12.webp' %}" alt="Student"
+                                                class="reviewer-avatar">
+                                            <div class="reviewer-info">
+                                                <h6>Sarah Williams</h6>
+                                                <p>Data Scientist at Amazon</p>
+                                                <div class="review-rating">
+                                                    <i class="bi bi-star-fill"></i>
+                                                    <i class="bi bi-star-fill"></i>
+                                                    <i class="bi bi-star-fill"></i>
+                                                    <i class="bi bi-star-fill"></i>
+                                                    <i class="bi bi-star-fill"></i>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <p>"Excepteur sint occaecat cupidatat non proident, sunt in culpa qui
+                                            officia deserunt mollitia animi. The hands-on approach and real-world
+                                            projects made all the difference."</p>
+                                    </div>
+
+                                    <div class="review-card">
+                                        <div class="review-header">
+                                            <img src="{% static 'img/person/person-m-8.webp' %}" alt="Student"
+                                                class="reviewer-avatar">
+                                            <div class="reviewer-info">
+                                                <h6>David Martinez</h6>
+                                                <p>ML Engineer at Tesla</p>
+                                                <div class="review-rating">
+                                                    <i class="bi bi-star-fill"></i>
+                                                    <i class="bi bi-star-fill"></i>
+                                                    <i class="bi bi-star-fill"></i>
+                                                    <i class="bi bi-star-fill"></i>
+                                                    <i class="bi bi-star-fill"></i>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <p>"Quis autem vel eum iure reprehenderit qui in ea voluptate velit esse
+                                            quam nihil molestiae consequatur. Professor Chen's expertise is
+                                            unmatched."</p>
+                                    </div>
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-lg-4">
+                    <div class="sidebar-widgets" data-aos="fade-left" data-aos-delay="300">
+
+
+
+                        <div class="achievements-widget">
+                            <h4>Recognition &amp; Awards</h4>
+                            <div class="achievement-list">
+                                <div class="achievement-item">
+                                    <i class="bi bi-trophy"></i>
+                                    <div class="achievement-text">
+                                        <h6>Best Research Paper Award in International E-Conference</h6>
+                                        <p>Jharkhand</p>
+                                    </div>
+                                </div>
+                                <div class="achievement-item">
+                                    <i class="bi bi-patch-check"></i>
+                                    <div class="achievement-text">
+                                        <h6>Directorial Excellence Award</h6>
+                                        <p>Lord’s Cricket Ground, London, UK</p>
+                                    </div>
+                                </div>
+                                <div class="achievement-item">
+                                    <i class="bi bi-mortarboard"></i>
+                                    <div class="achievement-text">
+                                        <h6>Best Youth Leader Award</h6>
+                                        <p>New Delhi</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="contact-widget">
+                            <h4>Get in Touch</h4>
+                            <div class="contact-info">
+                                <div class="contact-item">
+                                    <i class="bi bi-envelope"></i>
+                                    <span>drneerjaarun@gmail.com</span>
+                                </div>
+                                <div class="contact-item">
+                                    <i class="bi bi-telephone"></i>
+                                    <span>079-26301919</span>
+                                </div>
+                                <div class="contact-item">
+                                    <i class="bi bi-geo-alt"></i>
+                                    <span>Gujarat University</span>
+                                </div>
+                            </div>
+                            <div class="office-hours">
+                                <h6>Office Hours</h6>
+                                <p>Monaday &amp; Saturday<br>11:00 PM - 6:00 PM</p>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+
+            </div>
+
+        </div>
+
+    </section><!-- /Instructor Profile Section -->
+
+
+
+</main>
+
+
+
+<!-- Scroll Top -->
+<a href="#" id="scroll-top" class="scroll-top d-flex align-items-center justify-content-center"><i
+        class="bi bi-arrow-up-short"></i></a>
+
+<!-- Preloader -->
+<div id="preloader"></div>
+
+<!-- Vendor JS Files -->
+<script src="{% static 'vendor/bootstrap/js/bootstrap.bundle.min.js' %}"></script>
+<script src="{% static 'vendor/php-email-form/validate.js' %}"></script>
+<script src="{% static 'vendor/aos/aos.js' %}"></script>
+<script src="{% static 'vendor/purecounter/purecounter_vanilla.js' %}"></script>
+<script src="{% static 'vendor/swiper/swiper-bundle.min.js' %}"></script>
+
+<!-- Main JS File -->
+<script src="{% static 'js/main.js' %}"></script>
+
+</body>
+
+</html>
+{% endblock %}

@@ -1,0 +1,390 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block title %}Courses - Learner{% endblock %}
+{% block content %}
+
+<body class="courses-page">
+
+  <main class="main">
+
+    <!-- Page Title -->
+    <div class="page-title light-background">
+      <div class="container d-lg-flex justify-content-between align-items-center">
+        <h1 class="mb-2 mb-lg-0">Courses</h1>
+        <nav class="breadcrumbs">
+          <ol>
+            <li><a href="/">Home</a></li>
+            <li class="current">Courses</li>
+          </ol>
+        </nav>
+      </div>
+    </div><!-- End Page Title -->
+
+    <!-- Courses Section -->
+    <section id="courses-2" class="courses-2 section">
+
+      <div class="container" data-aos="fade-up" data-aos-delay="100">
+
+        <div class="row">
+          <!-- Filters Sidebar -->
+          <div class="col-lg-3">
+            <div class="course-filters" data-aos="fade-right" data-aos-delay="100">
+              <h4 class="filter-title">Filter Courses</h4>
+
+              <form method="get" id="filterForm">
+                <!-- Category Filter -->
+                <div class="filter-group">
+                  <h5>Category</h5>
+                  <div class="filter-options">
+                    <label class="filter-checkbox">
+                      <input type="checkbox" name="category" value="all" {% if not selected_categories %}checked{% endif %} onchange="this.form.submit()">
+                      <span class="checkmark"></span>
+                      All Categories
+                    </label>
+                    {% for category in all_categories %}
+                    <label class="filter-checkbox">
+                      <input type="checkbox" name="category" value="{{ category.slug }}" 
+                             {% if category.slug in selected_categories %}checked{% endif %}
+                             onchange="this.form.submit()">
+                      <span class="checkmark"></span>
+                      {{ category.name }}
+                    </label>
+                    {% endfor %}
+                  </div>
+                </div>
+
+                <!-- Level Filter -->
+                <div class="filter-group">
+                  <h5>Level</h5>
+                  <div class="filter-options">
+                    <label class="filter-checkbox">
+                      <input type="checkbox" name="level" value="all" {% if not selected_levels %}checked{% endif %} onchange="this.form.submit()">
+                      <span class="checkmark"></span>
+                      All Levels
+                    </label>
+                    <label class="filter-checkbox">
+                      <input type="checkbox" name="level" value="beginner" 
+                             {% if 'beginner' in selected_levels %}checked{% endif %}
+                             onchange="this.form.submit()">
+                      <span class="checkmark"></span>
+                      Beginner
+                    </label>
+                    <label class="filter-checkbox">
+                      <input type="checkbox" name="level" value="intermediate" 
+                             {% if 'intermediate' in selected_levels %}checked{% endif %}
+                             onchange="this.form.submit()">
+                      <span class="checkmark"></span>
+                      Intermediate
+                    </label>
+                    <label class="filter-checkbox">
+                      <input type="checkbox" name="level" value="advanced" 
+                             {% if 'advanced' in selected_levels %}checked{% endif %}
+                             onchange="this.form.submit()">
+                      <span class="checkmark"></span>
+                      Advanced
+                    </label>
+                  </div>
+                </div>
+
+                <!-- Duration Filter -->
+                <div class="filter-group">
+                  <h5>Duration</h5>
+                  <div class="filter-options">
+                    <label class="filter-checkbox">
+                      <input type="checkbox" name="duration" value="under_5" 
+                             {% if 'under_5' in selected_durations %}checked{% endif %}
+                             onchange="this.form.submit()">
+                      <span class="checkmark"></span>
+                      Under 5 hours
+                    </label>
+                    <label class="filter-checkbox">
+                      <input type="checkbox" name="duration" value="5_20" 
+                             {% if '5_20' in selected_durations %}checked{% endif %}
+                             onchange="this.form.submit()">
+                      <span class="checkmark"></span>
+                      5-20 hours
+                    </label>
+                    <label class="filter-checkbox">
+                      <input type="checkbox" name="duration" value="over_20" 
+                             {% if 'over_20' in selected_durations %}checked{% endif %}
+                             onchange="this.form.submit()">
+                      <span class="checkmark"></span>
+                      20+ hours
+                    </label>
+                  </div>
+                </div>
+
+                <!-- Price Filter -->
+                <div class="filter-group">
+                  <h5>Price</h5>
+                  <div class="filter-options">
+                    <label class="filter-checkbox">
+                      <input type="checkbox" name="price" value="free" 
+                             {% if 'free' in selected_price %}checked{% endif %}
+                             onchange="this.form.submit()">
+                      <span class="checkmark"></span>
+                      Free
+                    </label>
+                    <label class="filter-checkbox">
+                      <input type="checkbox" name="price" value="paid" 
+                             {% if 'paid' in selected_price %}checked{% endif %}
+                             onchange="this.form.submit()">
+                      <span class="checkmark"></span>
+                      Paid
+                    </label>
+                  </div>
+                </div>
+
+                <!-- Hidden field to preserve search query -->
+                {% if search_query %}
+                <input type="hidden" name="search" value="{{ search_query }}">
+                {% endif %}
+              </form>
+            </div><!-- End Course Filters -->
+          </div>
+
+          <!-- Courses Grid -->
+          <div class="col-lg-9">
+            <!-- Search and Sort Header -->
+            <div class="courses-header" data-aos="fade-left" data-aos-delay="100">
+              <div class="search-box">
+                <form method="get" id="searchForm">
+                  <i class="bi bi-search"></i>
+                  <input type="text" name="search" placeholder="Search courses..." value="{{ search_query }}">
+                </form>
+              </div>
+              <div class="sort-dropdown">
+                <select name="sort" onchange="window.location.href='?sort=' + this.value">
+                  <option value="popular" {% if sort_by == 'popular' %}selected{% endif %}>Sort by: Most Popular</option>
+                  <option value="newest" {% if sort_by == 'newest' %}selected{% endif %}>Newest First</option>
+                  <option value="price_low" {% if sort_by == 'price_low' %}selected{% endif %}>Price: Low to High</option>
+                  <option value="price_high" {% if sort_by == 'price_high' %}selected{% endif %}>Price: High to Low</option>
+                  <option value="duration_short" {% if sort_by == 'duration_short' %}selected{% endif %}>Duration: Short to Long</option>
+                </select>
+              </div>
+            </div>
+
+            <!-- Courses Grid -->
+            <div class="courses-grid" data-aos="fade-up" data-aos-delay="200">
+              {% if page_obj %}
+              <div class="row">
+                {% for course in page_obj %}
+                <div class="col-lg-6 col-md-6 mb-4">
+                  <div class="course-card">
+                    <div class="course-image">
+                      {% if course.image %}
+                      <img src="{{ course.image.url }}" alt="{{ course.title }}" class="img-fluid">
+                      {% else %}
+                      <img src="{% static 'img/default-course.jpg' %}" alt="{{ course.title }}" class="img-fluid">
+                      {% endif %}
+                      
+                      {% if course.is_free %}
+                      <div class="course-badge badge-free">Free</div>
+                      {% elif course.badge %}
+                      <div class="course-badge {{ course.get_badge_class }}">{{ course.get_badge_display_text }}</div>
+                      {% endif %}
+                      
+                      {% if not course.is_free %}
+                      <div class="course-price">${{ course.price }}</div>
+                      {% endif %}
+                    </div>
+                    
+                    <div class="course-content">
+                      <div class="course-meta">
+                        <span class="category">{{ course.category.name }}</span>
+                        <span class="level">{{ course.get_level_display }}</span>
+                      </div>
+                      
+                      <h3>{{ course.title }}</h3>
+                      <p>{{ course.description|truncatewords:20 }}</p>
+                      
+                      <div class="course-stats">
+                        <div class="stat">
+                          <i class="bi bi-clock"></i>
+                          <span>{{ course.duration_hours }} hours</span>
+                        </div>
+                        <div class="stat">
+                          <i class="bi bi-people"></i>
+                          <span>{{ course.students_enrolled|default:"0" }} students</span>
+                        </div>
+                        <div class="rating">
+                          <!-- Star Rating -->
+                          {% with rating=course.rating|floatformat:0 %}
+                          {% for i in "12345" %}
+                            {% if forloop.counter <= rating|add:0 %}
+                              <i class="bi bi-star-fill"></i>
+                            {% else %}
+                              <i class="bi bi-star"></i>
+                            {% endif %}
+                          {% endfor %}
+                          {% endwith %}
+                          <span>{{ course.rating|floatformat:1 }} ({{ course.total_reviews }} reviews)</span>
+                        </div>
+                      </div>
+                      
+                      <div class="instructor-info">
+                        {% if course.instructor.profile_image %}
+                        <img src="{{ course.instructor.profile_image.url }}" alt="{{ course.instructor }}" class="instructor-avatar">
+                        {% else %}
+                        <img src="{% static 'img/default-avatar.jpg' %}" alt="{{ course.instructor }}" class="instructor-avatar">
+                        {% endif %}
+                        <span class="instructor-name">{{ course.instructor.user.get_full_name|default:course.instructor.user.username }}</span>
+                      </div>
+                      
+                      {% if course.is_free %}
+                      <a href="#" class="btn-course">Start Free Course</a>
+                      {% else %}
+                      <a href="#" class="btn-course">Know More</a>
+                      {% endif %}
+                    </div>
+                  </div><!-- End Course Card -->
+                </div>
+                {% endfor %}
+              </div>
+              {% else %}
+              <div class="row">
+                <div class="col-12 text-center py-5">
+                  <h4>No courses found matching your criteria.</h4>
+                  <p>Try adjusting your filters or search terms.</p>
+                </div>
+              </div>
+              {% endif %}
+            </div><!-- End Courses Grid -->
+
+            <!-- Pagination -->
+            {% if page_obj.has_other_pages %}
+            <div class="pagination-wrapper" data-aos="fade-up" data-aos-delay="300">
+              <nav aria-label="Courses pagination">
+                <ul class="pagination justify-content-center">
+                  {% if page_obj.has_previous %}
+                  <li class="page-item">
+                    <a class="page-link" href="?page={{ page_obj.previous_page_number }}">
+                      <i class="bi bi-chevron-left"></i>
+                    </a>
+                  </li>
+                  {% else %}
+                  <li class="page-item disabled">
+                    <a class="page-link" href="#" tabindex="-1" aria-disabled="true">
+                      <i class="bi bi-chevron-left"></i>
+                    </a>
+                  </li>
+                  {% endif %}
+
+                  {% for num in page_obj.paginator.page_range %}
+                  {% if page_obj.number == num %}
+                  <li class="page-item active">
+                    <a class="page-link" href="#">{{ num }}</a>
+                  </li>
+                  {% elif num > page_obj.number|add:'-3' and num < page_obj.number|add:'3' %}
+                  <li class="page-item">
+                    <a class="page-link" href="?page={{ num }}">{{ num }}</a>
+                  </li>
+                  {% endif %}
+                  {% endfor %}
+
+                  {% if page_obj.has_next %}
+                  <li class="page-item">
+                    <a class="page-link" href="?page={{ page_obj.next_page_number }}">
+                      <i class="bi bi-chevron-right"></i>
+                    </a>
+                  </li>
+                  {% else %}
+                  <li class="page-item disabled">
+                    <a class="page-link" href="#" tabindex="-1" aria-disabled="true">
+                      <i class="bi bi-chevron-right"></i>
+                    </a>
+                  </li>
+                  {% endif %}
+                </ul>
+              </nav>
+            </div><!-- End Pagination -->
+            {% endif %}
+
+          </div>
+        </div>
+
+      </div>
+
+    </section><!-- /Courses Section -->
+
+  </main>
+
+  <footer id="footer" class="footer accent-background">
+
+    <div class="container footer-top">
+      <div class="row gy-4">
+        <div class="col-lg-5 col-md-12 footer-about">
+          <a href="/" class="logo d-flex align-items-center">
+            <span class="sitename">Learner</span>
+          </a>
+          <p>Cras fermentum odio eu feugiat lide par naso tierra. Justo eget nada terra videa magna derita valies darta donna mare fermentum iaculis eu non diam phasellus.</p>
+          <div class="social-links d-flex mt-4">
+            <a href=""><i class="bi bi-twitter-x"></i></a>
+            <a href=""><i class="bi bi-facebook"></i></a>
+            <a href=""><i class="bi bi-instagram"></i></a>
+            <a href=""><i class="bi bi-linkedin"></i></a>
+          </div>
+        </div>
+
+        <div class="col-lg-2 col-6 footer-links">
+          <h4>Useful Links</h4>
+          <ul>
+            <li><a href="#">Home</a></li>
+            <li><a href="#">About us</a></li>
+            <li><a href="#">Services</a></li>
+            <li><a href="#">Terms of service</a></li>
+            <li><a href="#">Privacy policy</a></li>
+          </ul>
+        </div>
+
+        <div class="col-lg-2 col-6 footer-links">
+          <h4>Our Services</h4>
+          <ul>
+            <li><a href="#">Web Design</a></li>
+            <li><a href="#">Web Development</a></li>
+            <li><a href="#">Product Management</a></li>
+            <li><a href="#">Marketing</a></li>
+            <li><a href="#">Graphic Design</a></li>
+          </ul>
+        </div>
+
+        <div class="col-lg-3 col-md-12 footer-contact text-center text-md-start">
+          <h4>Contact Us</h4>
+          <p>A108 Adam Street</p>
+          <p>New York, NY 535022</p>
+          <p>United States</p>
+          <p class="mt-4"><strong>Phone:</strong> <span>+1 5589 55488 55</span></p>
+          <p><strong>Email:</strong> <span>info@example.com</span></p>
+        </div>
+
+      </div>
+    </div>
+
+    <div class="container copyright text-center mt-4">
+      <p>© <span>Copyright</span> <strong class="px-1 sitename">Learner</strong> <span>All Rights Reserved</span></p>
+      <div class="credits">
+        Designed by <a href="https://bootstrapmade.com/">BootstrapMade</a>
+      </div>
+    </div>
+
+  </footer>
+
+  <!-- Scroll Top -->
+  <a href="#" id="scroll-top" class="scroll-top d-flex align-items-center justify-content-center"><i class="bi bi-arrow-up-short"></i></a>
+
+  <!-- Preloader -->
+  <div id="preloader"></div>
+
+  <!-- Vendor JS Files -->
+  <script src="{% static 'vendor/bootstrap/js/bootstrap.bundle.min.js' %}"></script>
+  <script src="{% static 'vendor/php-email-form/validate.js' %}"></script>
+  <script src="{% static 'vendor/aos/aos.js' %}"></script>
+  <script src="{% static 'vendor/purecounter/purecounter_vanilla.js' %}"></script>
+  <script src="{% static 'vendor/swiper/swiper-bundle.min.js' %}"></script>
+
+  <!-- Main JS File -->
+  <script src="{% static 'js/main.js' %}"></script>
+
+</body>
+
+{% endblock content %}

@@ -1,0 +1,313 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block title %}{{ course.title }} - Learner{% endblock %}
+{% block content %}
+
+<body class="course-details-page">
+
+  <main class="main">
+
+    <!-- Page Title -->
+    <div class="page-title light-background">
+      <div class="container d-lg-flex justify-content-between align-items-center">
+        <h1 class="mb-2 mb-lg-0">{{ course.title }}</h1>
+        <nav class="breadcrumbs">
+          <ol>
+            <li><a href="/">Home</a></li>
+            <li><a href="{% url 'courses_list' %}">Courses</a></li>
+            <li class="current">{{ course.title }}</li>
+          </ol>
+        </nav>
+      </div>
+    </div><!-- End Page Title -->
+
+    <!-- Course Details Section -->
+    <section id="course-details" class="course-details section">
+      <div class="container" data-aos="fade-up" data-aos-delay="100">
+        <div class="row">
+          
+          <!-- Main Content -->
+          <div class="col-lg-8">
+            
+            <!-- Course Image -->
+            <div class="course-image mb-4">
+              {% if course.image %}
+              <img src="{{ course.image.url }}" alt="{{ course.title }}" class="img-fluid rounded">
+              {% else %}
+              <img src="https://via.placeholder.com/800x400?text=Course+Image" alt="{{ course.title }}" class="img-fluid rounded">
+              {% endif %}
+            </div>
+
+            <!-- Course Info Tabs -->
+            <div class="course-info-tabs">
+              <ul class="nav nav-tabs" role="tablist">
+                <li class="nav-item">
+                  <a class="nav-link active" data-bs-toggle="tab" href="#overview">Overview</a>
+                </li>
+                <li class="nav-item">
+                  <a class="nav-link" data-bs-toggle="tab" href="#curriculum">Curriculum</a>
+                </li>
+                <li class="nav-item">
+                  <a class="nav-link" data-bs-toggle="tab" href="#instructor">Instructor</a>
+                </li>
+                <li class="nav-item">
+                  <a class="nav-link" data-bs-toggle="tab" href="#reviews">Reviews</a>
+                </li>
+              </ul>
+
+              <div class="tab-content">
+                <!-- Overview Tab -->
+                <div class="tab-pane fade show active" id="overview">
+                  <div class="p-4">
+                    <h3>Course Description</h3>
+                    <p>{{ course.description }}</p>
+                    
+                    <h4 class="mt-4">What You'll Learn</h4>
+                    <ul>
+                      <li>Master the fundamental concepts of {{ course.title }}</li>
+                      <li>Apply theoretical knowledge to practical scenarios</li>
+                      <li>Develop skills required for professional success</li>
+                      <li>Get hands-on experience with real-world projects</li>
+                    </ul>
+
+                    <h4 class="mt-4">Requirements</h4>
+                    <ul>
+                      <li>Basic understanding of the subject area</li>
+                      <li>Access to a computer and internet connection</li>
+                      <li>Willingness to learn and practice regularly</li>
+                    </ul>
+                  </div>
+                </div>
+
+                <!-- Curriculum Tab -->
+                <div class="tab-pane fade" id="curriculum">
+                  <div class="p-4">
+                    <h3>Course Curriculum</h3>
+                    <div class="accordion" id="curriculumAccordion">
+                      <div class="accordion-item">
+                        <h2 class="accordion-header">
+                          <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#module1">
+                            Module 1: Introduction
+                          </button>
+                        </h2>
+                        <div id="module1" class="accordion-collapse collapse show" data-bs-parent="#curriculumAccordion">
+                          <div class="accordion-body">
+                            <ul>
+                              <li><i class="bi bi-play-circle"></i> Lecture 1: Getting Started (15 min)</li>
+                              <li><i class="bi bi-play-circle"></i> Lecture 2: Basic Concepts (20 min)</li>
+                              <li><i class="bi bi-file-earmark-text"></i> Reading: Course Materials</li>
+                            </ul>
+                          </div>
+                        </div>
+                      </div>
+                      <div class="accordion-item">
+                        <h2 class="accordion-header">
+                          <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#module2">
+                            Module 2: Advanced Topics
+                          </button>
+                        </h2>
+                        <div id="module2" class="accordion-collapse collapse" data-bs-parent="#curriculumAccordion">
+                          <div class="accordion-body">
+                            <ul>
+                              <li><i class="bi bi-play-circle"></i> Lecture 3: Deep Dive (30 min)</li>
+                              <li><i class="bi bi-play-circle"></i> Lecture 4: Practical Applications (25 min)</li>
+                              <li><i class="bi bi-clipboard-check"></i> Quiz: Module 2 Assessment</li>
+                            </ul>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+                <!-- Instructor Tab -->
+                <div class="tab-pane fade" id="instructor">
+                  <div class="p-4">
+                    <div class="instructor-profile d-flex align-items-start">
+                      {% if course.instructor.profile_image %}
+                      <img src="{{ course.instructor.profile_image.url }}" alt="{{ course.instructor }}" class="rounded-circle me-3" style="width: 100px; height: 100px; object-fit: cover;">
+                      {% else %}
+                      <img src="https://via.placeholder.com/100" alt="{{ course.instructor }}" class="rounded-circle me-3">
+                      {% endif %}
+                      <div>
+                        <h3>{{ course.instructor.user.get_full_name|default:course.instructor.user.username }}</h3>
+                        <p class="text-muted">Course Instructor</p>
+                        <p>{{ course.instructor.bio|default:"Experienced educator and subject matter expert." }}</p>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+                <!-- Reviews Tab -->
+                <div class="tab-pane fade" id="reviews">
+                  <div class="p-4">
+                    <h3>Student Reviews</h3>
+                    <div class="reviews-summary mb-4">
+                      <div class="rating-overview">
+                        <h2>{{ course.rating|floatformat:1 }}</h2>
+                        <div class="rating">
+                          {% for i in "12345" %}
+                            {% if forloop.counter <= course.rating|floatformat:0|add:0 %}
+                              <i class="bi bi-star-fill"></i>
+                            {% else %}
+                              <i class="bi bi-star"></i>
+                            {% endif %}
+                          {% endfor %}
+                        </div>
+                        <p>{{ course.total_reviews }} reviews</p>
+                      </div>
+                    </div>
+                    
+                    <!-- Sample Review -->
+                    <div class="review-item border-bottom pb-3 mb-3">
+                      <div class="d-flex justify-content-between">
+                        <div>
+                          <strong>Sample Student</strong>
+                          <div class="rating">
+                            <i class="bi bi-star-fill"></i>
+                            <i class="bi bi-star-fill"></i>
+                            <i class="bi bi-star-fill"></i>
+                            <i class="bi bi-star-fill"></i>
+                            <i class="bi bi-star-fill"></i>
+                          </div>
+                        </div>
+                        <small class="text-muted">2 weeks ago</small>
+                      </div>
+                      <p class="mt-2">Excellent course! The content is well-structured and easy to follow.</p>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+          </div>
+
+          <!-- Sidebar -->
+          <div class="col-lg-4">
+            <div class="course-sidebar sticky-top">
+              
+              <!-- Price Card -->
+              <div class="card mb-4">
+                <div class="card-body text-center">
+                  {% if course.is_free %}
+                  <h2 class="text-success">Free</h2>
+                  {% else %}
+                  <h2 class="text-primary">₹{{ course.price|floatformat:0 }}</h2>
+                  {% endif %}
+                  
+                  {% if course.is_free %}
+                  <a href="{% url 'course_enroll' course.slug %}" class="btn btn-success btn-lg w-100 mt-3">
+                    Enroll Free
+                  </a>
+                  {% else %}
+                  <a href="{% url 'course_enroll' course.slug %}" class="btn btn-primary btn-lg w-100 mt-3">
+                    Enroll Now
+                  </a>
+                  {% endif %}
+                </div>
+              </div>
+
+              <!-- Course Info -->
+              <div class="card mb-4">
+                <div class="card-header">
+                  <h5 class="mb-0">Course Information</h5>
+                </div>
+                <div class="card-body">
+                  <ul class="list-unstyled">
+                    <li class="mb-3">
+                      <i class="bi bi-clock text-primary"></i>
+                      <strong>Duration:</strong> {{ course.duration_hours }} hours
+                    </li>
+                    <li class="mb-3">
+                      <i class="bi bi-bar-chart text-primary"></i>
+                      <strong>Level:</strong> {{ course.get_level_display }}
+                    </li>
+                    <li class="mb-3">
+                      <i class="bi bi-people text-primary"></i>
+                      <strong>Students:</strong> {{ course.students_enrolled }}
+                    </li>
+                    <li class="mb-3">
+                      <i class="bi bi-folder text-primary"></i>
+                      <strong>Category:</strong> {{ course.category.name }}
+                    </li>
+                    <li class="mb-3">
+                      <i class="bi bi-star text-primary"></i>
+                      <strong>Rating:</strong> {{ course.rating|floatformat:1 }} ({{ course.total_reviews }} reviews)
+                    </li>
+                  </ul>
+                </div>
+              </div>
+
+              <!-- Share -->
+              <div class="card">
+                <div class="card-header">
+                  <h5 class="mb-0">Share This Course</h5>
+                </div>
+                <div class="card-body">
+                  <div class="d-flex gap-2">
+                    <a href="#" class="btn btn-outline-primary btn-sm flex-fill">
+                      <i class="bi bi-facebook"></i>
+                    </a>
+                    <a href="#" class="btn btn-outline-info btn-sm flex-fill">
+                      <i class="bi bi-twitter"></i>
+                    </a>
+                    <a href="#" class="btn btn-outline-success btn-sm flex-fill">
+                      <i class="bi bi-whatsapp"></i>
+                    </a>
+                    <a href="#" class="btn btn-outline-primary btn-sm flex-fill">
+                      <i class="bi bi-linkedin"></i>
+                    </a>
+                  </div>
+                </div>
+              </div>
+
+            </div>
+          </div>
+
+        </div>
+
+        <!-- Related Courses -->
+        {% if related_courses %}
+        <div class="row mt-5">
+          <div class="col-12">
+            <h3 class="mb-4">Related Courses</h3>
+          </div>
+          {% for related in related_courses %}
+          <div class="col-lg-4 col-md-6 mb-4">
+            <div class="card h-100">
+              {% if related.image %}
+              <img src="{{ related.image.url }}" class="card-img-top" alt="{{ related.title }}">
+              {% endif %}
+              <div class="card-body">
+                <h5 class="card-title">{{ related.title }}</h5>
+                <p class="card-text">{{ related.description|truncatewords:15 }}</p>
+                <div class="d-flex justify-content-between align-items-center">
+                  {% if related.is_free %}
+                  <span class="badge bg-success">Free</span>
+                  {% else %}
+                  <span class="text-primary fw-bold">₹{{ related.price|floatformat:0 }}</span>
+                  {% endif %}
+                  <a href="{% url 'course_detail' related.slug %}" class="btn btn-sm btn-outline-primary">View Details</a>
+                </div>
+              </div>
+            </div>
+          </div>
+          {% endfor %}
+        </div>
+        {% endif %}
+
+      </div>
+    </section><!-- /Course Details Section -->
+
+  </main>
+
+
+  <!-- Scroll Top -->
+  <a href="#" id="scroll-top" class="scroll-top d-flex align-items-center justify-content-center"><i class="bi bi-arrow-up-short"></i></a>
+
+  <!-- Vendor JS Files -->
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+
+</body>
+
+{% endblock content %}

@@ -1,0 +1,195 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta content="width=device-width, initial-scale=1.0" name="viewport">
+  <title>{% block title %}Home - Gujarat University Online Education{% endblock %}</title>
+
+  <!-- Favicons -->
+  <link href="{% static 'img/logo.png' %}" rel="icon">
+  <link href="{% static 'img/apple-touch-icon.png' %}" rel="apple-touch-icon">
+
+  <!-- Fonts -->
+  <link href="https://fonts.googleapis.com" rel="preconnect">
+  <link href="https://fonts.gstatic.com" rel="preconnect" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&family=Raleway:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&family=Ubuntu:ital,wght@0,300;0,400;0,500;0,700;1,300;1,400;1,500;1,700&display=swap" rel="stylesheet">
+
+  <!-- Vendor CSS Files -->
+  <link href="{% static 'vendor/bootstrap/css/bootstrap.min.css' %}" rel="stylesheet">
+  <link href="{% static 'vendor/bootstrap-icons/bootstrap-icons.css' %}" rel="stylesheet">
+  <link href="{% static 'vendor/aos/aos.css' %}" rel="stylesheet">
+  <link href="{% static 'vendor/swiper/swiper-bundle.min.css' %}" rel="stylesheet">
+
+  <!-- Main CSS File -->
+  <link href="{% static 'css/main.css' %}" rel="stylesheet">
+
+  {% block extra_head %}{% endblock %}
+</head>
+
+<body class="index-page">
+
+  <header id="header" class="header d-flex align-items-center sticky-top">
+    <div class="container-fluid container-xl position-relative d-flex align-items-center">
+
+      <a href="/" class="logo d-flex align-items-center me-auto">
+        <!-- Uncomment the line below if you also wish to use an image logo -->
+        <img src="{% static 'img/logo.png' %}" alt="">
+        <h1 class="sitename"><img src="{% static 'img/online_education_img.png' %}" alt=""></h1>
+
+      </a>
+
+      <nav id="navmenu" class="navmenu">
+        <ul>
+          <li><a href="/" class="active">Home</a></li>
+          <li><a href="https://gujaratuniversity.ac.in/University">About</a></li>
+          <li><a href="/courses.html">Courses</a></li>
+          <li><a href="/administration.html">Administration</a></li>
+
+          <li><a href="/instructors.html">Faculty</a></li>
+         
+         
+
+         
+          <li><a href="/contact.html">Contact</a></li>
+        </ul>
+        <i class="mobile-nav-toggle d-xl-none bi bi-list"></i>
+      </nav>
+
+      <a class="btn-getstarted" href="/enroll.html">Inquiry Now</a>
+      <a class="btn-getstarted" href="https://online.gujaratuniversity.ac.in/admission/Registration">Registration</a>
+
+
+    </div>
+  </header>
+
+  {% block content %}{% endblock %}
+
+ <footer id="footer" class="footer" style="background-color: #136ad5; color: white;">
+    <div class="footer-top">
+      <div class="container">
+        <div class="row gy-4">
+
+          <div class="col-lg-5 col-md-12 footer-info">
+            <a href="/" class="logo d-flex align-items-center text-white text-decoration-none">
+              <span class="fs-3 fw-bold">Gujarat University - Online Education</span>
+            </a>
+            <p class="mt-2 text-light">Gujarat University invites you to enrol in fully online UGC-approved UG & PG Programs.</p>
+            <div class="social-links mt-3 d-flex flex-row gap-3">
+              <a href="#" class="text-white"><i class="bi bi-twitter fs-4"></i></a>
+              <a href="#" class="text-white"><i class="bi bi-facebook fs-4"></i></a>
+              <a href="#" class="text-white"><i class="bi bi-instagram fs-4"></i></a>
+              <a href="#" class="text-white"><i class="bi bi-linkedin fs-4"></i></a>
+              <a href="#" class="text-white"><i class="bi bi-youtube fs-4"></i></a>
+            </div>
+          </div>
+
+          <div class="col-lg-2 col-6 footer-links">
+            <h4 class="text-white">Useful Links</h4>
+            <ul class="list-unstyled">
+              <li><a href="/" class="text-light text-decoration-none">Home</a></li>
+              <li><a href="/courses.html" class="text-light text-decoration-none">Courses</a></li>
+              <li><a href="/pricing.html" class="text-light text-decoration-none">Pricing</a></li>
+              <li><a href="/terms.html" class="text-light text-decoration-none">Terms</a></li>
+              <li><a href="/privacy.html" class="text-light text-decoration-none">Privacy</a></li>
+            </ul>
+          </div>
+
+          <div class="col-lg-2 col-6 footer-links">
+            <h4 class="text-white">Our Courses</h4>
+            <ul class="list-unstyled">
+              <li><a href="#" class="text-light text-decoration-none">Web Development</a></li>
+              <li><a href="#" class="text-light text-decoration-none">UI/UX Design</a></li>
+              <li><a href="#" class="text-light text-decoration-none">Digital Marketing</a></li>
+              <li><a href="#" class="text-light text-decoration-none">Data Science</a></li>
+              <li><a href="#" class="text-light text-decoration-none">Business Administration</a></li>
+            </ul>
+          </div>
+
+          <div class="col-lg-3 col-md-12 footer-contact text-center text-md-start">
+            <h4 class="text-white">Contact Us</h4>
+            <p class="text-light">
+              <i class="bi bi-geo-alt me-2"></i> Gujarat University<br>
+              Navrangpura, Ahmedabad<br>
+              Gujarat 380009<br><br>
+              <i class="bi bi-telephone me-2"></i> <strong>Phone:</strong> +91 79 2630 1341<br>
+              <i class="bi bi-envelope me-2"></i> <strong>Email:</strong> onlineedu@gujaratuniversity.ac.in<br>
+            </p>
+          </div>
+
+        </div>
+      </div>
+    </div>
+
+    <div class="container mt-4 py-3 border-top border-light border-opacity-25">
+      <div class="row align-items-center">
+        <div class="col-md-6 text-center text-md-start">
+          <div class="copyright text-light">
+            &copy;2022<strong><span class="text-white"> Gujarat University</span></strong>  Online Education
+          </div>
+        </div>
+        <!-- <div class="col-md-6 text-center text-md-end">
+          <div class="credits text-light opacity-75">
+           Designed  by <a href="https://bootstrapmade.com/" class="text-light text-decoration-none">Gujarat University</a>
+          </div>
+        </div> -->
+      </div>
+    </div>
+  </footer>
+  <!-- Vendor JS Files -->
+  <script src="{% static 'vendor/bootstrap/js/bootstrap.bundle.min.js' %}"></script>
+  <script src="{% static 'vendor/aos/aos.js' %}"></script>
+  <script src="{% static 'vendor/purecounter/purecounter_vanilla.js' %}"></script>
+  <script src="{% static 'vendor/swiper/swiper-bundle.min.js' %}"></script>
+
+  <!-- Main JS File -->
+  <script src="{% static 'js/main.js' %}"></script>
+
+  <!-- Runtime static fixer removed — templates now use the Django 'static' template tag -->
+
+  
+</body>
+</html>
+
+{% block extra_js %}
+<script>
+// Fix for JavaScript errors
+document.addEventListener('DOMContentLoaded', function() {
+    console.log('Contact page loaded - fixing errors');
+    
+    // Fix for AOS library (if you're using it)
+    if(typeof AOS !== 'undefined') {
+        AOS.init({
+            duration: 800,
+            easing: 'ease-in-out',
+            once: true,
+            mirror: false
+        });
+    }
+    
+    // Fix for form submission
+    const contactForm = document.querySelector('.php-email-form');
+    if(contactForm) {
+        contactForm.addEventListener('submit', function(e) {
+            // Add form validation here
+            console.log('Form submitted');
+        });
+    }
+    
+    // Fix for event listener errors
+    const socialLinks = document.querySelectorAll('.social-links a');
+    socialLinks.forEach(link => {
+        link.addEventListener('click', function(e) {
+            e.preventDefault();
+            console.log('Social link clicked:', this.href);
+        });
+    });
+});
+
+// Global error handler
+window.addEventListener('error', function(e) {
+    console.error('JavaScript Error:', e.message);
+    return true; // Prevents error from showing in console
+});
+</script>
+{% endblock extra_js %}
