@@ -1,6 +1,7 @@
 {% load static %}
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
   <meta charset="utf-8">
   <meta content="width=device-width, initial-scale=1.0" name="viewport">
@@ -13,11 +14,14 @@
   <!-- Fonts -->
   <link href="https://fonts.googleapis.com" rel="preconnect">
   <link href="https://fonts.gstatic.com" rel="preconnect" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&family=Raleway:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&family=Ubuntu:ital,wght@0,300;0,400;0,500;0,700;1,300;1,400;1,500;1,700&display=swap" rel="stylesheet">
+  <link
+    href="https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&family=Raleway:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&family=Ubuntu:ital,wght@0,300;0,400;0,500;0,700;1,300;1,400;1,500;1,700&display=swap"
+    rel="stylesheet">
 
   <!-- Vendor CSS Files -->
   <link href="{% static 'vendor/bootstrap/css/bootstrap.min.css' %}" rel="stylesheet">
   <link href="{% static 'vendor/bootstrap-icons/bootstrap-icons.css' %}" rel="stylesheet">
+  
   <link href="{% static 'vendor/aos/aos.css' %}" rel="stylesheet">
   <link href="{% static 'vendor/swiper/swiper-bundle.min.css' %}" rel="stylesheet">
 
@@ -28,6 +32,23 @@
 </head>
 
 <body class="index-page">
+<!-- ======= Top Static Bar ======= -->
+<div class="topbar fixed-top">
+  <div class="container-fluid container-xl d-flex justify-content-end align-items-center gap-3">
+   
+      <a class="btn-getstarted" href="https://online.gujaratuniversity.ac.in/admission/Registration">Registration</a>
+
+    <a href="https://online.gujaratuniversity.ac.in/admission/Registration" class="topbar-btn">
+      <i class="bi bi-person-plus me-1"></i> Admission Form
+    </a>
+
+    <a href="/iks-registration.html" class="topbar-btn">
+      <i class="bi bi-journal-bookmark me-1"></i> IKS Course Registration
+    </a>
+
+  </div>
+</div>
+<!-- ======= End Top Static Bar ======= -->
 
   <header id="header" class="header d-flex align-items-center sticky-top">
     <div class="container-fluid container-xl position-relative d-flex align-items-center">
@@ -42,16 +63,22 @@
       <nav id="navmenu" class="navmenu">
         <ul>
           <li><a href="/" class="active">Home</a></li>
-          <li><a href="https://gujaratuniversity.ac.in/University">About</a></li>
+          <li><a href="https://gujaratuniversity.ac.in/University">About Us</a></li>
           <li><a href="/courses.html">Courses</a></li>
-          <li><a href="/administration.html">Administration</a></li>
+          <li class="nav-item dropdown">
+            <a class="nav-link dropdown-toggle" href="#" id="coursesDropdown" role="button" data-bs-toggle="dropdown"
+              aria-expanded="false">
+              CDOE
+            </a>
 
-          <li><a href="/instructors.html">Faculty</a></li>
-         
-         
-
-         
-          <li><a href="/contact.html">Contact</a></li>
+            <ul class="dropdown-menu" aria-labelledby="coursesDropdown">
+              <li><a class="dropdown-item"  href="/administration.html">Administration</a></li>
+              <li><a class="dropdown-item" href="/instructors.html">Teaching Staff</a></li>
+              <li><a class="dropdown-item" href="/pg-courses.html">Non-Teaching Staff</a></li>
+              <li><a class="dropdown-item" href="/certificate-courses.html">Multitasking Staff</a></li>
+            </ul>
+          </li>
+         <li><a href="/contact.html">Contact</a></li>
         </ul>
         <i class="mobile-nav-toggle d-xl-none bi bi-list"></i>
       </nav>
@@ -65,7 +92,7 @@
 
   {% block content %}{% endblock %}
 
- <footer id="footer" class="footer" style="background-color: #136ad5; color: white;">
+  <footer id="footer" class="footer" style="background-color: #136ad5; color: white;">
     <div class="footer-top">
       <div class="container">
         <div class="row gy-4">
@@ -74,7 +101,8 @@
             <a href="/" class="logo d-flex align-items-center text-white text-decoration-none">
               <span class="fs-3 fw-bold">Gujarat University - Online Education</span>
             </a>
-            <p class="mt-2 text-light">Gujarat University invites you to enrol in fully online UGC-approved UG & PG Programs.</p>
+            <p class="mt-2 text-light">Gujarat University invites you to enrol in fully online UGC-approved UG & PG
+              Programs.</p>
             <div class="social-links mt-3 d-flex flex-row gap-3">
               <a href="#" class="text-white"><i class="bi bi-twitter fs-4"></i></a>
               <a href="#" class="text-white"><i class="bi bi-facebook fs-4"></i></a>
@@ -125,7 +153,7 @@
       <div class="row align-items-center">
         <div class="col-md-6 text-center text-md-start">
           <div class="copyright text-light">
-            &copy;2022<strong><span class="text-white"> Gujarat University</span></strong>  Online Education
+            &copy;2022<strong><span class="text-white"> Gujarat University</span></strong> Online Education
           </div>
         </div>
         <!-- <div class="col-md-6 text-center text-md-end">
@@ -147,49 +175,50 @@
 
   <!-- Runtime static fixer removed — templates now use the Django 'static' template tag -->
 
-  
+
 </body>
+
 </html>
 
 {% block extra_js %}
 <script>
-// Fix for JavaScript errors
-document.addEventListener('DOMContentLoaded', function() {
+  // Fix for JavaScript errors
+  document.addEventListener('DOMContentLoaded', function () {
     console.log('Contact page loaded - fixing errors');
-    
+
     // Fix for AOS library (if you're using it)
-    if(typeof AOS !== 'undefined') {
-        AOS.init({
-            duration: 800,
-            easing: 'ease-in-out',
-            once: true,
-            mirror: false
-        });
+    if (typeof AOS !== 'undefined') {
+      AOS.init({
+        duration: 800,
+        easing: 'ease-in-out',
+        once: true,
+        mirror: false
+      });
     }
-    
+
     // Fix for form submission
     const contactForm = document.querySelector('.php-email-form');
-    if(contactForm) {
-        contactForm.addEventListener('submit', function(e) {
-            // Add form validation here
-            console.log('Form submitted');
-        });
+    if (contactForm) {
+      contactForm.addEventListener('submit', function (e) {
+        // Add form validation here
+        console.log('Form submitted');
+      });
     }
-    
+
     // Fix for event listener errors
     const socialLinks = document.querySelectorAll('.social-links a');
     socialLinks.forEach(link => {
-        link.addEventListener('click', function(e) {
-            e.preventDefault();
-            console.log('Social link clicked:', this.href);
-        });
+      link.addEventListener('click', function (e) {
+        e.preventDefault();
+        console.log('Social link clicked:', this.href);
+      });
     });
-});
+  });
 
-// Global error handler
-window.addEventListener('error', function(e) {
+  // Global error handler
+  window.addEventListener('error', function (e) {
     console.error('JavaScript Error:', e.message);
     return true; // Prevents error from showing in console
-});
+  });
 </script>
 {% endblock extra_js %}

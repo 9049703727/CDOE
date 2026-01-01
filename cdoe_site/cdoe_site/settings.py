@@ -126,5 +126,16 @@ MEDIA_URL = '/media/'
 MEDIA_ROOT = os.path.join(BASE_DIR / 'media')
 
 # Email settings - development friendly
-EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
-DEFAULT_FROM_EMAIL = 'webmaster@localhost'
+DEFAULT_FROM_EMAIL = 'gajjarurvi2310@gmail.com'
+
+
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+EMAIL_HOST = 'smtp.gmail.com'
+EMAIL_PORT = 587
+EMAIL_USE_TLS = True
+
+EMAIL_HOST_USER = 'gajjarurvi2310@gmail.com'      # sender email
+EMAIL_HOST_PASSWORD = 'mwaf mbat eiyg zlnp'    # Gmail App Password
+
+DEFAULT_FROM_EMAIL = 'Gujarat University Online <gajjarurvi2310@gmail.com>'
+

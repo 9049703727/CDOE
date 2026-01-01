@@ -159,3 +159,38 @@
   });
 
 })();
+
+document.getElementById("mobile").addEventListener("input", function () {
+  this.value = this.value.replace(/[^0-9]/g, "");
+});
+ const form = document.querySelector('.enrollment-form');
+  const emailInput = document.getElementById('email');
+  const mobileInput = document.getElementById('mobile');
+  const emailError = document.getElementById('emailError');
+  const mobileError = document.getElementById('mobileError');
+
+  form.addEventListener('submit', function(e) {
+    let valid = true;
+
+    // Email validation
+    const emailPattern = /^[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,}$/;
+    if (!emailPattern.test(emailInput.value)) {
+      emailError.style.display = 'block';
+      valid = false;
+    } else {
+      emailError.style.display = 'none';
+    }
+
+    // Mobile validation
+    const mobilePattern = /^[0-9]{10}$/;
+    if (!mobilePattern.test(mobileInput.value)) {
+      mobileError.style.display = 'block';
+      valid = false;
+    } else {
+      mobileError.style.display = 'none';
+    }
+
+    if (!valid) {
+      e.preventDefault(); // Stop form submission
+    }
+  });

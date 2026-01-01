@@ -1,5 +1,6 @@
 from django.contrib import admin
 from .models import Subscriber
+from .models import Inquiry 
 
 @admin.register(Subscriber)
 class SubscriberAdmin(admin.ModelAdmin):
@@ -53,3 +54,10 @@ class CourseAdmin(admin.ModelAdmin):
             'classes': ('collapse',)
         }),
     )
+
+   
+
+@admin.register(Inquiry)
+class InquiryAdmin(admin.ModelAdmin):
+    list_display = ('first_name', 'last_name', 'course','gender','category','dob','email', 'mobile','city','state','country', 'created_at')
+    search_fields = ('first_name', 'last_name', 'email', 'mobile')
