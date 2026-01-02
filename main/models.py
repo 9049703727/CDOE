@@ -89,6 +89,7 @@ class Course(models.Model):
         return f"₹{self.price:,.0f}"
 
 class Inquiry(models.Model):
+    course = models.ForeignKey(Course, on_delete=models.CASCADE)
     COURSE_CHOICES = [
         ('web-development', 'Full Stack Web Development'),
         ('data-science', 'Data Science & Analytics'),
@@ -161,23 +162,23 @@ class Notification(models.Model):
 
     def __str__(self):
         return self.title
-
-
-
 class TechnicalStaff(models.Model):
     name = models.CharField(max_length=100)
-    designation = models.CharField(max_length=100)   # e.g. System Admin, Lab Assistant
-    department = models.CharField(max_length=100)
-    bio = models.TextField()
+    specialty = models.CharField(max_length=100)
+    description = models.TextField()
     photo = models.ImageField(upload_to='technical_staff/')
-
-    experience_years = models.PositiveIntegerField(default=0)
-    skills = models.CharField(max_length=255, help_text="Comma separated")
+    rating = models.DecimalField(max_digits=2, decimal_places=1, default=0.0)
+    students = models.PositiveIntegerField(default=0)
+    courses = models.PositiveIntegerField(default=0)
 
     linkedin = models.URLField(blank=True, null=True)
-    email = models.EmailField(blank=True, null=True)
+    twitter = models.URLField(blank=True, null=True)
+    github = models.URLField(blank=True, null=True)
 
     is_active = models.BooleanField(default=True)
 
     def __str__(self):
         return self.name
+
+
+

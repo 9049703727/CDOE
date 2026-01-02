@@ -74,6 +74,6 @@ class NotificationAdmin(admin.ModelAdmin):
 
 @admin.register(TechnicalStaff)
 class TechnicalStaffAdmin(admin.ModelAdmin):
-    list_display = ('name', 'designation', 'department', 'experience_years', 'is_active')
-    list_filter = ('department', 'is_active')
-    search_fields = ('name', 'designation')
+    list_display = ('name', 'specialty', 'rating', 'is_active')
+    list_filter = ('is_active', 'specialty')
+    search_fields = ('name',)

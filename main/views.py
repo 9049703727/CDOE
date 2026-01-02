@@ -10,13 +10,22 @@ from .models import Notification
 
 from .models import Course, Category, Instructor, Inquiry
 from .forms import ContactForm
+from .models import TechnicalStaff
+
+
 
 
 # =========================
 # Home Page
 # =========================
+
+
 def index(request):
-    return render(request, 'index.html')
+    notifications = Notification.objects.all().order_by('-date')[:5]
+    return render(request, 'index.html', {
+        'notifications': notifications
+    })
+
 
 
 # =========================
@@ -161,11 +170,25 @@ def course_enroll(request, slug):
 # =========================
 # Inquiry Form (UPDATED)
 # =========================
-def inquiry_form(request):
-    if request.method == "POST":
+   
 
+from django.shortcuts import render, redirect, get_object_or_404
+from django.core.mail import send_mail
+from django.conf import settings
+from .models import Inquiry, Course
+
+def inquiry_form(request):
+    # Fetch courses dynamically for the form
+    courses = Course.objects.filter(is_active=True).order_by('title')
+
+    if request.method == "POST":
+        # Get the course object instead of just the string
+        course_slug = request.POST.get('course')
+        course_obj = get_object_or_404(Course, slug=course_slug)
+
+        # Create Inquiry
         inquiry = Inquiry.objects.create(
-            course=request.POST.get('course'),
+            course=course_obj,  # store as ForeignKey
             first_name=request.POST.get('firstName'),
             middle_name=request.POST.get('middleName'),
             last_name=request.POST.get('lastName'),
@@ -193,7 +216,7 @@ def inquiry_form(request):
             message=f"""
 Dear {inquiry.first_name} {inquiry.last_name},
 
-Thank you for your inquiry for the "{inquiry.course}" course.
+Thank you for your inquiry for the "{inquiry.course.title}" course.
 
 We have received your request successfully.
 Our team will contact you shortly with further details.
@@ -217,7 +240,7 @@ New Inquiry Details:
 Name: {inquiry.first_name} {inquiry.last_name}
 Email: {inquiry.email}
 Mobile: {inquiry.mobile}
-Course: {inquiry.course}
+Course: {inquiry.course.title}
 """,
             from_email=settings.DEFAULT_FROM_EMAIL,
             recipient_list=[settings.DEFAULT_FROM_EMAIL],
@@ -226,7 +249,8 @@ Course: {inquiry.course}
 
         return redirect('inquiry_success')
 
-    return render(request, 'inquiry.html')
+    return render(request, 'inquiry.html', {'courses': courses})
+
 
 
 # =========================
@@ -239,22 +263,18 @@ def iks_course_registration(request):
     return render(request,'iks_course_registration')
 
 
-def index(request):
-    notifications = Notification.objects.all().order_by('-date')[:5]
-    return render(request, 'index.html', {
-        'notifications': notifications
-    })
-
 # View all notifications page
 def notifications_view(request):
     notifications = Notification.objects.all().order_by('-date')
     return render(request, 'notifications.html', {
         'notifications': notifications
     })
-
-
 def technical_staff(request):
     staff_list = TechnicalStaff.objects.filter(is_active=True)
+    print("STAFF COUNT:", staff_list.count())
+
     return render(request, 'technical_staff.html', {
         'staff_list': staff_list
     })
+
+

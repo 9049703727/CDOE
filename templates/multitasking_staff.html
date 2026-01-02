@@ -1,0 +1,131 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block title %}Technical Staff - Gujarat University Online Education{% endblock %}
+{% block content %}
+
+
+
+
+<main class="main">
+
+  <!-- Page Title -->
+  <div class="page-title light-background">
+    <div class="container d-lg-flex justify-content-between align-items-center">
+      <h1 class="mb-2 mb-lg-0">Technical Staff</h1>
+      <nav class="breadcrumbs">
+        <ol>
+          <li><a href="index.html">Home</a></li>
+          <li class="current">Technical Staff</li>
+        </ol>
+      </nav>
+    </div>
+  </div><!-- End Page Title -->
+
+  <!-- Instructors Section -->
+  <section id="instructors" class="instructors section">
+
+    <div class="container" data-aos="fade-up" data-aos-delay="100">
+
+      <div class="row gy-4">
+
+        {% for staff in staff_list %}
+        <div class="col-xl-3 col-lg-4 col-md-6" data-aos="fade-up">
+          <div class="instructor-card">
+
+            <div class="instructor-image">
+              {% if staff.photo %}
+              <img src="{{ staff.photo.url }}" class="img-fluid" alt="{{ staff.name }}">
+              {% else %}
+              <img src="{% static 'img/default-user.png' %}" class="img-fluid" alt="No Image">
+              {% endif %}
+
+
+              <div class="overlay-content">
+                <div class="rating-stars">
+                  <i class="bi bi-star-fill"></i>
+                  <i class="bi bi-star-fill"></i>
+                  <i class="bi bi-star-fill"></i>
+                  <i class="bi bi-star-fill"></i>
+                  <i class="bi bi-star-half"></i>
+                  <span>{{ staff.rating }}</span>
+                </div>
+
+                <div class="course-count">
+                  <i class="bi bi-play-circle"></i>
+                  <span>{{ staff.courses }} Courses</span>
+                </div>
+              </div>
+            </div>
+
+            <div class="instructor-info">
+              <h5>{{ staff.name }}</h5>
+              <p class="specialty">{{ staff.specialty }}</p>
+              <p class="description">
+                {{ staff.description|truncatechars:120 }}
+              </p>
+
+              <div class="stats-grid">
+                <div class="stat">
+                  <span class="number">{{ staff.students }}</span>
+                  <span class="label">Students</span>
+                </div>
+                <div class="stat">
+                  <span class="number">{{ staff.rating }}</span>
+                  <span class="label">Rating</span>
+                </div>
+              </div>
+
+              <div class="action-buttons">
+                <a href="#" class="btn-view">View Profile</a>
+
+                <div class="social-links">
+                  {% if staff.linkedin %}
+                  <a href="{{ staff.linkedin }}"><i class="bi bi-linkedin"></i></a>
+                  {% endif %}
+                  {% if staff.twitter %}
+                  <a href="{{ staff.twitter }}"><i class="bi bi-twitter"></i></a>
+                  {% endif %}
+                  {% if staff.github %}
+                  <a href="{{ staff.github }}"><i class="bi bi-github"></i></a>
+                  {% endif %}
+                </div>
+              </div>
+
+            </div>
+          </div>
+        </div>
+
+        {% empty %}
+        <p class="text-center">No technical staff available.</p>
+        {% endfor %}
+
+      </div>
+
+
+    </div>
+
+  </section><!-- /Instructors Section -->
+
+
+  {% endblock content %}
+
+
+  <!-- Scroll Top -->
+  <a href="#" id="scroll-top" class="scroll-top d-flex align-items-center justify-content-center"><i
+      class="bi bi-arrow-up-short"></i></a>
+
+  <!-- Preloader -->
+  <div id="preloader"></div>
+
+  <!-- Vendor JS Files -->
+  <script src="{% static 'vendor/bootstrap/js/bootstrap.bundle.min.js' %}"></script>
+  <script src="{% static 'vendor/php-email-form/validate.js' %}"></script>
+  <script src="{% static 'vendor/aos/aos.js' %}"></script>
+  <script src="{% static 'vendor/purecounter/purecounter_vanilla.js' %}"></script>
+  <script src="{% static 'vendor/swiper/swiper-bundle.min.js' %}"></script>
+
+  <!-- Main JS File -->
+  <script src="{% static 'js/main.js' %}"></script>
+
+
+  </html>
