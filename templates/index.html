@@ -125,345 +125,111 @@
 
   </section><!-- /Courses Hero Section -->
 
-  <!-- Notification Panel -->
-  <!-- Notification Panel -->
-  <section class="notifications-section section light-background">
-    <div class="container">
-
-      <div class="section-title text-center">
-        <h2>News & Latest Notifications</h2>
-        <p>Stay updated with admissions, courses & announcements</p>
-      </div>
-
-      <div class="row justify-content-center">
-        <div class="col-lg-8">
-          <div class="notification-card">
-
-            <ul class="notification-list">
-              {% if notifications %}
-              {% for notif in notifications %}
-              <li class="notification-item {% if notif.is_new %}new{% endif %}">
-                <div class="notif-icon">
-                  <i class="bi bi-mortarboard-fill"></i>
-                </div>
-                <div class="notif-content">
-                  <h6>{{ notif.title|default:"No Title" }}</h6>
-                  <small>
-                    <i class="bi bi-calendar"></i>
-                    {{ notif.date|date:"d M Y"|default:"No Date" }}
-                  </small>
-                  {% if notif.pdf %}
-                  <br>
-                  <a href="{{ notif.pdf.url }}" target="_blank" class="pdf-link">
-                    <i class="bi bi-file-earmark-pdf"></i> View PDF
-                  </a>
-                  {% endif %}
-                </div>
-                {% if notif.is_new %}
-                <span class="badge-new">NEW</span>
-                {% endif %}
-              </li>
-              {% endfor %}
-              {% else %}
-              <li class="notification-item">No notifications found.</li>
-              {% endif %}
-            </ul>
-
-            <div class="text-center mt-3">
-              <a href="{% url 'notifications' %}" class="btn-view-all">
-                <i class="bi bi-list-ul"></i> View All Notifications
-              </a>
-            </div>
-
-          </div>
-        </div>
-      </div>
-
-    </div>
-  </section>
-
-
+<!-- Featured Courses Section -->
   <!-- Featured Courses Section -->
-  <section id="featured-courses" class="featured-courses section">
+    <section id="featured-courses" class="featured-courses section">
 
-    <!-- Section Title -->
-    <div class="container section-title" data-aos="fade-up">
-      <h2>Featured Courses</h2>
-      <p>Necessitatibus eius consequatur ex aliquid fuga eum quidem sint consectetur velit</p>
-    </div><!-- End Section Title -->
+      <!-- Section Title -->
+      <div class="container section-title" data-aos="fade-up">
+        <h2>Featured Courses</h2>
+        <p>Explore our most popular and highly-rated online courses</p>
+      </div><!-- End Section Title -->
 
-    <div class="container" data-aos="fade-up" data-aos-delay="100">
+      <div class="container" data-aos="fade-up" data-aos-delay="100">
 
-      <div class="row gy-4">
-
-        <div class="col-lg-4 col-md-6" data-aos="fade-up" data-aos-delay="200">
-          <div class="course-card">
-            <div class="course-image">
-              <img src="{% static 'img/education/students-9.webp' %}" alt="Course" class="img-fluid">
-              <div class="badge featured">Featured</div>
-              <div class="price-badge">$149</div>
+        <div class="row gy-4">
+          {% for course in featured_courses %}
+          <div class="col-lg-4 col-md-6" data-aos="fade-up" data-aos-delay="{{ forloop.counter|add:1 }}00">
+            <div class="course-card">
+              <div class="course-image">
+                {% if course.image %}
+                <img src="{{ course.image.url }}" alt="{{ course.title }}" class="img-fluid">
+                {% else %}
+                <img src="{% static 'img/education/students-9.webp' %}" alt="{{ course.title }}" class="img-fluid">
+                {% endif %}
+                
+                {% if course.is_free %}
+                <div class="badge featured">Free</div>
+                <div class="price-badge">Free</div>
+                {% else %}
+                <div class="badge featured">Featured</div>
+                <div class="price-badge">₹{{ course.price }}</div>
+                {% endif %}
+              </div>
+              
+              <div class="course-content">
+                <div class="course-meta">
+                  <span class="category">{{ course.category.name }}</span>
+                  <span class="duration">{{ course.duration_hours }} hours</span>
+                </div>
+                
+                <h3><a href="#">{{ course.title }}</a></h3>
+                <p>{{ course.description|truncatechars:120 }}</p>
+                
+                <div class="instructor">
+                  {% if course.instructor.profile_image %}
+                  <img src="{{ course.instructor.profile_image.url }}" alt="{{ course.instructor.get_full_name }}" class="instructor-img">
+                  {% else %}
+                  <img src="{% static 'img/person/person-f-3.webp' %}" alt="{{ course.instructor.get_full_name }}" class="instructor-img">
+                  {% endif %}
+                  <div class="instructor-info">
+                    <h6>{{ course.instructor.get_full_name }}</h6>
+                    <span>{{ course.instructor.specialization|default:"Instructor" }}</span>
+                  </div>
+                </div>
+                
+                <div class="course-stats">
+                  <div class="rating">
+                    {% with rating=course.rating|floatformat:1 %}
+                    {% for i in "12345"|make_list %}
+                      {% if forloop.counter <= rating|floatformat:0 %}
+                        <i class="bi bi-star-fill"></i>
+                      {% elif forloop.counter == rating|floatformat:0|add:1 and rating|slice:"-1" == "5" %}
+                        <i class="bi bi-star-half"></i>
+                      {% else %}
+                        <i class="bi bi-star"></i>
+                      {% endif %}
+                    {% endfor %}
+                    <span>({{ course.rating|floatformat:1 }})</span>
+                    {% endwith %}
+                  </div>
+                  <div class="students">
+                    <i class="bi bi-people-fill"></i>
+                    <span>{{ course.students_enrolled }} students</span>
+                  </div>
+                </div>
+                <a href="#" class="btn-course">Know More</a>
+              </div>
             </div>
-            <div class="course-content">
-              <div class="course-meta">
-                <span class="level">Beginner</span>
-                <span class="duration">8 Weeks</span>
-              </div>
-              <h3><a href="#">Digital Marketing Fundamentals</a></h3>
-              <p>Lorem ipsum dolor sit amet consectetur adipiscing elit sed do eiusmod tempor incididunt ut labore et
-                dolore magna aliqua enim ad minim veniam.</p>
-              <div class="instructor">
-                <img src="{% static 'img/person/person-f-3.webp' %}" alt="Instructor" class="instructor-img">
-                <div class="instructor-info">
-                  <h6>Sarah Johnson</h6>
-                  <span>Marketing Expert</span>
-                </div>
-              </div>
-              <div class="course-stats">
-                <div class="rating">
-                  <i class="bi bi-star-fill"></i>
-                  <i class="bi bi-star-fill"></i>
-                  <i class="bi bi-star-fill"></i>
-                  <i class="bi bi-star-fill"></i>
-                  <i class="bi bi-star-half"></i>
-                  <span>(4.5)</span>
-                </div>
-                <div class="students">
-                  <i class="bi bi-people-fill"></i>
-                  <span>342 students</span>
-                </div>
-              </div>
-              <a href="/course-details.html" class="btn-course">know More</a>
-            </div>
+          </div><!-- End Course Item -->
+          {% empty %}
+          <!-- Fallback static content if no courses -->
+          <div class="col-12 text-center">
+            <p>No courses available at the moment. Check back soon!</p>
           </div>
-        </div><!-- End Course Item -->
+          {% endfor %}
+        </div>
 
-        <div class="col-lg-4 col-md-6" data-aos="fade-up" data-aos-delay="300">
-          <div class="course-card">
-            <div class="course-image">
-              <img src="{% static 'img/education/campus-4.webp' %}" alt="Course" class="img-fluid">
-              <div class="badge new">New</div>
-              <div class="price-badge">$89</div>
-            </div>
-            <div class="course-content">
-              <div class="course-meta">
-                <span class="level">Intermediate</span>
-                <span class="duration">6 Weeks</span>
-              </div>
-              <h3><a href="#">Web Development with JavaScript</a></h3>
-              <p>Ut enim ad minim veniam quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo
-                consequat duis aute irure dolor in reprehenderit.</p>
-              <div class="instructor">
-                <img src="{% static 'img/person/person-m-5.webp' %}" alt="Instructor" class="instructor-img">
-                <div class="instructor-info">
-                  <h6>Michael Chen</h6>
-                  <span>Full Stack Developer</span>
-                </div>
-              </div>
-              <div class="course-stats">
-                <div class="rating">
-                  <i class="bi bi-star-fill"></i>
-                  <i class="bi bi-star-fill"></i>
-                  <i class="bi bi-star-fill"></i>
-                  <i class="bi bi-star-fill"></i>
-                  <i class="bi bi-star-fill"></i>
-                  <span>(5.0)</span>
-                </div>
-                <div class="students">
-                  <i class="bi bi-people-fill"></i>
-                  <span>156 students</span>
-                </div>
-              </div>
-              <a href="/course-details.html" class="btn-course">know More</a>
-            </div>
-          </div>
-        </div><!-- End Course Item -->
-
-        <div class="col-lg-4 col-md-6" data-aos="fade-up" data-aos-delay="400">
-          <div class="course-card">
-            <div class="course-image">
-              <img src="{% static 'img/education/students-7.webp' %}" alt="Course" class="img-fluid">
-              <div class="badge certificate">Certificate</div>
-              <div class="price-badge">Free</div>
-            </div>
-            <div class="course-content">
-              <div class="course-meta">
-                <span class="level">Beginner</span>
-                <span class="duration">4 Weeks</span>
-              </div>
-              <h3><a href="#">Introduction to Data Science</a></h3>
-              <p>Excepteur sint occaecat cupidatat non proident sunt in culpa qui officia deserunt mollit anim id est
-                laborum sed ut perspiciatis unde omnis.</p>
-              <div class="instructor">
-                <img src="{% static 'img/person/person-f-7.webp' %}" alt="Instructor" class="instructor-img">
-                <div class="instructor-info">
-                  <h6>Dr. Emily Watson</h6>
-                  <span>Data Scientist</span>
-                </div>
-              </div>
-              <div class="course-stats">
-                <div class="rating">
-                  <i class="bi bi-star-fill"></i>
-                  <i class="bi bi-star-fill"></i>
-                  <i class="bi bi-star-fill"></i>
-                  <i class="bi bi-star-fill"></i>
-                  <i class="bi bi-star"></i>
-                  <span>(4.2)</span>
-                </div>
-                <div class="students">
-                  <i class="bi bi-people-fill"></i>
-                  <span>789 students</span>
-                </div>
-              </div>
-              <a href="/course-details.html" class="btn-course">know More</a>
-            </div>
-          </div>
-        </div><!-- End Course Item -->
-
-        <div class="col-lg-4 col-md-6" data-aos="fade-up" data-aos-delay="200">
-          <div class="course-card">
-            <div class="course-image">
-              <img src="{% static 'img/education/education-5.webp' %}" alt="Course" class="img-fluid">
-              <div class="badge popular">Popular</div>
-              <div class="price-badge">$199</div>
-            </div>
-            <div class="course-content">
-              <div class="course-meta">
-                <span class="level">Advanced</span>
-                <span class="duration">12 Weeks</span>
-              </div>
-              <h3><a href="#">Business Strategy &amp; Leadership</a></h3>
-              <p>Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium totam
-                rem aperiam eaque ipsa quae ab illo.</p>
-              <div class="instructor">
-                <img src="{% static 'img/person/person-m-8.webp' %}" alt="Instructor" class="instructor-img">
-                <div class="instructor-info">
-                  <h6>Robert Anderson</h6>
-                  <span>Business Consultant</span>
-                </div>
-              </div>
-              <div class="course-stats">
-                <div class="rating">
-                  <i class="bi bi-star-fill"></i>
-                  <i class="bi bi-star-fill"></i>
-                  <i class="bi bi-star-fill"></i>
-                  <i class="bi bi-star-fill"></i>
-                  <i class="bi bi-star-half"></i>
-                  <span>(4.7)</span>
-                </div>
-                <div class="students">
-                  <i class="bi bi-people-fill"></i>
-                  <span>234 students</span>
-                </div>
-              </div>
-              <a href="/course-details.html" class="btn-course">know More</a>
-            </div>
-          </div>
-        </div><!-- End Course Item -->
-
-        <div class="col-lg-4 col-md-6" data-aos="fade-up" data-aos-delay="300">
-          <div class="course-card">
-            <div class="course-image">
-              <img src="{% static 'img/education/activities-3.webp' %}" alt="Course" class="img-fluid">
-              <div class="badge certificate">Certificate</div>
-              <div class="price-badge">$129</div>
-            </div>
-            <div class="course-content">
-              <div class="course-meta">
-                <span class="level">Intermediate</span>
-                <span class="duration">10 Weeks</span>
-              </div>
-              <h3><a href="#">Graphic Design Masterclass</a></h3>
-              <p>Nemo enim ipsam voluptatem quia voluptas sit aspernatur aut odit aut fugit sed quia consequuntur magni
-                dolores eos qui ratione voluptatem.</p>
-              <div class="instructor">
-                <img src="{% static 'img/person/person-f-12.webp' %}" alt="Instructor" class="instructor-img">
-                <div class="instructor-info">
-                  <h6>Lisa Martinez</h6>
-                  <span>Creative Director</span>
-                </div>
-              </div>
-              <div class="course-stats">
-                <div class="rating">
-                  <i class="bi bi-star-fill"></i>
-                  <i class="bi bi-star-fill"></i>
-                  <i class="bi bi-star-fill"></i>
-                  <i class="bi bi-star-fill"></i>
-                  <i class="bi bi-star"></i>
-                  <span>(4.3)</span>
-                </div>
-                <div class="students">
-                  <i class="bi bi-people-fill"></i>
-                  <span>467 students</span>
-                </div>
-              </div>
-              <a href="/course-details.html" class="btn-course">know More</a>
-            </div>
-          </div>
-        </div><!-- End Course Item -->
-
-        <div class="col-lg-4 col-md-6" data-aos="fade-up" data-aos-delay="400">
-          <div class="course-card">
-            <div class="course-image">
-              <img src="{% static 'img/education/teacher-6.webp' %}" alt="Course" class="img-fluid">
-              <div class="badge new">New</div>
-              <div class="price-badge">$99</div>
-            </div>
-            <div class="course-content">
-              <div class="course-meta">
-                <span class="level">Beginner</span>
-                <span class="duration">5 Weeks</span>
-              </div>
-              <h3><a href="#">Photography for Beginners</a></h3>
-              <p>At vero eos et accusamus et iusto odio dignissimos ducimus qui blanditiis praesentium voluptatum
-                deleniti atque corrupti quos dolores et quas.</p>
-              <div class="instructor">
-                <img src="{% static 'img/person/person-m-11.webp' %}" alt="Instructor" class="instructor-img">
-                <div class="instructor-info">
-                  <h6>James Wilson</h6>
-                  <span>Professional Photographer</span>
-                </div>
-              </div>
-              <div class="course-stats">
-                <div class="rating">
-                  <i class="bi bi-star-fill"></i>
-                  <i class="bi bi-star-fill"></i>
-                  <i class="bi bi-star-fill"></i>
-                  <i class="bi bi-star-fill"></i>
-                  <i class="bi bi-star-half"></i>
-                  <span>(4.6)</span>
-                </div>
-                <div class="students">
-                  <i class="bi bi-people-fill"></i>
-                  <span>298 students</span>
-                </div>
-              </div>
-              <a href="/course-details.html" class="btn-course">know More</a>
-            </div>
-          </div>
-        </div><!-- End Course Item -->
+        <div class="more-courses text-center" data-aos="fade-up" data-aos-delay="500">
+          <a href="/courses.html" class="btn-more">View All Courses</a>
+        </div>
 
       </div>
 
-      <div class="more-courses text-center" data-aos="fade-up" data-aos-delay="500">
-        <a href="courses.html" class="btn-more">View All Courses</a>
-      </div>
+    </section><!-- /Featured Courses Section -->
 
-    </div>
+    <!-- Course Categories Section -->
+    <section id="course-categories" class="course-categories section">
 
-  </section><!-- /Featured Courses Section -->
+      <!-- Section Title -->
+      <div class="container section-title" data-aos="fade-up">
+        <h2> Accredited. Respected. Trusted.</h2>
+        <p>Necessitatibus eius consequatur ex aliquid fuga eum quidem sint consectetur velit</p>
+      </div><!-- End Section Title -->
 
-  <!-- Course Categories Section -->
-  <section id="course-categories" class="course-categories section">
+      <div class="container" data-aos="fade-up" data-aos-delay="100">
 
-    <!-- Section Title -->
-    <div class="container section-title" data-aos="fade-up">
-      <h2> Accredited. Respected. Trusted.</h2>
-      <p>Necessitatibus eius consequatur ex aliquid fuga eum quidem sint consectetur velit</p>
-    </div><!-- End Section Title -->
-
-    <div class="container" data-aos="fade-up" data-aos-delay="100">
-
-      <div class="row g-5">
+        <div class="row g-5">
 
         <div class="col-xl-3 col-lg-3 col-md-4 col-sm-6" data-aos="zoom-in" data-aos-delay="100">
           <a href="courses.html" class="category-card category-tech">
@@ -502,25 +268,27 @@
 
     </div>
 
-  </section><!-- /Course Categories Section -->
-
-  <!-- Featured Instructors Section -->
+    <!-- Featured Instructors Section -->
+    <!-- Featured Instructors Section -->
   <section id="featured-instructors" class="featured-instructors section">
-
-    <!-- Section Title -->
     <div class="container section-title" data-aos="fade-up">
       <h2>Featured Instructors</h2>
-      <p>Necessitatibus eius consequatur ex aliquid fuga eum quidem sint consectetur velit</p>
-    </div><!-- End Section Title -->
+      <p>Learn from our experienced faculty members</p>
+    </div>
 
     <div class="container" data-aos="fade-up" data-aos-delay="100">
-
       <div class="row gy-4">
-
-        <div class="col-xl-3 col-lg-4 col-md-6" data-aos="fade-up" data-aos-delay="200">
+        {% for instructor in featured_instructors %}
+        <div class="col-xl-3 col-lg-4 col-md-6" data-aos="fade-up" data-aos-delay="{{ forloop.counter|add:1 }}00">
           <div class="instructor-card">
             <div class="instructor-image">
-              <img src="{% static 'img/education/teacher-2.webp' %}" class="img-fluid" alt="">
+              {% if instructor.profile_image %}
+              <img src="{{ instructor.profile_image.url }}" class="img-fluid" alt="{{ instructor.get_full_name }}">
+              {% else %}
+              <div class="instructor-img-placeholder-large">
+                {{ instructor.first_name|first }}{{ instructor.last_name|first }}
+              </div>
+              {% endif %}
               <div class="overlay-content">
                 <div class="rating-stars">
                   <i class="bi bi-star-fill"></i>
@@ -528,177 +296,55 @@
                   <i class="bi bi-star-fill"></i>
                   <i class="bi bi-star-fill"></i>
                   <i class="bi bi-star-half"></i>
-                  <span>4.8</span>
+                  <span>{{ instructor.get_average_rating|default:"4.8" }}</span>
                 </div>
                 <div class="course-count">
                   <i class="bi bi-play-circle"></i>
-                  <span>18 Courses</span>
+                  <span>{{ instructor.get_total_courses }} Courses</span>
                 </div>
               </div>
             </div>
+            
             <div class="instructor-info">
-              <h5>Sarah Johnson</h5>
-              <p class="specialty">Web Development</p>
-              <p class="description">Nulla facilisi morbi tempus iaculis urna id volutpat lacus laoreet non curabitur
-                gravida.</p>
+              <h5>{{ instructor.get_full_name }}</h5>
+              {% if instructor.title %}
+              <p class="specialty">{{ instructor.title }}</p>
+              {% endif %}
+              <p class="description">{{ instructor.short_description|truncatechars:80|default:instructor.specialization }}</p>
+              
               <div class="stats-grid">
                 <div class="stat">
-                  <span class="number">2.1k</span>
+                  <span class="number">{{ instructor.total_students|default:"0" }}</span>
                   <span class="label">Students</span>
                 </div>
                 <div class="stat">
-                  <span class="number">4.8</span>
-                  <span class="label">Rating</span>
+                  <span class="number">{{ instructor.years_experience|default:"5" }}</span>
+                  <span class="label">Years Exp.</span>
                 </div>
               </div>
+              
               <div class="action-buttons">
                 <a href="#" class="btn-view">View Profile</a>
                 <div class="social-links">
-                  <a href="#"><i class="bi bi-linkedin"></i></a>
-                  <a href="#"><i class="bi bi-twitter"></i></a>
+                  {% if instructor.linkedin_url %}
+                  <a href="{{ instructor.linkedin_url }}"><i class="bi bi-linkedin"></i></a>
+                  {% endif %}
+                  {% if instructor.twitter_url %}
+                  <a href="{{ instructor.twitter_url }}"><i class="bi bi-twitter"></i></a>
+                  {% endif %}
                 </div>
               </div>
             </div>
           </div>
         </div>
-
-        <div class="col-xl-3 col-lg-4 col-md-6" data-aos="fade-up" data-aos-delay="250">
-          <div class="instructor-card">
-            <div class="instructor-image">
-              <img src="{% static 'img/education/teacher-7.webp' %}" class="img-fluid" alt="">
-              <div class="overlay-content">
-                <div class="rating-stars">
-                  <i class="bi bi-star-fill"></i>
-                  <i class="bi bi-star-fill"></i>
-                  <i class="bi bi-star-fill"></i>
-                  <i class="bi bi-star-fill"></i>
-                  <i class="bi bi-star-fill"></i>
-                  <span>4.9</span>
-                </div>
-                <div class="course-count">
-                  <i class="bi bi-play-circle"></i>
-                  <span>24 Courses</span>
-                </div>
-              </div>
-            </div>
-            <div class="instructor-info">
-              <h5>Michael Chen</h5>
-              <p class="specialty">Data Science</p>
-              <p class="description">Suspendisse potenti nullam ac tortor vitae purus faucibus ornare suspendisse sed
-                nisi.</p>
-              <div class="stats-grid">
-                <div class="stat">
-                  <span class="number">3.5k</span>
-                  <span class="label">Students</span>
-                </div>
-                <div class="stat">
-                  <span class="number">4.9</span>
-                  <span class="label">Rating</span>
-                </div>
-              </div>
-              <div class="action-buttons">
-                <a href="#" class="btn-view">View Profile</a>
-                <div class="social-links">
-                  <a href="#"><i class="bi bi-github"></i></a>
-                  <a href="#"><i class="bi bi-linkedin"></i></a>
-                </div>
-              </div>
-            </div>
-          </div>
+        {% empty %}
+        <div class="col-12 text-center">
+          <p>No featured instructors available.</p>
         </div>
-
-        <div class="col-xl-3 col-lg-4 col-md-6" data-aos="fade-up" data-aos-delay="300">
-          <div class="instructor-card">
-            <div class="instructor-image">
-              <img src="{% static 'img/education/teacher-4.webp' %}" class="img-fluid" alt="">
-              <div class="overlay-content">
-                <div class="rating-stars">
-                  <i class="bi bi-star-fill"></i>
-                  <i class="bi bi-star-fill"></i>
-                  <i class="bi bi-star-fill"></i>
-                  <i class="bi bi-star-fill"></i>
-                  <i class="bi bi-star"></i>
-                  <span>4.6</span>
-                </div>
-                <div class="course-count">
-                  <i class="bi bi-play-circle"></i>
-                  <span>15 Courses</span>
-                </div>
-              </div>
-            </div>
-            <div class="instructor-info">
-              <h5>Amanda Rodriguez</h5>
-              <p class="specialty">UX Design</p>
-              <p class="description">Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac
-                turpis.</p>
-              <div class="stats-grid">
-                <div class="stat">
-                  <span class="number">1.8k</span>
-                  <span class="label">Students</span>
-                </div>
-                <div class="stat">
-                  <span class="number">4.6</span>
-                  <span class="label">Rating</span>
-                </div>
-              </div>
-              <div class="action-buttons">
-                <a href="#" class="btn-view">View Profile</a>
-                <div class="social-links">
-                  <a href="#"><i class="bi bi-dribbble"></i></a>
-                  <a href="#"><i class="bi bi-behance"></i></a>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-
-        <div class="col-xl-3 col-lg-4 col-md-6" data-aos="fade-up" data-aos-delay="350">
-          <div class="instructor-card">
-            <div class="instructor-image">
-              <img src="{% static 'img/education/teacher-9.webp' %}" class="img-fluid" alt="">
-              <div class="overlay-content">
-                <div class="rating-stars">
-                  <i class="bi bi-star-fill"></i>
-                  <i class="bi bi-star-fill"></i>
-                  <i class="bi bi-star-fill"></i>
-                  <i class="bi bi-star-fill"></i>
-                  <i class="bi bi-star-half"></i>
-                  <span>4.7</span>
-                </div>
-                <div class="course-count">
-                  <i class="bi bi-play-circle"></i>
-                  <span>21 Courses</span>
-                </div>
-              </div>
-            </div>
-            <div class="instructor-info">
-              <h5>David Thompson</h5>
-              <p class="specialty">Digital Marketing</p>
-              <p class="description">Vivamus magna justo lacinia eget consectetur sed convallis at tellus curabitur non
-                nulla.</p>
-              <div class="stats-grid">
-                <div class="stat">
-                  <span class="number">2.9k</span>
-                  <span class="label">Students</span>
-                </div>
-                <div class="stat">
-                  <span class="number">4.7</span>
-                  <span class="label">Rating</span>
-                </div>
-              </div>
-              <div class="action-buttons">
-                <a href="#" class="btn-view">View Profile</a>
-                <div class="social-links">
-                  <a href="#"><i class="bi bi-instagram"></i></a>
-                  <a href="#"><i class="bi bi-facebook"></i></a>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
+        {% endfor %}
       </div>
-
     </div>
+  </section><!-- /Featured Instructors Section -->
 
   </section><!-- /Featured Instructors Section -->
 

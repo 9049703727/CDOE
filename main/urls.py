@@ -10,7 +10,9 @@ urlpatterns = [
     path('courses.html', views.courses_list, name='courses_list'),
     path('courses/<slug:slug>/', views.course_detail, name='course_detail'),
     path('courses/<slug:slug>/enroll/', views.course_enroll, name='course_enroll'),
-    
+    path('instructors.html', views.instructors_list, name='instructors_list'),
+    path('instructor-profile.html/<int:id>/', views.instructor_detail, name='instructor_detail'),
+    path('<path:filename>.html', views.serve_html, name='serve_html'),
     path('inquiry/', inquiry_form, name='inquiry'),
     path('inquiry-success/', inquiry_success, name='inquiry_success'),
     path('iks-course/<slug:slug>/', views.iks_course_registration, name='iks_course_registration'),

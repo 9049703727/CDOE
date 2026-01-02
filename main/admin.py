@@ -20,17 +20,17 @@ class CategoryAdmin(admin.ModelAdmin):
 
 @admin.register(Instructor)
 class InstructorAdmin(admin.ModelAdmin):
-    list_display = ['user', 'get_full_name']
-    search_fields = ['user__first_name', 'user__last_name', 'user__username']
+    list_display = ['get_full_name']
+    search_fields = ['first_name', 'last_name']
     
     def get_full_name(self, obj):
-        return obj.user.get_full_name() or obj.user.username
+        return obj.get_full_name()
     get_full_name.short_description = 'Full Name'
 
 @admin.register(Course)
 class CourseAdmin(admin.ModelAdmin):
-    list_display = ['title', 'category', 'instructor', 'level', 'price', 'is_free', 'students_enrolled', 'rating', 'is_active']
-    list_filter = ['category', 'level', 'is_free', 'is_active', 'badge']
+    list_display = ['title', 'category', 'instructor', 'price', 'is_free', 'students_enrolled', 'rating', 'is_active']
+    list_filter = ['category', 'is_free', 'is_active']
     search_fields = ['title', 'description']
     prepopulated_fields = {'slug': ('title',)}
     list_editable = ['is_active', 'price']
@@ -41,13 +41,13 @@ class CourseAdmin(admin.ModelAdmin):
             'fields': ('title', 'slug', 'description', 'image')
         }),
         ('Course Details', {
-            'fields': ('category', 'instructor', 'level', 'duration_hours')
+            'fields': ('category', 'instructor','duration_hours')
         }),
         ('Pricing', {
             'fields': ('price', 'is_free')
         }),
-        ('Badges & Status', {
-            'fields': ('badge', 'is_active')
+        ('Status', {
+            'fields': ('is_active',)
         }),
         ('Statistics', {
             'fields': ('students_enrolled', 'rating', 'total_reviews')
