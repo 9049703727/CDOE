@@ -14,6 +14,10 @@ urlpatterns = [
     path('inquiry/', inquiry_form, name='inquiry'),
     path('inquiry-success/', inquiry_success, name='inquiry_success'),
     path('iks-course/<slug:slug>/', views.iks_course_registration, name='iks_course_registration'),
+  
+    path('notifications/', views.notifications_view, name='notifications'),
+    path('technical-staff/', views.technical_staff, name='technical_staff'),
+
 
 ]
 

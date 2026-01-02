@@ -1,0 +1,59 @@
+{% extends 'base.html' %}
+{% block content %}
+
+<section class="notifications-section section light-background">
+  <div class="container">
+
+    <div class="section-title text-center">
+      <h2>All Notifications</h2>
+      <p>Admissions, courses & official announcements</p>
+    </div>
+
+    <div class="row justify-content-center">
+      <div class="col-lg-8">
+        <div class="notification-card">
+
+          <ul class="notification-list">
+            {% for notif in notifications %}
+              <li class="notification-item {% if notif.is_new %}new{% endif %}">
+
+                <div class="notif-icon">
+                  <i class="bi bi-mortarboard-fill"></i>
+                </div>
+
+                <div class="notif-content">
+                  <h6>{{ notif.title }}</h6>
+
+                  <small>
+                    <i class="bi bi-calendar"></i>
+                    {{ notif.date|date:"d M Y" }}
+                  </small>
+
+                  {% if notif.pdf %}
+                    <br>
+                    <a href="{{ notif.pdf.url }}" target="_blank" class="pdf-link">
+                      <i class="bi bi-file-earmark-pdf"></i> View PDF
+                    </a>
+                  {% endif %}
+                </div>
+
+                {% if notif.is_new %}
+                  <span class="badge-new">NEW</span>
+                {% endif %}
+
+              </li>
+            {% empty %}
+              <li class="notification-item text-center">
+                No notifications available.
+              </li>
+            {% endfor %}
+          </ul>
+
+        </div>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+{% endblock %}

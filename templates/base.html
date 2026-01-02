@@ -1,4 +1,5 @@
 {% load static %}
+
 <!DOCTYPE html>
 <html lang="en">
 
@@ -21,7 +22,6 @@
   <!-- Vendor CSS Files -->
   <link href="{% static 'vendor/bootstrap/css/bootstrap.min.css' %}" rel="stylesheet">
   <link href="{% static 'vendor/bootstrap-icons/bootstrap-icons.css' %}" rel="stylesheet">
-  
   <link href="{% static 'vendor/aos/aos.css' %}" rel="stylesheet">
   <link href="{% static 'vendor/swiper/swiper-bundle.min.css' %}" rel="stylesheet">
 
@@ -32,24 +32,13 @@
 </head>
 
 <body class="index-page">
-<!-- ======= Top Static Bar ======= -->
-<div class="topbar fixed-top">
-  <div class="container-fluid container-xl d-flex justify-content-end align-items-center gap-3">
-   
-      <a class="btn-getstarted" href="https://online.gujaratuniversity.ac.in/admission/Registration">Registration</a>
+<div class="top-buttons-bar">
+    <a class="top-btn" href="/enroll.html">Inquiry Now</a>
+    <a class="top-btn" href="https://online.gujaratuniversity.ac.in/admission/Registration">Registration</a>
+    <a class="top-btn" href="iks_course_registration.html">IKS Course Registration</a>
+    <a class="top-btn" href="https://www.online-gu.com/">LMS Login</a>
 
-    <a href="https://online.gujaratuniversity.ac.in/admission/Registration" class="topbar-btn">
-      <i class="bi bi-person-plus me-1"></i> Admission Form
-    </a>
-
-    <a href="/iks-registration.html" class="topbar-btn">
-      <i class="bi bi-journal-bookmark me-1"></i> IKS Course Registration
-    </a>
-
-  </div>
 </div>
-<!-- ======= End Top Static Bar ======= -->
-
   <header id="header" class="header d-flex align-items-center sticky-top">
     <div class="container-fluid container-xl position-relative d-flex align-items-center">
 
@@ -63,7 +52,9 @@
       <nav id="navmenu" class="navmenu">
         <ul>
           <li><a href="/" class="active">Home</a></li>
-          <li><a href="https://gujaratuniversity.ac.in/University">About Us</a></li>
+          <!-- <li><a href="https://gujaratuniversity.ac.in/University">About Us</a></li> -->
+          <li><a href="about.html">About Us</a></li>
+
           <li><a href="/courses.html">Courses</a></li>
           <li class="nav-item dropdown">
             <a class="nav-link dropdown-toggle" href="#" id="coursesDropdown" role="button" data-bs-toggle="dropdown"
@@ -74,17 +65,26 @@
             <ul class="dropdown-menu" aria-labelledby="coursesDropdown">
               <li><a class="dropdown-item"  href="/administration.html">Administration</a></li>
               <li><a class="dropdown-item" href="/instructors.html">Teaching Staff</a></li>
-              <li><a class="dropdown-item" href="/pg-courses.html">Non-Teaching Staff</a></li>
-              <li><a class="dropdown-item" href="/certificate-courses.html">Multitasking Staff</a></li>
+              <li><a class="dropdown-item" href="/technical_staff.html">Technical Staff</a></li>
+              <li><a class="dropdown-item" href="/multitasking_staff.html">Multitasking Staff</a></li>
             </ul>
           </li>
-         <li><a href="/contact.html">Contact</a></li>
+          
+
+
+          <li><a href="/instructors.html">CIQA</a></li>
+          
+
+
+
+
+          <li><a href="/contact.html">Contact US</a></li>
         </ul>
         <i class="mobile-nav-toggle d-xl-none bi bi-list"></i>
       </nav>
 
-      <a class="btn-getstarted" href="/enroll.html">Inquiry Now</a>
-      <a class="btn-getstarted" href="https://online.gujaratuniversity.ac.in/admission/Registration">Registration</a>
+      <!-- <a class="btn-getstarted" href="/enroll.html">Inquiry Now</a>
+      <a class="btn-getstarted" href="https://online.gujaratuniversity.ac.in/admission/Registration">Registration</a> -->
 
 
     </div>

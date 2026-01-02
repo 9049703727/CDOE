@@ -1,6 +1,9 @@
 from django.contrib import admin
 from .models import Subscriber
 from .models import Inquiry 
+from .models import Notification  # <-- Add this line
+from .models import TechnicalStaff
+
 
 @admin.register(Subscriber)
 class SubscriberAdmin(admin.ModelAdmin):
@@ -61,3 +64,16 @@ class CourseAdmin(admin.ModelAdmin):
 class InquiryAdmin(admin.ModelAdmin):
     list_display = ('first_name', 'last_name', 'course','gender','category','dob','email', 'mobile','city','state','country', 'created_at')
     search_fields = ('first_name', 'last_name', 'email', 'mobile')
+
+@admin.register(Notification)
+class NotificationAdmin(admin.ModelAdmin):
+    list_display = ('title', 'date', 'is_new')
+    list_filter = ('is_new', 'date')
+    search_fields = ('title',)
+
+
+@admin.register(TechnicalStaff)
+class TechnicalStaffAdmin(admin.ModelAdmin):
+    list_display = ('name', 'designation', 'department', 'experience_years', 'is_active')
+    list_filter = ('department', 'is_active')
+    search_fields = ('name', 'designation')

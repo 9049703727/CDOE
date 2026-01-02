@@ -128,6 +128,7 @@
     </section><!-- /Courses Hero Section -->
 
     <!-- Notification Panel -->
+<!-- Notification Panel -->
 <section class="notifications-section section light-background">
   <div class="container">
 
@@ -137,57 +138,62 @@
     </div>
 
     <div class="row justify-content-center">
-
       <div class="col-lg-8">
         <div class="notification-card">
 
           <ul class="notification-list">
+            {% if notifications %}
+              {% for notif in notifications %}
+                <li class="notification-item {% if notif.is_new %}new{% endif %}">
+                  
+                  <div class="notif-icon">
+                    <i class="bi bi-mortarboard-fill"></i>
+                  </div>
 
-            <li class="notification-item new">
-              <div class="notif-icon">
-                <i class="bi bi-mortarboard-fill"></i>
-              </div>
-              <div class="notif-content">
-                <h6>BCA Admissions Open (2025)</h6>
-                <small><i class="bi bi-calendar"></i> 15 Jan 2025</small>
-              </div>
-              <span class="badge-new">NEW</span>
-            </li>
+                  <div class="notif-content">
+                    <h6>{{ notif.title }}</h6>
 
-            <li class="notification-item">
-              <div class="notif-icon">
-                <i class="bi bi-book-fill"></i>
-              </div>
-              <div class="notif-content">
-                <h6>IKS Free Courses – Semester 1 & 3</h6>
-                <small><i class="bi bi-calendar"></i> 10 Jan 2025</small>
-              </div>
-            </li>
+                    <small>
+                      <i class="bi bi-calendar"></i>
+                      {{ notif.date|date:"d M Y" }}
+                    </small>
 
-            <li class="notification-item">
-              <div class="notif-icon">
-                <i class="bi bi-calculator-fill"></i>
-              </div>
-              <div class="notif-content">
-                <h6>MSc Mathematics Orientation Program</h6>
-                <small><i class="bi bi-calendar"></i> 08 Jan 2025</small>
-              </div>
-            </li>
+                    {% if notif.pdf %}
+                      <br>
+                      <a href="{{ notif.pdf.url }}" target="_blank" class="pdf-link">
+                        <i class="bi bi-file-earmark-pdf"></i> View PDF
+                      </a>
+                    {% endif %}
+                  </div>
 
+                  {% if notif.is_new %}
+                    <span class="badge-new">NEW</span>
+                  {% endif %}
+
+                </li>
+              {% endfor %}
+            {% else %}
+              <li class="notification-item text-center">
+                No notifications found.
+              </li>
+            {% endif %}
           </ul>
 
-          <div class="text-center">
-            <a href="" class="btn-view-all">
+          <!-- VIEW ALL BUTTON -->
+          <div class="text-center mt-3">
+            <a href="{% url 'notifications' %}" class="btn-view-all">
               <i class="bi bi-list-ul"></i> View All Notifications
             </a>
           </div>
 
         </div>
       </div>
-
     </div>
+
   </div>
 </section>
+
+
 
     <!-- Featured Courses Section -->
     <section id="featured-courses" class="featured-courses section">

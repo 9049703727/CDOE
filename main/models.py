@@ -149,3 +149,35 @@ class Inquiry(models.Model):
 
     def __str__(self):
         return f"{self.first_name} {self.last_name} - {self.course}"
+
+
+
+
+class Notification(models.Model):
+    title = models.CharField(max_length=255)
+    date = models.DateField()
+    pdf = models.FileField(upload_to='notifications/', blank=True, null=True)
+    is_new = models.BooleanField(default=True)
+
+    def __str__(self):
+        return self.title
+
+
+
+class TechnicalStaff(models.Model):
+    name = models.CharField(max_length=100)
+    designation = models.CharField(max_length=100)   # e.g. System Admin, Lab Assistant
+    department = models.CharField(max_length=100)
+    bio = models.TextField()
+    photo = models.ImageField(upload_to='technical_staff/')
+
+    experience_years = models.PositiveIntegerField(default=0)
+    skills = models.CharField(max_length=255, help_text="Comma separated")
+
+    linkedin = models.URLField(blank=True, null=True)
+    email = models.EmailField(blank=True, null=True)
+
+    is_active = models.BooleanField(default=True)
+
+    def __str__(self):
+        return self.name

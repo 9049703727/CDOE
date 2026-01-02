@@ -110,6 +110,10 @@ h6 {
   font-weight: 600;
 }
 
+.fixed-top{
+  background-color: #c1d1cd;
+}
+
 .php-email-form .sent-message {
   display: none;
   color: #ffffff;
@@ -153,6 +157,50 @@ h6 {
 /*--------------------------------------------------------------
 # Global Header
 --------------------------------------------------------------*/
+/* Top buttons bar */
+/* Top buttons bar */
+.top-buttons-bar {
+    position: fixed;
+    top: 0;
+    right: 0;
+    width: 100%;
+    background-color: #0d6efd; /* GU blue */
+    display: flex;
+    justify-content: flex-end;   /* RIGHT side */
+    align-items: center;
+    gap: 10px;
+    padding: 6px 20px;
+    z-index: 9999;
+}
+
+/* Buttons */
+.top-buttons-bar .top-btn {
+    background-color: #ffffff;
+    color: #0d6efd;
+    padding: 6px 14px;
+    text-decoration: none;
+    border-radius: 4px;
+    font-size: 14px;
+    font-weight: 600;
+    transition: 0.3s;
+}
+
+.top-buttons-bar .top-btn:hover {
+    background-color: #084298;
+    color: #ffffff;
+}
+
+/* Push main header down */
+header.header {
+    margin-top: 42px; /* adjust height if needed */
+}
+
+
+/* Add spacing for header so it doesn't overlap */
+header.header {
+    margin-top: 45px; /* adjust based on top bar height */
+}
+
 .header {
   --background-color:#f8fbff;
   --default-color: #ffffff;
@@ -783,6 +831,81 @@ section,
     background: var(--accent-color);
     display: inline-block;
   }
+}
+.iks-container {
+    max-width: 1100px;
+    margin: 30px auto;
+    border: 1px solid #0d3b66;
+    background: #ffffff;
+}
+
+.iks-header {
+    background: #0d3b66;
+    color: #fff;
+    padding: 10px 20px;
+    font-size: 18px;
+}
+
+.iks-form {
+    padding: 20px;
+}
+
+.form-row {
+    display: flex;
+    gap: 20px;
+    margin-bottom: 15px;
+}
+
+.form-group {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+}
+
+.form-group label {
+    font-size: 14px;
+    margin-bottom: 5px;
+    font-weight: 600;
+}
+
+.form-group input,
+.form-group select {
+    padding: 8px 10px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    font-size: 14px;
+}
+
+.form-group input:focus,
+.form-group select:focus {
+    border-color: #0d3b66;
+    outline: none;
+}
+
+.form-submit {
+    text-align: center;
+    margin-top: 20px;
+}
+
+.form-submit button {
+    background: #0d3b66;
+    color: #fff;
+    padding: 10px 40px;
+    border: none;
+    font-size: 16px;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+.form-submit button:hover {
+    background: #082c4d;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+    .form-row {
+        flex-direction: column;
+    }
 }
 
 /*--------------------------------------------------------------

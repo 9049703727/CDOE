@@ -138,4 +138,3 @@ EMAIL_HOST_USER = 'gajjarurvi2310@gmail.com'      # sender email
 EMAIL_HOST_PASSWORD = 'mwaf mbat eiyg zlnp'    # Gmail App Password
 
 DEFAULT_FROM_EMAIL = 'Gujarat University Online <gajjarurvi2310@gmail.com>'
-

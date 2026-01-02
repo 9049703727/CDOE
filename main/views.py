@@ -6,6 +6,7 @@ from django.http import Http404
 from django.template import TemplateDoesNotExist
 from django.core.mail import send_mail
 from django.conf import settings
+from .models import Notification
 
 from .models import Course, Category, Instructor, Inquiry
 from .forms import ContactForm
@@ -236,3 +237,24 @@ def inquiry_success(request):
 
 def iks_course_registration(request):
     return render(request,'iks_course_registration')
+
+
+def index(request):
+    notifications = Notification.objects.all().order_by('-date')[:5]
+    return render(request, 'index.html', {
+        'notifications': notifications
+    })
+
+# View all notifications page
+def notifications_view(request):
+    notifications = Notification.objects.all().order_by('-date')
+    return render(request, 'notifications.html', {
+        'notifications': notifications
+    })
+
+
+def technical_staff(request):
+    staff_list = TechnicalStaff.objects.filter(is_active=True)
+    return render(request, 'technical_staff.html', {
+        'staff_list': staff_list
+    })

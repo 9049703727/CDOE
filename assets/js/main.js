@@ -194,3 +194,43 @@ document.getElementById("mobile").addEventListener("input", function () {
       e.preventDefault(); // Stop form submission
     }
   });
+
+document.addEventListener("DOMContentLoaded", function () {
+
+  const iksCourse = document.getElementById("iks_course");
+  if (!iksCourse) return;
+
+  const gcasReg = document.getElementById("gcas_reg_no");
+  const gcasConf = document.getElementById("gcas_conf_no");
+
+  const gcasRegStar = document.getElementById("gcas_reg_star");
+  const gcasConfStar = document.getElementById("gcas_conf_star");
+
+  iksCourse.addEventListener("change", function () {
+    if (this.value === "IKS_1") {
+      // Make required
+      gcasReg.required = true;
+      gcasConf.required = true;
+
+      // Show *
+      gcasRegStar.classList.remove("d-none");
+      gcasConfStar.classList.remove("d-none");
+    } else {
+      // Make optional
+      gcasReg.required = false;
+      gcasConf.required = false;
+
+      // Hide *
+      gcasRegStar.classList.add("d-none");
+      gcasConfStar.classList.add("d-none");
+
+      // Clear values
+      gcasReg.value = "";
+      gcasConf.value = "";
+    }
+  });
+
+  // Trigger on page load
+  iksCourse.dispatchEvent(new Event("change"));
+
+});
