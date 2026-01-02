@@ -1,6 +1,6 @@
 from django.shortcuts import render, get_object_or_404, redirect
 from django.core.paginator import Paginator
-from django.db.models import Q
+from django.db.models import Q, Count, Sum, Avg
 from django.contrib import messages
 from django.http import Http404
 from django.template import TemplateDoesNotExist
@@ -16,7 +16,27 @@ from .forms import ContactForm
 # Home Page
 # =========================
 def index(request):
-    return render(request, 'index.html')
+    # Get featured courses (you can customize the criteria)
+
+     # Get featured courses (active courses, ordered by newest)
+    featured_courses = Course.objects.filter(is_active=True).order_by('-created_at')[:3]
+        
+    # Get all categories with course count
+    categories = Category.objects.annotate(
+        course_count=Count('courses', filter=models.Q(courses__is_active=True))
+    ).filter(course_count__gt=0)[:8]
+    
+    # Get featured instructors
+    featured_instructors = Instructor.objects.filter(
+        is_active=True,
+    )[:4]
+
+    context = {
+        'featured_courses': featured_courses,
+        'categories': categories,
+        'featured_instructors': featured_instructors,
+    }
+    return render(request, 'index.html',context)
 
 
 # =========================
@@ -58,7 +78,7 @@ def serve_html(request, filename):
 # =========================
 def courses_list(request):
     courses = Course.objects.filter(is_active=True).select_related(
-        'category', 'instructor', 'instructor__user'
+        'category', 'instructor'
     )
 
     categories = request.GET.getlist('category')
@@ -68,11 +88,17 @@ def courses_list(request):
     search_query = request.GET.get('search', '')
     sort_by = request.GET.get('sort', 'popular')
 
-    if categories and 'all' not in categories:
+    if 'all' in categories:
+        categories = []
+    
+    # Filter courses
+    courses = Course.objects.all()
+    
+    if categories:
         courses = courses.filter(category__slug__in=categories)
 
-    if levels and 'all' not in levels:
-        courses = courses.filter(level__in=levels)
+    # if levels and 'all' not in levels:
+    #     courses = courses.filter(level__in=levels)
 
     if durations:
         duration_q = Q()
@@ -94,8 +120,8 @@ def courses_list(request):
         courses = courses.filter(
             Q(title__icontains=search_query) |
             Q(description__icontains=search_query) |
-            Q(instructor__user__first_name__icontains=search_query) |
-            Q(instructor__user__last_name__icontains=search_query)
+            Q(instructor__first_name__icontains=search_query) |
+            Q(instructor__last_name__icontains=search_query)
         )
 
     if sort_by == 'popular':
@@ -157,7 +183,85 @@ def course_enroll(request, slug):
 
     return render(request, 'enroll.html', {'course': course})
 
+def instructors_list(request):
+    """View for listing all instructors"""
+    # Get all active instructors
+    instructors = Instructor.objects.filter(is_active=True)
+    
+    # Get filter parameters
+    specialization = request.GET.get('specialization', '')
+    search_query = request.GET.get('search', '')
+    
+    # Apply specialization filter
+    if specialization:
+        instructors = instructors.filter(specialization__icontains=specialization)
+    
+    # Apply search
+    if search_query:
+        instructors = instructors.filter(
+            Q(first_name__icontains=search_query) |
+            Q(last_name__icontains=search_query) |
+            Q(specialization__icontains=search_query) |
+            Q(bio__icontains=search_query)
+        )
+    
+    # Annotate with course count and total students
+    instructors = instructors.annotate(
+        course_count=Count('courses', filter=Q(courses__is_active=True)),
+        total_students_count=Sum('courses__students_enrolled', filter=Q(courses__is_active=True)),
+        avg_rating=Avg('courses__rating', filter=Q(courses__is_active=True))
+    )
+    
+    # Order by featured first, then by name
+    instructors = instructors.order_by('-is_featured', 'first_name')
+    
+    # Pagination
+    paginator = Paginator(instructors, 8)  # 8 instructors per page
+    page_number = request.GET.get('page', 1)
+    page_obj = paginator.get_page(page_number)
+    
+    # Get unique specializations for filter
+    all_specializations = Instructor.objects.filter(
+        is_active=True
+    ).exclude(
+        specialization=''
+    ).values_list('specialization', flat=True).distinct()
+    
+    context = {
+        'page_obj': page_obj,
+        'all_specializations': all_specializations,
+        'selected_specialization': specialization,
+        'search_query': search_query,
+        'total_instructors': paginator.count,
+    }
+    
+    return render(request, 'instructors.html', context)
 
+
+def instructor_detail(request, id):
+    """View for individual instructor profile"""
+    instructor = get_object_or_404(Instructor, id=id, is_active=True)
+    
+    # Get instructor's courses
+    courses = Course.objects.filter(
+        instructor=instructor,
+        is_active=True
+    ).select_related('category')
+    
+    # Calculate stats
+    total_courses = courses.count()
+    total_students = courses.aggregate(Sum('students_enrolled'))['students_enrolled__sum'] or 0
+    avg_rating = courses.aggregate(Avg('rating'))['rating__avg'] or 0
+    
+    context = {
+        'instructor': instructor,
+        'courses': courses,
+        'total_courses': total_courses,
+        'total_students': total_students,
+        'avg_rating': round(avg_rating, 1),
+    }
+    
+    return render(request, 'instructor-profile.html', context)
 # =========================
 # Inquiry Form (UPDATED)
 # =========================

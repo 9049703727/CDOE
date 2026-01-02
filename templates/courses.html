@@ -30,7 +30,7 @@
             <div class="course-filters" data-aos="fade-right" data-aos-delay="100">
               <h4 class="filter-title">Filter Courses</h4>
 
-              <form method="get" id="filterForm">
+              <form method="get" id="filterForm" action="courses.html">
                 <div class="filter-group">
                   <h5>Category</h5>
                   <div class="filter-options">
@@ -51,7 +51,7 @@
                   </div>
                 </div>
 
-                <div class="filter-group">
+                <!-- <div class="filter-group">
                   <h5>Level</h5>
                   <div class="filter-options">
                     <label class="filter-checkbox">
@@ -128,7 +128,7 @@
                       Paid
                     </label>
                   </div>
-                </div>
+                </div> -->
 
                 <!-- Hidden field to preserve search query -->
                 {% if search_query %}
@@ -153,7 +153,7 @@
                   {% endfor %}
                 </form>
               </div>
-              <div class="sort-dropdown">
+              <!-- <div class="sort-dropdown">
                 <select name="sort" onchange="location.href='?sort=' + this.value + '{{ request.GET.urlencode|safe }}';">
                   <option value="popular" {% if sort_by == 'popular' %}selected{% endif %}>Sort by: Most Popular</option>
                   <option value="newest" {% if sort_by == 'newest' %}selected{% endif %}>Newest First</option>
@@ -161,7 +161,7 @@
                   <option value="price_high" {% if sort_by == 'price_high' %}selected{% endif %}>Price: High to Low</option>
                   <option value="duration_short" {% if sort_by == 'duration_short' %}selected{% endif %}>Duration: Short to Long</option>
                 </select>
-              </div>
+              </div> -->
             </div>
 
             <div class="courses-grid" data-aos="fade-up" data-aos-delay="200">
@@ -182,7 +182,7 @@
                     <div class="course-content">
                       <div class="course-meta">
                         <span class="category">{{ course.category.name }}</span>
-                        <span class="level">{{ course.get_level_display }}</span>
+                        <!-- <span class="level">{{ course.get_level_display }}</span> -->
                       </div>
                       <h3>{{ course.title }}</h3>
                       <p>{{ course.description|truncatewords:20 }}</p>
@@ -318,3 +318,37 @@
 </body>
 
 {% endblock content %}
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    const form = document.getElementById('filterForm');
+    const allCategoriesCheckbox = document.getElementById('allCategories');
+    const categoryCheckboxes = document.querySelectorAll('.category-checkbox');
+    
+    // Handle "All Categories" checkbox
+    allCategoriesCheckbox.addEventListener('change', function() {
+        if (this.checked) {
+            // Uncheck all other categories
+            categoryCheckboxes.forEach(cb => cb.checked = false);
+            form.submit();
+        }
+    });
+    
+    // Handle individual category checkboxes
+    categoryCheckboxes.forEach(checkbox => {
+        checkbox.addEventListener('change', function() {
+            if (this.checked) {
+                // Uncheck "All Categories"
+                allCategoriesCheckbox.checked = false;
+            } else {
+                // If no categories are selected, check "All Categories"
+                const anyChecked = Array.from(categoryCheckboxes).some(cb => cb.checked);
+                if (!anyChecked) {
+                    allCategoriesCheckbox.checked = true;
+                }
+            }
+            form.submit();
+        });
+    });
+});
+</script>

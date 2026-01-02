@@ -130,7 +130,7 @@
                       <img src="https://via.placeholder.com/100" alt="{{ course.instructor }}" class="rounded-circle me-3">
                       {% endif %}
                       <div>
-                        <h3>{{ course.instructor.user.get_full_name|default:course.instructor.user.username }}</h3>
+                        <h3>{{ course.instructor.get_full_name }}</h3>
                         <p class="text-muted">Course Instructor</p>
                         <p>{{ course.instructor.bio|default:"Experienced educator and subject matter expert." }}</p>
                       </div>

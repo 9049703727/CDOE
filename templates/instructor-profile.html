@@ -1,11 +1,9 @@
 {% extends 'base.html' %}
 {% load static %}
-{% block title %}Instructor Profile - Learner{% endblock %}
+{% block title %}{{ instructor.get_display_name }} - Instructor Profile{% endblock %}
 {% block content %}
 
 <body class="instructor-profile-page">
-
-
 
   <main class="main">
 
@@ -15,8 +13,9 @@
         <h1 class="mb-2 mb-lg-0">Instructor Profile</h1>
         <nav class="breadcrumbs">
           <ol>
-            <li><a href="index.html">Home</a></li>
-            <li class="current">Instructor Profile</li>
+            <li><a href="/">Home</a></li>
+            <li><a href="{% url 'instructors_list' %}">Instructors</a></li>
+            <li class="current">{{ instructor.get_display_name }}</li>
           </ol>
         </nav>
       </div>
@@ -37,39 +36,62 @@
               </div>
               <div class="hero-content">
                 <div class="instructor-avatar">
-                  <img src="{% static 'img/education/teacher-7.webp' %}" alt="Instructor" class="img-fluid">
+                  {% if instructor.profile_image %}
+                  <img src="{{ instructor.profile_image.url }}" alt="{{ instructor.get_display_name }}" class="img-fluid">
+                  {% else %}
+                  <img src="{% static 'img/education/teacher-7.webp' %}" alt="{{ instructor.get_display_name }}" class="img-fluid">
+                  {% endif %}
                   <div class="status-badge">
                     <i class="bi bi-patch-check-fill"></i>
                     <span>Verified</span>
                   </div>
                 </div>
                 <div class="instructor-info">
-                  <h2>Prof. Alexandra Chen</h2>
-                  <p class="title">Machine Learning &amp; AI Specialist</p>
+                  <h2>{{ instructor.get_display_name }}</h2>
+                  <p class="title">{{ instructor.specialization|default:"Educator" }}</p>
                   <div class="credentials">
-                    <span class="credential">Ph.D. MIT</span>
-                    <span class="credential">10+ Years</span>
-                    <span class="credential">15,247 Students</span>
+                    {% if instructor.title %}
+                    <span class="credential">{{ instructor.title }}</span>
+                    {% endif %}
+                    {% if instructor.years_experience > 0 %}
+                    <span class="credential">{{ instructor.years_experience }}+ Years</span>
+                    {% endif %}
+                    <span class="credential">{{ total_students|default:"0" }} Students</span>
                   </div>
                   <div class="rating-overview">
                     <div class="stars">
-                      <i class="bi bi-star-fill"></i>
-                      <i class="bi bi-star-fill"></i>
-                      <i class="bi bi-star-fill"></i>
-                      <i class="bi bi-star-fill"></i>
-                      <i class="bi bi-star-half"></i>
+                      {% with rating=avg_rating|floatformat:0 %}
+                      {% for i in "12345" %}
+                        {% if forloop.counter <= rating|add:0 %}
+                          <i class="bi bi-star-fill"></i>
+                        {% elif forloop.counter == rating|add:1 and avg_rating|floatformat:1|slice:"-1" >= "5" %}
+                          <i class="bi bi-star-half"></i>
+                        {% else %}
+                          <i class="bi bi-star"></i>
+                        {% endif %}
+                      {% endfor %}
+                      {% endwith %}
                     </div>
-                    <span class="rating-text">4.9 rating from 3,821 reviews</span>
+                    <span class="rating-text">{{ avg_rating|floatformat:1 }} rating from {{ courses.count }} course{{ courses.count|pluralize }}</span>
                   </div>
                   <div class="contact-actions">
-                    <a href="#" class="btn-contact">
+                    <a href="mailto:{{ instructor.email }}" class="btn-contact">
                       <i class="bi bi-envelope"></i>
                       Contact Instructor
                     </a>
                     <div class="social-media">
-                      <a href="#"><i class="bi bi-linkedin"></i></a>
-                      <a href="#"><i class="bi bi-twitter-x"></i></a>
-                      <a href="#"><i class="bi bi-youtube"></i></a>
+                      {% if instructor.linkedin_url %}
+                      <a href="{{ instructor.linkedin_url }}" target="_blank"><i class="bi bi-linkedin"></i></a>
+                      {% endif %}
+                      {% if instructor.twitter_url %}
+                      <a href="{{ instructor.twitter_url }}" target="_blank"><i class="bi bi-twitter-x"></i></a>
+                      {% endif %}
+                      {% if instructor.github_url %}
+                      <a href="{{ instructor.github_url }}" target="_blank"><i class="bi bi-github"></i></a>
+                      {% endif %}
+                      {% if instructor.facebook_url %}
+                      <a href="{{ instructor.facebook_url }}" target="_blank"><i class="bi bi-facebook"></i></a>
+                      {% endif %}
                     </div>
                   </div>
                 </div>
@@ -92,184 +114,81 @@
                   </button>
                 </li>
                 <li class="nav-item" role="presentation">
-                  <button class="nav-link" data-bs-toggle="tab" data-bs-target="#instructor-profile-experience" type="button" role="tab">
-                    <i class="bi bi-briefcase"></i>
-                    Experience
-                  </button>
-                </li>
-                <li class="nav-item" role="presentation">
                   <button class="nav-link" data-bs-toggle="tab" data-bs-target="#instructor-profile-courses" type="button" role="tab">
                     <i class="bi bi-book"></i>
-                    Courses
-                  </button>
-                </li>
-                <li class="nav-item" role="presentation">
-                  <button class="nav-link" data-bs-toggle="tab" data-bs-target="#instructor-profile-reviews" type="button" role="tab">
-                    <i class="bi bi-star"></i>
-                    Reviews
+                    Courses ({{ courses.count }})
                   </button>
                 </li>
               </ul>
 
               <div class="tab-content custom-tab-content">
 
+                <!-- About Tab -->
                 <div class="tab-pane fade show active" id="instructor-profile-about" role="tabpanel">
                   <div class="about-content">
                     <div class="bio-section">
                       <h4>Professional Biography</h4>
-                      <p>Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam, eaque ipsa quae ab illo inventore veritatis et quasi architecto beatae vitae dicta sunt explicabo. Nemo enim ipsam voluptatem quia voluptas sit aspernatur aut odit aut fugit.</p>
-                      <p>At vero eos et accusamus et iusto odio dignissimos ducimus qui blanditiis praesentium voluptatum deleniti atque corrupti quos dolores et quas molestias excepturi sint occaecati cupiditate non provident.</p>
+                      {% if instructor.bio %}
+                        <p>{{ instructor.bio|linebreaks }}</p>
+                      {% else %}
+                        <p>{{ instructor.short_description|default:"Experienced educator dedicated to helping students achieve their learning goals." }}</p>
+                      {% endif %}
                     </div>
 
+                    {% if instructor.specialization %}
                     <div class="expertise-grid">
                       <h4>Core Expertise</h4>
                       <div class="skills-grid">
                         <div class="skill-item">
-                          <i class="bi bi-cpu"></i>
-                          <span>Artificial Intelligence</span>
+                          <i class="bi bi-award"></i>
+                          <span>{{ instructor.specialization }}</span>
                         </div>
+                        {% if courses.count > 0 %}
+                        {% for course in courses|slice:":5" %}
                         <div class="skill-item">
-                          <i class="bi bi-diagram-3"></i>
-                          <span>Neural Networks</span>
+                          <i class="bi bi-book"></i>
+                          <span>{{ course.category.name }}</span>
                         </div>
-                        <div class="skill-item">
-                          <i class="bi bi-graph-up"></i>
-                          <span>Data Science</span>
-                        </div>
-                        <div class="skill-item">
-                          <i class="bi bi-code-slash"></i>
-                          <span>Python &amp; R</span>
-                        </div>
-                        <div class="skill-item">
-                          <i class="bi bi-cloud"></i>
-                          <span>Cloud Computing</span>
-                        </div>
-                        <div class="skill-item">
-                          <i class="bi bi-robot"></i>
-                          <span>Machine Learning</span>
-                        </div>
+                        {% endfor %}
+                        {% endif %}
                       </div>
                     </div>
+                    {% endif %}
                   </div>
                 </div>
 
-                <div class="tab-pane fade" id="instructor-profile-experience" role="tabpanel">
-                  <div class="experience-grid">
-                    <div class="experience-card">
-                      <div class="timeline-marker">2019</div>
-                      <div class="experience-details">
-                        <h5>Lead AI Researcher</h5>
-                        <p class="institution">TechForward Institute</p>
-                        <p>Similique sunt in culpa qui officia deserunt mollitia animi, id est laborum et dolorum fuga. Et harum quidem rerum facilis est et expedita distinctio.</p>
-                      </div>
-                    </div>
-
-                    <div class="experience-card">
-                      <div class="timeline-marker">2016</div>
-                      <div class="experience-details">
-                        <h5>Senior Data Scientist</h5>
-                        <p class="institution">InnovateLabs Corp</p>
-                        <p>Temporibus autem quibusdam et aut officiis debitis aut rerum necessitatibus saepe eveniet ut et voluptates repudiandae sint et molestiae non recusandae.</p>
-                      </div>
-                    </div>
-
-                    <div class="experience-card">
-                      <div class="timeline-marker">2014</div>
-                      <div class="experience-details">
-                        <h5>Research Fellow</h5>
-                        <p class="institution">MIT Computer Science Lab</p>
-                        <p>Nam libero tempore, cum soluta nobis est eligendi optio cumque nihil impedit quo minus id quod maxime placeat facere possimus.</p>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-
+                <!-- Courses Tab -->
                 <div class="tab-pane fade" id="instructor-profile-courses" role="tabpanel">
                   <div class="courses-grid">
+                    {% for course in courses %}
                     <div class="course-item">
                       <div class="course-thumb">
-                        <img src="{% static 'img/education/courses-5.webp' %}" alt="Course" class="img-fluid">
-                        <div class="course-level">Advanced</div>
+                        {% if course.image %}
+                        <img src="{{ course.image.url }}" alt="{{ course.title }}" class="img-fluid">
+                        {% else %}
+                        <img src="{% static 'img/education/courses-5.webp' %}" alt="{{ course.title }}" class="img-fluid">
+                        {% endif %}
+                        <div class="course-level">{{ course.get_level_display }}</div>
                       </div>
                       <div class="course-info">
-                        <h5>Deep Learning Mastery</h5>
+                        <h5>{{ course.title }}</h5>
                         <div class="course-stats">
-                          <span><i class="bi bi-people"></i> 5,234 enrolled</span>
-                          <span><i class="bi bi-star-fill"></i> 4.8</span>
+                          <span><i class="bi bi-people"></i> {{ course.students_enrolled }} enrolled</span>
+                          <span><i class="bi bi-star-fill"></i> {{ course.rating|floatformat:1 }}</span>
                         </div>
-                        <p class="price">$249</p>
+                        {% if course.is_free %}
+                        <p class="price text-success">Free</p>
+                        {% else %}
+                        <p class="price">₹{{ course.price|floatformat:0 }}</p>
+                        {% endif %}
+                        <a href="{% url 'course_detail' course.slug %}" class="btn btn-sm btn-primary mt-2">View Course</a>
                       </div>
                     </div>
-
-                    <div class="course-item">
-                      <div class="course-thumb">
-                        <img src="{% static 'img/education/courses-9.webp' %}" alt="Course" class="img-fluid">
-                        <div class="course-level">Intermediate</div>
-                      </div>
-                      <div class="course-info">
-                        <h5>AI Ethics &amp; Applications</h5>
-                        <div class="course-stats">
-                          <span><i class="bi bi-people"></i> 3,567 enrolled</span>
-                          <span><i class="bi bi-star-fill"></i> 4.9</span>
-                        </div>
-                        <p class="price">$179</p>
-                      </div>
+                    {% empty %}
+                    <div class="col-12 text-center py-4">
+                      <p>No courses available at the moment.</p>
                     </div>
-
-                    <div class="course-item">
-                      <div class="course-thumb">
-                        <img src="{% static 'img/education/courses-12.webp' %}" alt="Course" class="img-fluid">
-                        <div class="course-level">Beginner</div>
-                      </div>
-                      <div class="course-info">
-                        <h5>Python for Data Analysis</h5>
-                        <div class="course-stats">
-                          <span><i class="bi bi-people"></i> 8,912 enrolled</span>
-                          <span><i class="bi bi-star-fill"></i> 4.7</span>
-                        </div>
-                        <p class="price">$129</p>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-
-                <div class="tab-pane fade" id="instructor-profile-reviews" role="tabpanel">
-                  <div class="reviews-container">
-                    <div class="review-card">
-                      <div class="review-header">
-                        <img src="{% static 'img/person/person-f-12.webp' %}" alt="Student" class="reviewer-avatar">
-                        <div class="reviewer-info">
-                          <h6>Sarah Williams</h6>
-                          <p>Data Scientist at Amazon</p>
-                          <div class="review-rating">
-                            <i class="bi bi-star-fill"></i>
-                            <i class="bi bi-star-fill"></i>
-                            <i class="bi bi-star-fill"></i>
-                            <i class="bi bi-star-fill"></i>
-                            <i class="bi bi-star-fill"></i>
-                          </div>
-                        </div>
-                      </div>
-                      <p>"Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollitia animi. The hands-on approach and real-world projects made all the difference."</p>
-                    </div>
-
-                    <div class="review-card">
-                      <div class="review-header">
-                        <img src="{% static 'img/person/person-m-8.webp' %}" alt="Student" class="reviewer-avatar">
-                        <div class="reviewer-info">
-                          <h6>David Martinez</h6>
-                          <p>ML Engineer at Tesla</p>
-                          <div class="review-rating">
-                            <i class="bi bi-star-fill"></i>
-                            <i class="bi bi-star-fill"></i>
-                            <i class="bi bi-star-fill"></i>
-                            <i class="bi bi-star-fill"></i>
-                            <i class="bi bi-star-fill"></i>
-                          </div>
-                        </div>
-                      </div>
-                      <p>"Quis autem vel eum iure reprehenderit qui in ea voluptate velit esse quam nihil molestiae consequatur. Professor Chen's expertise is unmatched."</p>
-                    </div>
+                    {% endfor %}
                   </div>
                 </div>
 
@@ -277,9 +196,11 @@
             </div>
           </div>
 
+          <!-- Sidebar -->
           <div class="col-lg-4">
             <div class="sidebar-widgets" data-aos="fade-left" data-aos-delay="300">
 
+              <!-- Stats Widget -->
               <div class="stats-widget">
                 <h4>Teaching Impact</h4>
                 <div class="stats-grid">
@@ -288,7 +209,7 @@
                       <i class="bi bi-people"></i>
                     </div>
                     <div class="stat-content">
-                      <h5>15,247</h5>
+                      <h5>{{ total_students|default:"0" }}</h5>
                       <p>Total Students</p>
                     </div>
                   </div>
@@ -297,78 +218,87 @@
                       <i class="bi bi-book"></i>
                     </div>
                     <div class="stat-content">
-                      <h5>18</h5>
+                      <h5>{{ total_courses }}</h5>
                       <p>Active Courses</p>
                     </div>
                   </div>
                   <div class="stat-box">
                     <div class="stat-icon">
-                      <i class="bi bi-award"></i>
+                      <i class="bi bi-star"></i>
                     </div>
                     <div class="stat-content">
-                      <h5>94%</h5>
-                      <p>Completion Rate</p>
+                      <h5>{{ avg_rating|floatformat:1 }}</h5>
+                      <p>Avg Rating</p>
                     </div>
                   </div>
+                  {% if instructor.years_experience > 0 %}
                   <div class="stat-box">
                     <div class="stat-icon">
                       <i class="bi bi-clock"></i>
                     </div>
                     <div class="stat-content">
-                      <h5>10+</h5>
+                      <h5>{{ instructor.years_experience }}+</h5>
                       <p>Years Teaching</p>
                     </div>
                   </div>
+                  {% endif %}
                 </div>
               </div>
 
-              <div class="achievements-widget">
-                <h4>Recognition &amp; Awards</h4>
-                <div class="achievement-list">
-                  <div class="achievement-item">
-                    <i class="bi bi-trophy"></i>
-                    <div class="achievement-text">
-                      <h6>Excellence in Teaching Award</h6>
-                      <p>MIT Computer Science Department • 2022</p>
-                    </div>
-                  </div>
-                  <div class="achievement-item">
-                    <i class="bi bi-patch-check"></i>
-                    <div class="achievement-text">
-                      <h6>AI Research Grant</h6>
-                      <p>National Science Foundation • 2021</p>
-                    </div>
-                  </div>
-                  <div class="achievement-item">
-                    <i class="bi bi-mortarboard"></i>
-                    <div class="achievement-text">
-                      <h6>Outstanding Educator Recognition</h6>
-                      <p>IEEE Computer Society • 2020</p>
-                    </div>
-                  </div>
-                </div>
-              </div>
-
+              <!-- Contact Widget -->
               <div class="contact-widget">
                 <h4>Get in Touch</h4>
                 <div class="contact-info">
                   <div class="contact-item">
                     <i class="bi bi-envelope"></i>
-                    <span>alexandra.chen@university.edu</span>
+                    <span>{{ instructor.email }}</span>
                   </div>
+                  <div class="contact-item">
+                    <i class="bi bi-person"></i>
+                    <span>{{ instructor.get_full_name }}</span>
+                  </div>
+                  {% if instructor.phone %}
                   <div class="contact-item">
                     <i class="bi bi-telephone"></i>
-                    <span>+1 (555) 789-0123</span>
+                    <span>{{ instructor.phone }}</span>
                   </div>
-                  <div class="contact-item">
-                    <i class="bi bi-geo-alt"></i>
-                    <span>Room 304, Computer Science Building</span>
+                  {% endif %}
+                </div>
+                
+                {% if instructor.linkedin_url or instructor.twitter_url or instructor.github_url or instructor.facebook_url %}
+                <div class="social-links mt-3">
+                  <h6>Connect on Social Media</h6>
+                  <div class="d-flex gap-2 justify-content-center">
+                    {% if instructor.linkedin_url %}
+                    <a href="{{ instructor.linkedin_url }}" target="_blank" class="btn btn-sm btn-outline-primary">
+                      <i class="bi bi-linkedin"></i>
+                    </a>
+                    {% endif %}
+                    {% if instructor.twitter_url %}
+                    <a href="{{ instructor.twitter_url }}" target="_blank" class="btn btn-sm btn-outline-info">
+                      <i class="bi bi-twitter"></i>
+                    </a>
+                    {% endif %}
+                    {% if instructor.github_url %}
+                    <a href="{{ instructor.github_url }}" target="_blank" class="btn btn-sm btn-outline-dark">
+                      <i class="bi bi-github"></i>
+                    </a>
+                    {% endif %}
+                    {% if instructor.facebook_url %}
+                    <a href="{{ instructor.facebook_url }}" target="_blank" class="btn btn-sm btn-outline-primary">
+                      <i class="bi bi-facebook"></i>
+                    </a>
+                    {% endif %}
                   </div>
                 </div>
-                <div class="office-hours">
-                  <h6>Office Hours</h6>
-                  <p>Tuesday &amp; Thursday<br>2:00 PM - 4:00 PM</p>
-                </div>
+                {% endif %}
+              </div>
+
+              <!-- All Courses Button -->
+              <div class="text-center mt-4">
+                <a href="{% url 'courses_list' %}" class="btn btn-primary w-100">
+                  <i class="bi bi-grid"></i> Browse All Courses
+                </a>
               </div>
 
             </div>
@@ -382,70 +312,7 @@
 
   </main>
 
-  <footer id="footer" class="footer accent-background">
-
-    <div class="container footer-top">
-      <div class="row gy-4">
-        <div class="col-lg-5 col-md-12 footer-about">
-          <a href="index.html" class="logo d-flex align-items-center">
-            <span class="sitename">Learner</span>
-          </a>
-          <p>Cras fermentum odio eu feugiat lide par naso tierra. Justo eget nada terra videa magna derita valies darta donna mare fermentum iaculis eu non diam phasellus.</p>
-          <div class="social-links d-flex mt-4">
-            <a href=""><i class="bi bi-twitter-x"></i></a>
-            <a href=""><i class="bi bi-facebook"></i></a>
-            <a href=""><i class="bi bi-instagram"></i></a>
-            <a href=""><i class="bi bi-linkedin"></i></a>
-          </div>
-        </div>
-
-        <div class="col-lg-2 col-6 footer-links">
-          <h4>Useful Links</h4>
-          <ul>
-            <li><a href="#">Home</a></li>
-            <li><a href="#">About us</a></li>
-            <li><a href="#">Services</a></li>
-            <li><a href="#">Terms of service</a></li>
-            <li><a href="#">Privacy policy</a></li>
-          </ul>
-        </div>
-
-        <div class="col-lg-2 col-6 footer-links">
-          <h4>Our Services</h4>
-          <ul>
-            <li><a href="#">Web Design</a></li>
-            <li><a href="#">Web Development</a></li>
-            <li><a href="#">Product Management</a></li>
-            <li><a href="#">Marketing</a></li>
-            <li><a href="#">Graphic Design</a></li>
-          </ul>
-        </div>
-
-        <div class="col-lg-3 col-md-12 footer-contact text-center text-md-start">
-          <h4>Contact Us</h4>
-          <p>A108 Adam Street</p>
-          <p>New York, NY 535022</p>
-          <p>United States</p>
-          <p class="mt-4"><strong>Phone:</strong> <span>+1 5589 55488 55</span></p>
-          <p><strong>Email:</strong> <span>info@example.com</span></p>
-        </div>
-
-      </div>
-    </div>
-
-    <div class="container copyright text-center mt-4">
-      <p>© <span>Copyright</span> <strong class="px-1 sitename">Learner</strong> <span>All Rights Reserved</span></p>
-      <div class="credits">
-        <!-- All the links in the footer should remain intact. -->
-        <!-- You can delete the links only if you've purchased the pro version. -->
-        <!-- Licensing information: https://bootstrapmade.com/license/ -->
-        <!-- Purchase the pro version with working PHP/AJAX contact form: [buy-url] -->
-        Designed by <a href="https://bootstrapmade.com/">BootstrapMade</a>
-      </div>
-    </div>
-
-  </footer>
-
+  
   <!-- Scroll Top -->
   <a href="#" id="scroll-top" class="scroll-top d-flex align-items-center justify-content-center"><i class="bi bi-arrow-up-short"></i></a>
 
@@ -463,7 +330,5 @@
   <script src="{% static 'js/main.js' %}"></script>
 
 </body>
-
-</html>
 
 {% endblock content %}
