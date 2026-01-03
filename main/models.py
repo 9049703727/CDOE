@@ -203,5 +203,38 @@ class TechnicalStaff(models.Model):
     def __str__(self):
         return self.name
 
+class AdminStaff(models.Model):
+    name = models.CharField(max_length=100)
+    designation = models.CharField(max_length=100)   # e.g. Registrar, Clerk
+    department = models.CharField(max_length=100)
+    bio = models.TextField()
+    photo = models.ImageField(upload_to='admin_staff/', blank=True, null=True)
+
+    experience_years = models.PositiveIntegerField(default=0)
+    rating = models.DecimalField(max_digits=3, decimal_places=1, default=4.5)
+    students = models.PositiveIntegerField(default=0)
+    courses = models.PositiveIntegerField(default=0)
+
+    linkedin = models.URLField(blank=True, null=True)
+    twitter = models.URLField(blank=True, null=True)
+    github = models.URLField(blank=True, null=True)
+
+    is_active = models.BooleanField(default=True)
+    created_at = models.DateTimeField(auto_now_add=True)
+
+    def __str__(self):
+        return self.name
+
+class FAQ(models.Model):
+    question = models.CharField(max_length=255)
+    answer = models.TextField()
+    is_active = models.BooleanField(default=True)
+    order = models.PositiveIntegerField(default=0)  # Optional: for sorting
+
+    def __str__(self):
+        return self.question
+
+    class Meta:
+        ordering = ['order']  # Sort by order
 
 

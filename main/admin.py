@@ -2,6 +2,9 @@ from django.contrib import admin
 from .models import Subscriber
 from .models import Notification  # <-- Add this line
 from .models import TechnicalStaff, Testimonial
+from .models import AdminStaff
+from .models import FAQ
+
 
 
 @admin.register(Subscriber)
@@ -79,3 +82,16 @@ class TestimonialAdmin(admin.ModelAdmin):
     list_filter = ['is_active', 'rating', 'created_at']
     search_fields = ['name', 'designation', 'testimonial_text']
     list_editable = ['is_active']
+
+
+@admin.register(AdminStaff)
+class AdminStaffAdmin(admin.ModelAdmin):
+    list_display = ('name', 'designation', 'department', 'is_active')
+    list_filter = ('department', 'is_active')
+    search_fields = ('name', 'designation')
+
+
+@admin.register(FAQ)
+class FAQAdmin(admin.ModelAdmin):
+    list_display = ('question', 'is_active', 'order')
+    list_editable = ('is_active', 'order')

@@ -20,6 +20,12 @@ urlpatterns = [
     path('technical-staff/', views.technical_staff, name='technical_staff'),
     # path("send-otp/", views.send_otp, name="send_otp"),
     # path("verify-otp/", views.verify_otp, name="verify_otp"),
+    path('notifications/', views.notifications_view, name='notifications'),
+
+    path('contact/', views.contact_page, name='contact_page'),
+    path('administration/', views.admin_staff_list, name='admin_staff_list'),
+    
+
 
     path('<path:filename>.html', views.serve_html, name='serve_html'),
 

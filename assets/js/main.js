@@ -344,3 +344,81 @@ function startTimer(seconds) {
     if (time < 0) clearInterval(timerInterval);
   }, 1000);
 }
+
+
+  const videoSwiper = new Swiper('#videoSwiper', {
+    loop: true,
+    slidesPerView: 1,
+    spaceBetween: 30,
+    pagination: {
+      el: '.swiper-pagination',
+      clickable: true,
+    },
+    navigation: {
+      nextEl: '#videoNextBtn',
+      prevEl: '#videoPrevBtn',
+    },
+    breakpoints: {
+      768: {
+        slidesPerView: 2
+      },
+      1200: {
+        slidesPerView: 3
+      }
+    }
+  });
+
+// Dynamic form validation based on selected IKS course
+// Dynamic form validation based on selected IKS course
+document.addEventListener('DOMContentLoaded', function () {
+    const courseSelect = document.getElementById('iks_course');
+    const gcasRegNo = document.getElementById('gcas_reg_no');
+    const gcasConfNo = document.getElementById('gcas_conf_no');
+    const enrollmentNo = document.getElementById('enrollment_no');
+
+    const gcasRegStar = document.getElementById('gcas_reg_star');
+    const gcasConfStar = document.getElementById('gcas_conf_star');
+    const enrollmentStar = document.getElementById('enrollment_star'); // Make sure you have this in HTML
+
+    courseSelect.addEventListener('change', function () {
+        const selectedCourse = this.value;
+
+        if (selectedCourse === 'IKS_1') {
+            // IKS_1: GCAS required, Enrollment optional
+            gcasRegNo.required = true;
+            gcasConfNo.required = true;
+            enrollmentNo.required = false;
+
+            gcasRegStar.classList.remove('d-none');
+            gcasConfStar.classList.remove('d-none');
+            enrollmentStar.classList.add('d-none');
+        } else if (selectedCourse === 'IKS_2') {
+            // IKS_2: Enrollment required, GCAS optional
+            gcasRegNo.required = false;
+            gcasConfNo.required = false;
+            enrollmentNo.required = true;
+
+            gcasRegStar.classList.add('d-none');
+            gcasConfStar.classList.add('d-none');
+            enrollmentStar.classList.remove('d-none');
+        } else if (selectedCourse === 'IKS_3') {
+            // IKS_3: Enrollment required, GCAS optional
+            gcasRegNo.required = false;
+            gcasConfNo.required = false;
+            enrollmentNo.required = true;
+
+            gcasRegStar.classList.add('d-none');
+            gcasConfStar.classList.add('d-none');
+            enrollmentStar.classList.remove('d-none');
+        } else {
+            // Default: none required
+            gcasRegNo.required = false;
+            gcasConfNo.required = false;
+            enrollmentNo.required = false;
+
+            gcasRegStar.classList.add('d-none');
+            gcasConfStar.classList.add('d-none');
+            enrollmentStar.classList.add('d-none');
+        }
+    });
+});

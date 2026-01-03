@@ -8,8 +8,14 @@ from django.core.mail import send_mail
 from django.conf import settings
 from .models import Notification
 
+from .models import Course, Category, Instructor, Testimonial
 from .forms import ContactForm
 from .models import TechnicalStaff
+from .models import AdminStaff
+from .models import FAQ
+from .models import IKSRegistration
+
+
 
 
 
@@ -42,6 +48,7 @@ def index(request):
         'featured_courses': featured_courses,
         # 'categories': categories,
         'featured_instructors': featured_instructors,
+        'testimonials': testimonials
               
     }
     return render(request, 'index.html',context)
@@ -323,5 +330,28 @@ def technical_staff(request):
     return render(request, 'technical_staff.html', {
         'staff_list': staff_list
     })
+
+
+
+def admin_staff_list(request):
+    staff_list = AdminStaff.objects.filter(is_active=True)
+    
+
+    return render(request, 'administration.html', {
+        'staff_list': staff_list
+    })
+
+
+
+def contact_page(request):
+    faqs = FAQ.objects.filter(is_active=True)
+    
+    context = {
+        'faqs': faqs,
+        # Include your contact form here as well
+        # 'form': YourContactForm(),  # replace with your form
+    }
+    return render(request, 'contact.html', context)
+
 
 

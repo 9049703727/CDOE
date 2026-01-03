@@ -19,7 +19,7 @@
             <div class="hero-text">
               <h1>
                 Gujarat University<br>
-                <span style="color: #19b6ee;">Online Education</span>
+                <span style="color: #19b6ee;">Center For Distance and Online Education</span>
               </h1>
               <div class="hero-stats">
                 <h6>Gujarat University invites you to enrol in fully online UGC-approved UG & PG Programs. Any student
@@ -48,7 +48,7 @@
                 </a>
 
                 <a href="https://gujaratuniversity.ac.in/University" target="_blank" class="btn btn-primary">
-                  Visit Official Website
+                  Visit GU Website
                 </a>
               </div>
 
@@ -207,7 +207,8 @@
                 <div class="price-badge">Free</div>
                 {% else %}
                 <!-- <div class="badge featured">Featured</div> -->
-                <div class="price-badge">₹{{ course.price }}</div>
+               <div class="course-price">{{ course.get_price_display  }}</div>
+                   <div class="course-price-international">{{ course.price_international }}</div>
                 {% endif %}
               </div>
               
@@ -762,54 +763,126 @@
 
 
 
- <!-- Video Gallery Section -->
-<section id="video-gallery" class="video-gallery section">
-  <div class="container">
-    <h2 class="section-title text-center mb-5">VIDEO GALLERY</h2>
-    <div class="row justify-content-center g-4">
 
-      <!-- Video Card 1 -->
-      <div class="col-lg-3 col-md-4 col-sm-6">
-        <div class="card video-card text-center p-3">
-          <a href="https://www.youtube.com/watch?v=jRDkK3hlV9U" target="_blank">
-            <img src="" alt="YouTube" class="video-icon mb-2">
-            <h5 class="video-title mb-1">IKS SEMESTER 3</h5>
-            <p class="video-lang">ENGLISH</p>
-          </a>
-        </div>
-      </div>
+<section id="video-gallery" class="testimonials section">
 
-      <!-- Video Card 2 -->
-      <div class="col-lg-3 col-md-4 col-sm-6">
-        <div class="card video-card text-center p-3">
-          <a href="https://www.youtube.com/watch?v=VIDEO_ID_4" target="_blank">
-            <img src="" alt="YouTube" class="video-icon mb-2">
-            <h5 class="video-title mb-1">IKS SEMESTER 1</h5>
-            <p class="video-lang">GUJARATI</p>
-          </a>
-        </div>
-      </div>
-
-      <!-- Video Card 3 -->
-      <div class="col-lg-3 col-md-4 col-sm-6">
-        <div class="card video-card text-center p-3">
-          <a href="https://www.youtube.com/watch?v=VIDEO_ID_5" target="_blank">
-            <img src="" alt="YouTube" class="video-icon mb-2">
-            <h5 class="video-title mb-1">ONLINE PROGRAM</h5>
-            <p class="video-lang">GUJARAT UNIVERSITY</p>
-          </a>
-        </div>
-      </div>
-
-    </div>
-
-    <!-- View All Button -->
-    <div class="text-center mt-4">
-      <a href="" class="btn btn-primary">View All</a>
-    </div>
-
+  <!-- Section Title -->
+  <div class="container section-title" data-aos="fade-up">
+    <h2>YouTube Video Gallery</h2>
+    <p>Watch our latest lectures, events, and student activities</p>
   </div>
+
+  <div class="container" data-aos="fade-up" data-aos-delay="100">
+    <div class="row">
+      <div class="col-12">
+
+        <div class="testimonial-wrapper">
+
+          <!-- Left Arrow (same as testimonials) -->
+          <button id="videoPrevBtn" aria-label="Previous video">
+            <i class="bi bi-chevron-left"></i>
+          </button>
+
+          <!-- Swiper -->
+          <div class="swiper testimonials-slider" id="videoSwiper">
+            <div class="swiper-wrapper">
+
+              <!-- Video 1 -->
+              <div class="swiper-slide">
+                <div class="testimonial-item video-item">
+
+                  <div class="video-wrapper ratio ratio-16x9">
+                    <iframe
+                      src="https://www.youtube.com/embed/jRDkK3hlV9U"
+                      title="Gujarat University Orientation"
+                      allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                      allowfullscreen>
+                    </iframe>
+                  </div>
+
+                  <h4 class="mt-3">IKS Semester 3</h4>
+                  <p>Indic Knowledge System Semester_3_Gujarati by Professor Dr. Joshi Jagdish.</p>
+
+                </div>
+              </div>
+
+              <!-- Video 2 -->
+              <div class="swiper-slide">
+                <div class="testimonial-item video-item">
+
+                  <div class="video-wrapper ratio ratio-16x9">
+                    <iframe
+                      src="https://www.youtube.com/embed/y3UrTh2cgJo"
+                      title="Online Learning Session"
+                      allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                      allowfullscreen>
+                    </iframe>
+                  </div>
+
+                  <h4 class="mt-3">IKS Semester 3</h4>
+                  <p>Indic Knowledge System Semester_3_Gujarati by Professor Dr. Joshi Jagdish.</p>
+
+                </div>
+              </div>
+
+              <!-- Video 3 -->
+              <div class="swiper-slide">
+                <div class="testimonial-item video-item">
+
+                  <div class="video-wrapper ratio ratio-16x9">
+                    <iframe
+                      src="https://www.youtube.com/embed/z3SDxJSAD0g"
+                      title="Student Activities"
+                      allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                      allowfullscreen>
+                    </iframe>
+                  </div>
+
+                  <h4 class="mt-3">IKS Semester 1</h4>
+                  <p>Indic Knowledge System Semester_1_English by Professor Dr. Joshi Jagdish.</p>
+
+                </div>
+              </div>
+
+               <div class="swiper-slide">
+                <div class="testimonial-item video-item">
+
+                  <div class="video-wrapper ratio ratio-16x9">
+                    <iframe
+                      src="https://www.youtube.com/embed/z3SDxJSAD0g"
+                      title="Student Activities"
+                      allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                      allowfullscreen>
+                    </iframe>
+                  </div>
+
+                  <h4 class="mt-3">IKS Semester 1</h4>
+                  <p>Indic Knowledge System Semester_1_English by Professor Dr. Joshi Jagdish.</p>
+
+                </div>
+              </div>
+
+            </div>
+
+            <!-- Pagination -->
+            <div class="swiper-pagination"></div>
+          </div>
+
+          <!-- Right Arrow (same as testimonials) -->
+          <button id="videoNextBtn" aria-label="Next video">
+            <i class="bi bi-chevron-right"></i>
+          </button>
+
+        </div>
+
+      </div>
+    </div>
+  </div>
+
 </section>
+
+
+
 
 
   

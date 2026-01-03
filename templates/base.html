@@ -33,25 +33,25 @@
 
 <body class="index-page">
 
-<!-- Top Buttons -->
-<div class="top-buttons-bar">
+  <!-- Top Buttons -->
+  <div class="top-buttons-bar">
     <a class="top-btn" href="/enroll.html">Inquiry Now</a>
     <a class="top-btn" href="https://online.gujaratuniversity.ac.in/admission/Registration">Registration</a>
     <a class="top-btn" href="iks_course_registration.html">IKS Course Registration</a>
     <a class="top-btn" href="https://www.online-gu.com/">LMS Login</a>
 
-</div>
+  </div>
 
-<!-- Header -->
-<header id="header" class="header d-flex align-items-center sticky-top">
-  <div class="container-fluid container-xl d-flex align-items-center">
+  <!-- Header -->
+  <header id="header" class="header d-flex align-items-center sticky-top">
+    <div class="container-fluid container-xl d-flex align-items-center">
 
-    <a href="/" class="logo d-flex align-items-center me-auto">
-      <img src="{% static 'img/logo.png' %}" alt="">
-      <h1 class="sitename">
-        <img src="{% static 'img/online_education_img.png' %}" alt="">
-      </h1>
-    </a>
+      <a href="/" class="logo d-flex align-items-center me-auto">
+        <img src="{% static 'img/logo.png' %}" alt="">
+        <h1 class="sitename">
+          <img src="{% static 'img/online_education_img.png' %}" alt="">
+        </h1>
+      </a>
 
       <nav id="navmenu" class="navmenu">
         <ul>
@@ -66,25 +66,17 @@
               CDOE
             </a>
             <ul class="dropdown-menu" aria-labelledby="coursesDropdown">
-              <li><a class="dropdown-item"  href="/administration.html">Administration</a></li>
+              <li><a class="dropdown-item" href="/administration.html">Vice Chancellor</a></li>
+              <li><a class="dropdown-item" href="/Director.html">Director</a></li>
+
               <li><a class="dropdown-item" href="/instructors.html">Teaching Staff</a></li>
-              <li><a class="dropdown-item"  href="{% url 'technical_staff' %}">Technical Staff</a></li>
-              <li><a class="dropdown-item" href="/multitasking_staff.html">Multitasking Staff</a></li>
+              <li><a class="dropdown-item" href="{% url 'technical_staff' %}">Technical Staff</a></li>
+              <li><a class="dropdown-item" href="{% url 'admin_staff_list' %}">Administration</a></li>
             </ul>
           </li>
           <li><a href="/instructors.html">CIQA</a></li>
           <li><a href="about.html">Downloads</a></li>
-
-          
-
-
-          
-          
-
-
-
-
-          <li><a href="/contact.html">Contact US</a></li>
+          <li><a href="{% url 'contact_page'%}">Contact Us</a></li>
         </ul>
         <i class="mobile-nav-toggle d-xl-none bi bi-list"></i>
       </nav>
@@ -96,46 +88,47 @@
     </div>
   </header>
 
-<!-- Page Content -->
-{% block content %}{% endblock %}
+  <!-- Page Content -->
+  {% block content %}{% endblock %}
 
-<!-- Footer -->
-<footer id="footer" class="footer" style="background-color:#136ad5;color:#fff;">
-  <div class="container py-4 text-center">
-    &copy; 2022 <strong>Gujarat University</strong> Online Education
-  </div>
-</footer>
+  <!-- Footer -->
+  <footer id="footer" class="footer" style="background-color:#136ad5;color:#fff;">
+    <div class="container py-4 text-center">
+      &copy; 2022 <strong>Gujarat University</strong> Center For Distance and Online Learning
+    </div>
+  </footer>
 
-<!-- Vendor JS -->
-<script src="{% static 'vendor/bootstrap/js/bootstrap.bundle.min.js' %}"></script>
-<script src="{% static 'vendor/aos/aos.js' %}"></script>
-<script src="{% static 'vendor/purecounter/purecounter_vanilla.js' %}"></script>
-<script src="{% static 'vendor/swiper/swiper-bundle.min.js' %}"></script>
+  <!-- Vendor JS -->
+  <script src="{% static 'vendor/bootstrap/js/bootstrap.bundle.min.js' %}"></script>
+  <script src="{% static 'vendor/aos/aos.js' %}"></script>
+  <script src="{% static 'vendor/purecounter/purecounter_vanilla.js' %}"></script>
+  <script src="{% static 'vendor/swiper/swiper-bundle.min.js' %}"></script>
 
-<!-- Main JS -->
-<script src="{% static 'js/main.js' %}"></script>
+  <!-- Main JS -->
+  <script src="{% static 'js/main.js' %}"></script>
 
-<!-- Page Specific JS -->
-{% block extra_js %}
-<script>
-  document.addEventListener('DOMContentLoaded', function () {
+  <!-- Page Specific JS -->
+  {% block extra_js %}
+  <script>
+    document.addEventListener('DOMContentLoaded', function () {
 
-    if (typeof AOS !== 'undefined') {
-      AOS.init({
-        duration: 800,
-        once: true
-      });
-    }
+      if (typeof AOS !== 'undefined') {
+        AOS.init({
+          duration: 800,
+          once: true
+        });
+      }
 
-    const contactForm = document.querySelector('.php-email-form');
-    if (contactForm) {
-      contactForm.addEventListener('submit', function () {
-        console.log('Form submitted');
-      });
-    }
-  });
-</script>
-{% endblock %}
+      const contactForm = document.querySelector('.php-email-form');
+      if (contactForm) {
+        contactForm.addEventListener('submit', function () {
+          console.log('Form submitted');
+        });
+      }
+    });
+  </script>
+  {% endblock %}
 
 </body>
+
 </html>
