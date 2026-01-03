@@ -282,85 +282,258 @@ from django.core.mail import send_mail
 from django.conf import settings
 from .models import Inquiry, Course
 
-def inquiry_form(request):
-    # Fetch courses dynamically for the form
-    courses = Course.objects.filter(is_active=True).order_by('title')
+import json
+import random
+import time
 
+from django.conf import settings
+from django.core.mail import send_mail
+from django.http import JsonResponse
+from django.shortcuts import render, redirect
+from django.views.decorators.http import require_POST
+
+from .models import Inquiry, Course
+
+OTP_EXPIRY_SECONDS = 300  # 5 minutes
+
+
+# ==================================================
+# INQUIRY FORM (OTP PROTECTED, MULTI-COURSE)
+# ==================================================
+import json
+import random
+import time
+from django.shortcuts import render, redirect
+from django.core.mail import send_mail
+from django.conf import settings
+from django.views.decorators.http import require_POST
+from django.http import JsonResponse
+from django.views.decorators.csrf import csrf_exempt
+
+def inquiry_form(request):
+    courses = Course.objects.filter(is_active=True).order_by("title")
+    
     if request.method == "POST":
-        # Get the course object instead of just the string
-        course_slug = request.POST.get('course')
-        course_obj = get_object_or_404(Course, slug=course_slug)
+        # Get the email from form
+        email = request.POST.get("email")
+        print("Processing inquiry for email:", email)
+
+        # Check if OTP was verified for this specific email
+        if not request.session.get("otp_verified", False):
+            return render(
+                request,
+                "enroll.html",
+                {
+                    "courses": courses,
+                    "error": "Please verify your email with OTP first.",
+                    "email": email
+                }
+            )
+
+        # Verify the email matches the one that was verified
+        verified_email = request.session.get("email_for_otp", "")
+        if email != verified_email:
+            return render(
+                request,
+                "enroll.html",
+                {
+                    "courses": courses,
+                    "error": "Email doesn't match verified email. Please verify again.",
+                    "email": email
+                }
+            )
+
+        # Multiple courses selection
+        course_slugs = request.POST.getlist("courses")
+
+        if not course_slugs:
+            return render(
+                request,
+                "enroll.html",
+                {
+                    "courses": courses,
+                    "error": "Please select at least one course."
+                }
+            )
+
+        course_objs = Course.objects.filter(
+            slug__in=course_slugs,  # Fixed: use __in for multiple values
+            is_active=True
+        )
+
+        if not course_objs.exists():
+            return render(
+                request,
+                "enroll.html",
+                {
+                    "courses": courses,
+                    "error": "Invalid course selection."
+                }
+            )
 
         # Create Inquiry
         inquiry = Inquiry.objects.create(
-            course=course_obj,  # store as ForeignKey
-            first_name=request.POST.get('firstName'),
-            middle_name=request.POST.get('middleName'),
-            last_name=request.POST.get('lastName'),
-            gender=request.POST.get('gender'),
-            category=request.POST.get('category'),
-            dob=request.POST.get('dob'),
-            email=request.POST.get('email'),
-            mobile=request.POST.get('mobile'),
-            address=request.POST.get('address'),
-            city=request.POST.get('city'),
-            state=request.POST.get('state'),
-            pin=request.POST.get('pin'),
-            country=request.POST.get('country'),
-            qualification=request.POST.get('qualification'),
-            passing_year=request.POST.get('passingYear'),
-            stream=request.POST.get('stream'),
-            current_status=request.POST.get('currentStatus'),
+            first_name=request.POST.get("firstName"),
+            middle_name=request.POST.get("middleName"),
+            last_name=request.POST.get("lastName"),
+            gender=request.POST.get("gender"),
+            date_of_birth=request.POST.get("dateOfBirth"),
+            email=request.POST.get("email"),
+            mobile_number=request.POST.get("mobileNumber"),
+            nationality=request.POST.get("nationality"),
+            country=request.POST.get("country"),
+            state=request.POST.get("state"),
+            pincode=request.POST.get("pincode"),
         )
 
-        # =========================
-        # Email to USER
-        # =========================
-        send_mail(
-            subject="Inquiry Received – Gujarat University Online Education",
-            message=f"""
-Dear {inquiry.first_name} {inquiry.last_name},
+        # Save ManyToMany courses
+        inquiry.courses.add(*course_objs)
 
-Thank you for your inquiry for the "{inquiry.course.title}" course.
+        # Course names for email
+        course_titles = ", ".join(course.title for course in course_objs)
+
+        # Email to USER
+        try:
+            send_mail(
+                subject="Inquiry Received – Gujarat University Online Education",
+                message=f"""Dear {inquiry.first_name} {inquiry.last_name},
+
+Thank you for your inquiry.
+
+Selected Courses:
+{course_titles}
 
 We have received your request successfully.
-Our team will contact you shortly with further details.
+Our team will contact you shortly.
 
 Regards,
-Gujarat University Online Education Team
-""",
-            from_email=settings.DEFAULT_FROM_EMAIL,
-            recipient_list=[inquiry.email],
-            fail_silently=False,
-        )
+CDOE Online Education Team""",
+                from_email=settings.DEFAULT_FROM_EMAIL,
+                recipient_list=[inquiry.email],
+                fail_silently=False,
+            )
+        except Exception as e:
+            print(f"Error sending user email: {e}")
 
-        # =========================
         # Email to ADMIN
-        # =========================
-        send_mail(
-            subject="New Inquiry Submitted",
-            message=f"""
-New Inquiry Details:
+        try:
+            send_mail(
+                subject="New Inquiry Submitted",
+                message=f"""New Inquiry Details:
 
 Name: {inquiry.first_name} {inquiry.last_name}
 Email: {inquiry.email}
-Mobile: {inquiry.mobile}
-Course: {inquiry.course.title}
-""",
-            from_email=settings.DEFAULT_FROM_EMAIL,
-            recipient_list=[settings.DEFAULT_FROM_EMAIL],
-            fail_silently=False,
-        )
+Mobile: {inquiry.mobile_number}
+Courses: {course_titles}""",
+                from_email=settings.DEFAULT_FROM_EMAIL,
+                recipient_list=[settings.DEFAULT_FROM_EMAIL],
+                fail_silently=False,
+            )
+        except Exception as e:
+            print(f"Error sending admin email: {e}")
 
-        return redirect('inquiry_success')
+        # Clear OTP session
+        for key in ["email_otp", "otp_time", "otp_verified", "email_for_otp"]:
+            request.session.pop(key, None)
 
-    return render(request, 'inquiry.html', {'courses': courses})
+        return redirect("inquiry_success")
+    
+    return render(request, "enroll.html", {"courses": courses})
 
 
+# Send OTP
+@require_POST
+def send_otp(request):
+    try:
+        data = json.loads(request.body)
+        email = data.get("email")
+        
+        if not email:
+            return JsonResponse({"status": "error", "message": "Email is required"})
+        
+        print("Sending OTP to email:", email)
+        
+        # Generate 6-digit OTP
+        email_otp = str(random.randint(100000, 999999))
+        
+        # Store in session
+        request.session["email_otp"] = email_otp
+        request.session["otp_time"] = time.time()
+        request.session["otp_verified"] = False
+        request.session["email_for_otp"] = email
+        request.session.modified = True  # Force session save
+        
+        print(f"OTP stored in session: {email_otp}")
+        
+        # Send email
+        try:
+            send_mail(
+                subject="Email Verification OTP",
+                message=f"Your OTP is {email_otp}. Valid for 5 minutes.",
+                from_email=settings.DEFAULT_FROM_EMAIL,
+                recipient_list=[email],
+                fail_silently=False,
+            )
+            print("Email sent successfully")
+        except Exception as e:
+            print(f"Email sending failed: {e}")
+            return JsonResponse({"status": "error", "message": f"Failed to send email: {str(e)}"})
+        
+        return JsonResponse({"status": "success", "message": "OTP sent successfully"})
+    
+    except json.JSONDecodeError:
+        return JsonResponse({"status": "error", "message": "Invalid JSON"})
+    except Exception as e:
+        print(f"Error sending OTP: {e}")
+        return JsonResponse({"status": "error", "message": str(e)})
 
-# =========================
+
+# Verify OTP
+@require_POST
+def verify_otp(request):
+    try:
+        data = json.loads(request.body)
+        user_otp = data.get("emailOtp", "").strip()
+        
+        print(f"Verifying OTP: {user_otp}")
+        
+        # Check if OTP was sent
+        if "email_otp" not in request.session:
+            return JsonResponse({"status": "error", "message": "OTP not requested. Please request OTP first."})
+        
+        # Check OTP expiry
+        otp_time = request.session.get("otp_time", 0)
+        current_time = time.time()
+        time_diff = current_time - otp_time
+        
+        print(f"OTP age: {time_diff} seconds")
+        
+        if time_diff > 300:  # 5 minutes
+            # Clear expired OTP
+            for key in ["email_otp", "otp_time", "otp_verified", "email_for_otp"]:
+                request.session.pop(key, None)
+            return JsonResponse({"status": "expired", "message": "OTP expired. Please request a new one."})
+        
+        # Verify OTP
+        stored_otp = request.session.get("email_otp", "")
+        print(f"Stored OTP: {stored_otp}, User OTP: {user_otp}")
+        
+        if user_otp == stored_otp:
+            request.session["otp_verified"] = True
+            request.session.modified = True
+            print("OTP verified successfully")
+            return JsonResponse({"status": "verified", "message": "OTP verified successfully"})
+        else:
+            return JsonResponse({"status": "invalid", "message": "Invalid OTP. Please try again."})
+    
+    except json.JSONDecodeError:
+        return JsonResponse({"status": "error", "message": "Invalid JSON"})
+    except Exception as e:
+        print(f"Error verifying OTP: {e}")
+        return JsonResponse({"status": "error", "message": str(e)})
+
+
 # Inquiry Success Page
-# =========================
 def inquiry_success(request):
     return render(request, 'inquiry_success.html')
 

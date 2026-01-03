@@ -1,4 +1,5 @@
 from django import forms
+from .models import Inquiry
 
 class ContactForm(forms.Form):
     name = forms.CharField(
@@ -21,3 +22,11 @@ class NewsletterForm(forms.Form):
     email = forms.EmailField(
         widget=forms.EmailInput(attrs={"class": "form-control", "placeholder": "Your Email"}),
     )
+
+class InquiryForm(forms.ModelForm):
+    class Meta:
+        model = Inquiry
+        fields = "__all__"
+        widgets = {
+            "courses": forms.CheckboxSelectMultiple
+        }
