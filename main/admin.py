@@ -62,6 +62,22 @@ class CourseAdmin(admin.ModelAdmin):
 
    
 
+# @admin.register(Inquiry)
+# class InquiryAdmin(admin.ModelAdmin):
+#     list_display = ('first_name', 'last_name', 'course','gender','category','dob','email', 'mobile','city','state','country', 'created_at')
+#     search_fields = ('first_name', 'last_name', 'email', 'mobile')
+
+@admin.register(Inquiry)
+class InquiryAdmin(admin.ModelAdmin):
+    list_display = (
+        'id',
+        'first_name',
+        'last_name',
+        'email',
+        'mobile_number',
+        'nationality',
+        'created_at',
+    )
 
 @admin.register(Notification)
 class NotificationAdmin(admin.ModelAdmin):

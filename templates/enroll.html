@@ -3,6 +3,37 @@
 {% block title %}Inquiry Form - Gujarat University Online Education{% endblock %}
 {% block content %}
 
+<!-- OTP Verification Modal -->
+<div class="modal fade" id="otpModal" tabindex="-1">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">Verify Email & Mobile</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+      </div>
+
+      <div class="modal-body">
+        <div class="mb-3">
+          <label>Email OTP</label>
+          <input type="text" id="emailOtp" class="form-control" placeholder="Enter Email OTP">
+        </div>
+
+        <!-- <div class="mb-3">
+          <label>Mobile OTP</label>
+          <input type="text" id="mobileOtp" class="form-control" placeholder="Enter Mobile OTP">
+        </div> -->
+
+        <div class="text-danger" id="otpError"></div>
+      </div>
+
+      <div class="modal-footer">
+        <!-- <button class="btn btn-primary" onclick="verifyOtp()">Verify & Submit</button> -->
+         <button type="button" class="btn btn-enroll" onclick="sendOtp()"></button>
+      </div>
+    </div>
+  </div>
+</div>
+
 <body class="enroll-page">
 
 
@@ -42,16 +73,17 @@
                 <div class="row mb-4">
                   <div class="col-12">
                     <div class="form-group">
-                      <label for="course" class="form-label">Choose Program *</label>
-                      <select id="course" name="course" class="form-select" required="">
-                        <option value="">Select a course...</option>
-                        <option value="web-development">Full Stack Web Development</option>
-                        <option value="data-science">Data Science & Analytics</option>
-                        <option value="digital-marketing">Digital Marketing Mastery</option>
-                        <option value="ui-ux-design">UI/UX Design Fundamentals</option>
-                        <option value="cybersecurity">Cybersecurity Essentials</option>
-                        <option value="mobile-development">Mobile App Development</option>
-                      </select>
+                      <label for="courses" class="form-label">Choose Program *</label>
+                      <select name="course" class="form-select" id="courses" required>
+  {% if courses %}
+    <option value="" selected disabled>Select a program</option>
+    {% for c in courses %}
+      <option value="{{ c.slug }}">{{ c.title }}</option>
+    {% endfor %}
+  {% else %}
+    <option value="" disabled>No courses available</option>
+  {% endif %}
+</select>
                     </div>
                   </div>
                 </div>
@@ -125,7 +157,7 @@
                   </div>
                   <div class="col-md-6">
                     <div class="form-group">
-                      <label for="mobile" class="form-label">Mobile Number *</label>
+                      <label for="mobile" class="form-label">Phone Number *</label>
                       <div class="input-group">
                         <!-- Country Code -->
                         <select name="country_code" class="form-select" style="max-width: 130px;" required>

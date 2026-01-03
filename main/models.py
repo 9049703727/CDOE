@@ -155,6 +155,39 @@ class Course(models.Model):
             return "Free"
         return f"₹{self.price:,.0f}"
 
+class Inquiry(models.Model):
+
+    GENDER_CHOICES = [
+        ('Male', 'Male'),
+        ('Female', 'Female'),
+        ('Other', 'Other'),
+    ]
+
+    first_name = models.CharField(max_length=100)
+    middle_name = models.CharField(max_length=100, blank=True, null=True)
+    last_name = models.CharField(max_length=100)
+
+    gender = models.CharField(max_length=10, choices=GENDER_CHOICES)
+    date_of_birth = models.DateField()
+
+    email = models.EmailField()
+    mobile_number = models.CharField(max_length=15)
+
+    nationality = models.CharField(max_length=50)
+    country = models.CharField(max_length=50)
+    state = models.CharField(max_length=50, blank=True, null=True)
+    pincode = models.CharField(max_length=10)
+
+    # 🔥 Student can choose multiple courses
+    courses = models.ManyToManyField(
+        Course,
+        related_name="inquiries"
+    )
+
+    created_at = models.DateTimeField(auto_now_add=True)
+
+    def __str__(self):
+        return f"{self.first_name} {self.last_name}"
 
 class Testimonial(models.Model):
     # Basic Information
