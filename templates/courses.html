@@ -177,6 +177,7 @@
                       {% endif %}
                       {% if not course.is_free %}
                       <div class="course-price">{{ course.get_price_display  }}</div>
+                      <div class="course-price-international">{{ course.price_international }}</div>
                       {% endif %}
                     </div>
                     <div class="course-content">

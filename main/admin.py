@@ -1,7 +1,7 @@
 from django.contrib import admin
 from .models import Subscriber
 from .models import Notification  # <-- Add this line
-from .models import TechnicalStaff
+from .models import TechnicalStaff, Testimonial
 
 
 @admin.register(Subscriber)
@@ -28,7 +28,7 @@ class InstructorAdmin(admin.ModelAdmin):
 
 @admin.register(Course)
 class CourseAdmin(admin.ModelAdmin):
-    list_display = ['title', 'category', 'instructor', 'price', 'is_free', 'students_enrolled', 'rating', 'is_active']
+    list_display = ['title', 'category', 'instructor', 'price','price_international','is_free', 'students_enrolled', 'rating', 'is_active']
     list_filter = ['category', 'is_free', 'is_active']
     search_fields = ['title', 'description']
     prepopulated_fields = {'slug': ('title',)}
@@ -43,7 +43,7 @@ class CourseAdmin(admin.ModelAdmin):
             'fields': ('category', 'instructor','duration_hours')
         }),
         ('Pricing', {
-            'fields': ('price', 'is_free')
+            'fields': ('price','price_international','is_free')
         }),
         ('Status', {
             'fields': ('is_active',)
@@ -72,3 +72,10 @@ class TechnicalStaffAdmin(admin.ModelAdmin):
     list_display = ('name', 'specialty', 'rating', 'is_active')
     list_filter = ('is_active', 'specialty')
     search_fields = ('name',)
+
+@admin.register(Testimonial)
+class TestimonialAdmin(admin.ModelAdmin):
+    list_display = ['name', 'designation', 'rating', 'is_active', 'created_at']
+    list_filter = ['is_active', 'rating', 'created_at']
+    search_fields = ['name', 'designation', 'testimonial_text']
+    list_editable = ['is_active']

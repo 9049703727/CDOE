@@ -6,232 +6,267 @@
 * License: https://bootstrapmade.com/license/
 */
 
-(function() {
+(function () {
   "use strict";
 
-  /**
-   * Apply .scrolled class to the body as the page is scrolled down
-   */
+  /* ===============================
+   SCROLL HEADER
+  =============================== */
   function toggleScrolled() {
-    const selectBody = document.querySelector('body');
-    const selectHeader = document.querySelector('#header');
-    if (!selectHeader.classList.contains('scroll-up-sticky') && !selectHeader.classList.contains('sticky-top') && !selectHeader.classList.contains('fixed-top')) return;
-    window.scrollY > 100 ? selectBody.classList.add('scrolled') : selectBody.classList.remove('scrolled');
+    const body = document.querySelector("body");
+    const header = document.querySelector("#header");
+    if (
+      !header ||
+      (!header.classList.contains("scroll-up-sticky") &&
+        !header.classList.contains("sticky-top") &&
+        !header.classList.contains("fixed-top"))
+    ) return;
+
+    window.scrollY > 100
+      ? body.classList.add("scrolled")
+      : body.classList.remove("scrolled");
   }
 
-  document.addEventListener('scroll', toggleScrolled);
-  window.addEventListener('load', toggleScrolled);
+  document.addEventListener("scroll", toggleScrolled);
+  window.addEventListener("load", toggleScrolled);
 
-  /**
-   * Mobile nav toggle
-   */
-  const mobileNavToggleBtn = document.querySelector('.mobile-nav-toggle');
+  /* ===============================
+   MOBILE NAV
+  =============================== */
+  const mobileNavToggleBtn = document.querySelector(".mobile-nav-toggle");
 
-  function mobileNavToogle() {
-    document.querySelector('body').classList.toggle('mobile-nav-active');
-    mobileNavToggleBtn.classList.toggle('bi-list');
-    mobileNavToggleBtn.classList.toggle('bi-x');
+  function mobileNavToggle() {
+    document.body.classList.toggle("mobile-nav-active");
+    mobileNavToggleBtn.classList.toggle("bi-list");
+    mobileNavToggleBtn.classList.toggle("bi-x");
   }
+
   if (mobileNavToggleBtn) {
-    mobileNavToggleBtn.addEventListener('click', mobileNavToogle);
+    mobileNavToggleBtn.addEventListener("click", mobileNavToggle);
   }
 
-  /**
-   * Hide mobile nav on same-page/hash links
-   */
-  document.querySelectorAll('#navmenu a').forEach(navmenu => {
-    navmenu.addEventListener('click', () => {
-      if (document.querySelector('.mobile-nav-active')) {
-        mobileNavToogle();
+  document.querySelectorAll("#navmenu a").forEach((link) => {
+    link.addEventListener("click", () => {
+      if (document.body.classList.contains("mobile-nav-active")) {
+        mobileNavToggle();
       }
     });
-
   });
 
-  /**
-   * Toggle mobile nav dropdowns
-   */
-  document.querySelectorAll('.navmenu .toggle-dropdown').forEach(navmenu => {
-    navmenu.addEventListener('click', function(e) {
+  document.querySelectorAll(".navmenu .toggle-dropdown").forEach((item) => {
+    item.addEventListener("click", function (e) {
       e.preventDefault();
-      this.parentNode.classList.toggle('active');
-      this.parentNode.nextElementSibling.classList.toggle('dropdown-active');
+      this.parentNode.classList.toggle("active");
+      this.parentNode.nextElementSibling.classList.toggle("dropdown-active");
       e.stopImmediatePropagation();
     });
   });
 
-  /**
-   * Preloader
-   */
-  const preloader = document.querySelector('#preloader');
+  /* ===============================
+   PRELOADER
+  =============================== */
+  const preloader = document.querySelector("#preloader");
   if (preloader) {
-    window.addEventListener('load', () => {
-      preloader.remove();
-    });
+    window.addEventListener("load", () => preloader.remove());
   }
 
-  /**
-   * Scroll top button
-   */
-  let scrollTop = document.querySelector('.scroll-top');
+  /* ===============================
+   SCROLL TOP
+  =============================== */
+  const scrollTop = document.querySelector(".scroll-top");
 
   function toggleScrollTop() {
-    if (scrollTop) {
-      window.scrollY > 100 ? scrollTop.classList.add('active') : scrollTop.classList.remove('active');
-    }
+    if (!scrollTop) return;
+    window.scrollY > 100
+      ? scrollTop.classList.add("active")
+      : scrollTop.classList.remove("active");
   }
-  scrollTop.addEventListener('click', (e) => {
+
+  scrollTop?.addEventListener("click", (e) => {
     e.preventDefault();
-    window.scrollTo({
-      top: 0,
-      behavior: 'smooth'
-    });
+    window.scrollTo({ top: 0, behavior: "smooth" });
   });
 
-  window.addEventListener('load', toggleScrollTop);
-  document.addEventListener('scroll', toggleScrollTop);
+  window.addEventListener("load", toggleScrollTop);
+  document.addEventListener("scroll", toggleScrollTop);
 
-  /**
-   * Animation on scroll function and init
-   */
-  function aosInit() {
+  /* ===============================
+   AOS
+  =============================== */
+  window.addEventListener("load", () => {
     AOS.init({
       duration: 600,
-      easing: 'ease-in-out',
+      easing: "ease-in-out",
       once: true,
-      mirror: false
-    });
-  }
-  window.addEventListener('load', aosInit);
-
-  /**
-   * Initiate Pure Counter
-   */
-  new PureCounter();
-
-  /**
-   * Init swiper sliders
-   */
-  function initSwiper() {
-    document.querySelectorAll(".init-swiper").forEach(function(swiperElement) {
-      let config = JSON.parse(
-        swiperElement.querySelector(".swiper-config").innerHTML.trim()
-      );
-
-      if (swiperElement.classList.contains("swiper-tab")) {
-        initSwiperWithCustomPagination(swiperElement, config);
-      } else {
-        new Swiper(swiperElement, config);
-      }
-    });
-  }
-
-  window.addEventListener("load", initSwiper);
-
-  /*
-   * Pricing Toggle
-   */
-
-  const pricingContainers = document.querySelectorAll('.pricing-toggle-container');
-
-  pricingContainers.forEach(function(container) {
-    const pricingSwitch = container.querySelector('.pricing-toggle input[type="checkbox"]');
-    const monthlyText = container.querySelector('.monthly');
-    const yearlyText = container.querySelector('.yearly');
-
-    pricingSwitch.addEventListener('change', function() {
-      const pricingItems = container.querySelectorAll('.pricing-item');
-
-      if (this.checked) {
-        monthlyText.classList.remove('active');
-        yearlyText.classList.add('active');
-        pricingItems.forEach(item => {
-          item.classList.add('yearly-active');
-        });
-      } else {
-        monthlyText.classList.add('active');
-        yearlyText.classList.remove('active');
-        pricingItems.forEach(item => {
-          item.classList.remove('yearly-active');
-        });
-      }
+      mirror: false,
     });
   });
+
+  /* ===============================
+   PURE COUNTER
+  =============================== */
+  new PureCounter();
 
 })();
 
-document.getElementById("mobile").addEventListener("input", function () {
+/* ===============================
+ FORM VALIDATION
+=============================== */
+document.getElementById("mobile")?.addEventListener("input", function () {
   this.value = this.value.replace(/[^0-9]/g, "");
 });
- const form = document.querySelector('.enrollment-form');
-  const emailInput = document.getElementById('email');
-  const mobileInput = document.getElementById('mobile');
-  const emailError = document.getElementById('emailError');
-  const mobileError = document.getElementById('mobileError');
 
-  form.addEventListener('submit', function(e) {
+const form = document.querySelector(".enrollment-form");
+if (form) {
+  const emailInput = document.getElementById("email");
+  const mobileInput = document.getElementById("mobile");
+  const emailError = document.getElementById("emailError");
+  const mobileError = document.getElementById("mobileError");
+
+  form.addEventListener("submit", function (e) {
     let valid = true;
 
-    // Email validation
     const emailPattern = /^[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,}$/;
     if (!emailPattern.test(emailInput.value)) {
-      emailError.style.display = 'block';
+      emailError.style.display = "block";
       valid = false;
-    } else {
-      emailError.style.display = 'none';
-    }
+    } else emailError.style.display = "none";
 
-    // Mobile validation
     const mobilePattern = /^[0-9]{10}$/;
     if (!mobilePattern.test(mobileInput.value)) {
-      mobileError.style.display = 'block';
+      mobileError.style.display = "block";
       valid = false;
-    } else {
-      mobileError.style.display = 'none';
-    }
+    } else mobileError.style.display = "none";
 
-    if (!valid) {
-      e.preventDefault(); // Stop form submission
-    }
+    if (!valid) e.preventDefault();
   });
+}
 
+/* ===============================
+ IKS COURSE LOGIC
+=============================== */
 document.addEventListener("DOMContentLoaded", function () {
-
   const iksCourse = document.getElementById("iks_course");
   if (!iksCourse) return;
 
   const gcasReg = document.getElementById("gcas_reg_no");
   const gcasConf = document.getElementById("gcas_conf_no");
-
   const gcasRegStar = document.getElementById("gcas_reg_star");
   const gcasConfStar = document.getElementById("gcas_conf_star");
 
   iksCourse.addEventListener("change", function () {
-    if (this.value === "IKS_1") {
-      // Make required
-      gcasReg.required = true;
-      gcasConf.required = true;
-
-      // Show *
-      gcasRegStar.classList.remove("d-none");
-      gcasConfStar.classList.remove("d-none");
-    } else {
-      // Make optional
-      gcasReg.required = false;
-      gcasConf.required = false;
-
-      // Hide *
-      gcasRegStar.classList.add("d-none");
-      gcasConfStar.classList.add("d-none");
-
-      // Clear values
+    const required = this.value === "IKS_1";
+    gcasReg.required = required;
+    gcasConf.required = required;
+    gcasRegStar.classList.toggle("d-none", !required);
+    gcasConfStar.classList.toggle("d-none", !required);
+    if (!required) {
       gcasReg.value = "";
       gcasConf.value = "";
     }
   });
 
-  // Trigger on page load
   iksCourse.dispatchEvent(new Event("change"));
+});
+
+/* ===============================
+ RANKINGS SLIDER (CUSTOM)
+=============================== */
+document.addEventListener("DOMContentLoaded", function () {
+  const track = document.getElementById("rankingsTrack");
+  const items = document.querySelectorAll(".ranking-item");
+
+  if (!track || items.length === 0) return;
+
+  let index = 0;
+  const itemWidth = items[0].offsetWidth + 20;
+
+  window.scrollRankings = function (direction) {
+    const maxIndex = items.length - 1;
+    index += direction;
+    index = Math.max(0, Math.min(index, maxIndex));
+    track.style.transform = `translateX(-${index * itemWidth}px)`;
+  };
+});
+
+/* ===============================
+ TESTIMONIALS SWIPER
+=============================== */
+document.addEventListener("DOMContentLoaded", function () {
+  const swiperEl = document.getElementById("testimonialsSwiper");
+  const prevBtn = document.getElementById("testimonialPrevBtn");
+  const nextBtn = document.getElementById("testimonialNextBtn");
+
+  if (!swiperEl || !prevBtn || !nextBtn || typeof Swiper === "undefined") return;
+
+  new Swiper("#testimonialsSwiper", {
+    loop: true,
+    speed: 600,
+    autoplay: {
+      delay: 5000,
+      disableOnInteraction: false,
+    },
+    slidesPerView: 1,
+    spaceBetween: 30,
+    navigation: {
+      nextEl: "#testimonialNextBtn",
+      prevEl: "#testimonialPrevBtn",
+    },
+    pagination: {
+      el: ".swiper-pagination",
+      clickable: true,
+    },
+    breakpoints: {
+      768: { slidesPerView: 2 },
+      992: { slidesPerView: 3 },
+    },
+  });
+});
+
+document.addEventListener("DOMContentLoaded", function () {
+
+  const track = document.getElementById("rankingsTrack");
+  const items = document.querySelectorAll(".ranking-item");
+  const prevBtn = document.getElementById("prevBtn");
+  const nextBtn = document.getElementById("nextBtn");
+
+  if (!track || items.length === 0 || !prevBtn || !nextBtn) {
+    return;
+  }
+
+  let currentIndex = 0;
+
+  function getItemWidth() {
+    return items[0].offsetWidth + 20; // card width + gap
+  }
+
+  function updateSlider() {
+    track.style.transform = `translateX(-${currentIndex * getItemWidth()}px)`;
+  }
+
+  nextBtn.addEventListener("click", function () {
+    if (currentIndex < items.length - 1) {
+      currentIndex++;
+      updateSlider();
+    }
+  });
+
+  prevBtn.addEventListener("click", function () {
+    if (currentIndex > 0) {
+      currentIndex--;
+      updateSlider();
+    }
+  });
+
+  // Optional: auto slide
+  setInterval(function () {
+    if (currentIndex < items.length - 1) {
+      currentIndex++;
+    } else {
+      currentIndex = 0;
+    }
+    updateSlider();
+  }, 4000);
 
 });
 

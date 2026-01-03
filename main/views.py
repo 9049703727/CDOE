@@ -8,7 +8,6 @@ from django.core.mail import send_mail
 from django.conf import settings
 from .models import Notification
 
-from .models import Course, Category, Instructor
 from .forms import ContactForm
 from .models import TechnicalStaff
 
@@ -26,6 +25,7 @@ def index(request):
      # Get featured courses (active courses, ordered by newest)
     featured_courses = Course.objects.filter(is_active=True).order_by('-created_at')[:3]
     notifications = Notification.objects.all().order_by('-date')[:5]
+    testimonials = Testimonial.objects.filter(is_active=True)
         
     # Get all categories with course count
     # categories = Category.objects.annotate(

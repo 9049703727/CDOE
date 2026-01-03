@@ -112,6 +112,12 @@ class Course(models.Model):
     instructor = models.ForeignKey(Instructor, on_delete=models.CASCADE, related_name='courses')
     # level = models.CharField(max_length=20, choices=LEVEL_CHOICES)
     price = models.DecimalField(max_digits=10, decimal_places=2, default=0.00)
+    price_international = models.DecimalField(
+    max_digits=10, 
+    decimal_places=2, 
+    default=0  # or any static price you want for existing courses
+)
+
     is_free = models.BooleanField(default=False)
     duration_hours = models.IntegerField(help_text="Course duration in hours")
     image = models.ImageField(upload_to='courses/')
