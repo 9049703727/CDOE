@@ -125,6 +125,60 @@
 
   </section><!-- /Courses Hero Section -->
 
+  <section class="notifications-section section light-background">
+    <div class="container">
+
+      <div class="section-title text-center">
+        <h2>News & Latest Notifications</h2>
+        <p>Stay updated with admissions, courses & announcements</p>
+      </div>
+
+      <div class="row justify-content-center">
+        <div class="col-lg-8">
+          <div class="notification-card">
+
+            <ul class="notification-list">
+              {% if notifications %}
+              {% for notif in notifications %}
+              <li class="notification-item {% if notif.is_new %}new{% endif %}">
+                <div class="notif-icon">
+                  <i class="bi bi-mortarboard-fill"></i>
+                </div>
+                <div class="notif-content">
+                  <h6>{{ notif.title|default:"No Title" }}</h6>
+                  <small>
+                    <i class="bi bi-calendar"></i>
+                    {{ notif.date|date:"d M Y"|default:"No Date" }}
+                  </small>
+                  {% if notif.pdf %}
+                  <br>
+                  <a href="{{ notif.pdf.url }}" target="_blank" class="pdf-link">
+                    <i class="bi bi-file-earmark-pdf"></i> View PDF
+                  </a>
+                  {% endif %}
+                </div>
+                {% if notif.is_new %}
+                <span class="badge-new">NEW</span>
+                {% endif %}
+              </li>
+              {% endfor %}
+              {% else %}
+              <li class="notification-item">No notifications found.</li>
+              {% endif %}
+            </ul>
+
+            <div class="text-center mt-3">
+              <a href="{% url 'notifications' %}" class="btn-view-all">
+                <i class="bi bi-list-ul"></i> View All Notifications
+              </a>
+            </div>
+
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </section>
 <!-- Featured Courses Section -->
   <!-- Featured Courses Section -->
     <section id="featured-courses" class="featured-courses section">
@@ -152,7 +206,7 @@
                 <div class="badge featured">Free</div>
                 <div class="price-badge">Free</div>
                 {% else %}
-                <div class="badge featured">Featured</div>
+                <!-- <div class="badge featured">Featured</div> -->
                 <div class="price-badge">₹{{ course.price }}</div>
                 {% endif %}
               </div>
@@ -218,55 +272,96 @@
 
     </section><!-- /Featured Courses Section -->
 
-    <!-- Course Categories Section -->
-    <section id="course-categories" class="course-categories section">
+    <!-- Ranking Section -->
+  <!-- Rankings & Accreditations Section -->
+<section id="rankings" class="rankings section">
 
-      <!-- Section Title -->
-      <div class="container section-title" data-aos="fade-up">
-        <h2> Accredited. Respected. Trusted.</h2>
-        <p>Necessitatibus eius consequatur ex aliquid fuga eum quidem sint consectetur velit</p>
-      </div><!-- End Section Title -->
+  <div class="container section-title" data-aos="fade-up">
+    <h2>Accredited. Respected. Trusted.</h2>
+    <p>Recognized for academic excellence and commitment to quality education</p>
+  </div><!-- End Section Title -->
 
-      <div class="container" data-aos="fade-up" data-aos-delay="100">
+  <div class="container" data-aos="fade-up" data-aos-delay="100">
 
-        <div class="row g-5">
+    <!-- Rankings Cards Container -->
+    <div class="rankings-wrapper">
+      
+      <!-- Navigation Arrows -->
+      <button class="nav-arrow prev-arrow" id="prevBtn">
+        <i class="bi bi-chevron-left"></i>
+      </button>
+      
+      <div class="rankings-viewport" id="rankingsViewport">
+        <div class="rankings-track" id="rankingsTrack">
 
-        <div class="col-xl-3 col-lg-3 col-md-4 col-sm-6" data-aos="zoom-in" data-aos-delay="100">
-          <a href="courses.html" class="category-card category-tech">
-            <div class="category-icon">
-              <img src="{% static 'img/logo.png' %}">
+          <!-- Card 1: UGC -->
+          <div class="ranking-item">
+            <div class="rank-label">UGC Entitled</div>
+            <div class="rank-logo">
+              <img src="{% static 'img/logo.png' %}" alt="UGC Logo">
             </div>
-          </a>
-        </div><!-- End Category Item -->
+            <h4 class="rank-title">UGC-entitled Online Degrees Equivalent to Campus Degree</h4>
+          </div>
 
-        <div class="col-xl-3 col-lg-3 col-md-4 col-sm-6" data-aos="zoom-in" data-aos-delay="150">
-          <a href="courses.html" class="category-card category-business">
-            <div class="category-icon">
-              <img src="{% static 'img/logo.png' %}">
+          <!-- Card 2: DEB -->
+          <div class="ranking-item">
+            <div class="rank-label">DEB Approved</div>
+            <div class="rank-logo">
+              <img src="{% static 'img/UGC-2.jpg.webp' %}" alt="DEB Logo">
             </div>
-          </a>
-        </div><!-- End Category Item -->
+            <h4 class="rank-title">Distance Education Bureau Approved Institution</h4>
+          </div>
 
-
-        <div class="col-xl-3 col-lg-3 col-md-4 col-sm-6" data-aos="zoom-in" data-aos-delay="150">
-          <a href="courses.html" class="category-card category-business">
-            <div class="category-icon">
-              <img src="{% static 'img/logo.png' %}">
+          <!-- Card 3: NAAC -->
+          <div class="ranking-item">
+            <div class="rank-label">NAAC A+ Grade</div>
+            <div class="rank-logo">
+              <img src="{% static 'img/NAAC-A-2.jpg.webp' %}" alt="NAAC Logo">
             </div>
-          </a>
-        </div><!-- End Category Item -->
+            <h4 class="rank-title">NAAC Accredited with A+ Grade</h4>
+          </div>
 
-
-        <div class="col-xl-3 col-lg-3 col-md-4 col-sm-6" data-aos="zoom-in" data-aos-delay="150">
-          <a href="courses.html" class="category-card category-business">
-            <div class="category-icon">
-              <img src="{% static 'img/logo.png' %}">
+          <!-- Card 4: NIRF -->
+          <div class="ranking-item">
+            <div class="rank-label">Rank 15</div>
+            <div class="rank-logo">
+              <img src="{% static 'img/nirf.png' %}" alt="NIRF Logo">
             </div>
-          </a>
-        </div><!-- End Category Item -->
+            <h4 class="rank-title">Amongst Top Universities in NIRF Rankings 2024</h4>
+          </div>
+
+          <!-- Card 5: AICTE -->
+          <div class="ranking-item">
+            <div class="rank-label">AICTE Compliant</div>
+            <div class="rank-logo">
+              <img src="{% static 'img/kcg.png' %}" alt="AICTE Logo">
+            </div>
+            <h4 class="rank-title">AICTE Norms Compliant Programs</h4>
+          </div>
+
+          <div class="ranking-item">
+            <div class="rank-label">Rank 15</div>
+            <div class="rank-logo">
+              <img src="{% static 'img/nirf.png' %}" alt="NIRF Logo">
+            </div>
+            <h4 class="rank-title">Amongst Top Universities in NIRF Rankings 2024</h4>
+          </div>
+
+        </div>
       </div>
 
+      <button class="nav-arrow next-arrow" id="nextBtn">
+        <i class="bi bi-chevron-right"></i>
+      </button>
+
     </div>
+
+    <!-- Pagination Dots -->
+    <div class="rankings-pagination" id="paginationDots"></div>
+
+  </div>
+
+</section><!-- /Rankings Section -->
 
     <!-- Featured Instructors Section -->
     <!-- Featured Instructors Section -->
@@ -346,229 +441,140 @@
     </div>
   </section><!-- /Featured Instructors Section -->
 
-  </section><!-- /Featured Instructors Section -->
-
   <!-- Testimonials Section -->
-  <section id="testimonials" class="testimonials section">
-    <!-- Section Title -->
-    <div class="container section-title" data-aos="fade-up">
-      <h2>Testimonials</h2>
-      <p>Necessitatibus eius consequatur ex aliquid fuga eum quidem sint consectetur velit</p>
-    </div><!-- End Section Title -->
+<section id="testimonials" class="testimonials section">
 
-    <div class="container" data-aos="fade-up" data-aos-delay="100">
+  <!-- Section Title -->
+  <div class="container section-title" data-aos="fade-up">
+    <h2>Testimonials</h2>
+    <p>Hear what our students say about their learning experience at Gujarat University CDOE</p>
+  </div>
 
-      <div class="row">
-        <div class="col-12">
-          <div class="critic-reviews" data-aos="fade-up" data-aos-delay="300">
-            <div class="row">
-              <div class="col-md-4">
-                <div class="critic-review">
-                  <div class="review-quote">"</div>
+  <div class="container" data-aos="fade-up" data-aos-delay="100">
+    <div class="row">
+      <div class="col-12">
+
+        {% if testimonials %}
+        <div class="testimonial-wrapper">
+
+          <!-- Left Arrow -->
+          <button id="testimonialPrevBtn" aria-label="Previous testimonial">
+            <i class="bi bi-chevron-left"></i>
+          </button>
+
+          <!-- Swiper -->
+<div class="swiper testimonials-slider" id="testimonialsSwiper">
+           
+             
+
+            <div class="swiper-wrapper">
+              {% for testimonial in testimonials %}
+              <div class="swiper-slide">
+                <div class="testimonial-item">
+
+                  <!-- Rating -->
                   <div class="stars">
-                    <i class="bi bi-star-fill"></i>
-                    <i class="bi bi-star-fill"></i>
-                    <i class="bi bi-star-fill"></i>
-                    <i class="bi bi-star-fill"></i>
-                    <i class="bi bi-star-fill"></i>
+                    {% for i in "12345" %}
+                      {% if forloop.counter <= testimonial.rating|floatformat:0 %}
+                        <i class="bi bi-star-fill"></i>
+                      {% elif forloop.counter == testimonial.rating|floatformat:0|add:1 and testimonial.rating|floatformat:1|slice:"-1" >= "5" %}
+                        <i class="bi bi-star-half"></i>
+                      {% else %}
+                        <i class="bi bi-star"></i>
+                      {% endif %}
+                    {% endfor %}
                   </div>
-                  <p>Pellentesque in ipsum id orci porta dapibus. Vivamus magna justo, lacinia eget consectetur sed,
-                    convallis at tellus.</p>
-                  <div class="critic-info">
-                    <div class="critic-name">The New York Times</div>
+
+                  <!-- Text -->
+                  <p>{{ testimonial.testimonial_text|truncatewords:30 }}</p>
+
+                  {% if testimonial.testimonial_text|wordcount > 30 %}
+                  <button
+                    class="read-more-btn"
+                    data-target="fulltext{{ testimonial.id }}">
+                    Read More <i class="bi bi-arrow-right"></i>
+                  </button>
+
+                  <div id="fulltext{{ testimonial.id }}" class="d-none">
+                    <h5>{{ testimonial.name }}</h5>
+                    <p class="text-muted">{{ testimonial.designation }}</p>
+                    <p>{{ testimonial.testimonial_text }}</p>
                   </div>
+                  {% endif %}
+
+                  <!-- Profile -->
+                  <div class="testimonial-profile">
+                    {% if testimonial.profile_image %}
+                      <img src="{{ testimonial.profile_image.url }}" alt="{{ testimonial.name }}">
+                    {% else %}
+                      <img src="{% static 'img/person/person-f-1.webp' %}" alt="{{ testimonial.name }}">
+                    {% endif %}
+                    <div>
+                      <h3>{{ testimonial.name }}</h3>
+                      <h4>{{ testimonial.designation }}</h4>
+                    </div>
+                  </div>
+
                 </div>
               </div>
-              <div class="col-md-4">
-                <div class="critic-review">
-                  <div class="review-quote">"</div>
-                  <div class="stars">
-                    <i class="bi bi-star-fill"></i>
-                    <i class="bi bi-star-fill"></i>
-                    <i class="bi bi-star-fill"></i>
-                    <i class="bi bi-star-fill"></i>
-                    <i class="bi bi-star-half"></i>
-                  </div>
-                  <p>Curabitur non nulla sit amet nisl tempus convallis quis ac lectus. Nulla quis lorem ut libero
-                    malesuada feugiat.</p>
-                  <div class="critic-info">
-                    <div class="critic-name">Washington Post</div>
-                  </div>
-                </div>
-              </div>
-              <div class="col-md-4">
-                <div class="critic-review">
-                  <div class="review-quote">"</div>
-                  <div class="stars">
-                    <i class="bi bi-star-fill"></i>
-                    <i class="bi bi-star-fill"></i>
-                    <i class="bi bi-star-fill"></i>
-                    <i class="bi bi-star-fill"></i>
-                    <i class="bi bi-star-fill"></i>
-                  </div>
-                  <p>Mauris blandit aliquet elit, eget tincidunt nibh pulvinar a. Vivamus suscipit tortor eget felis
-                    porttitor volutpat.</p>
-                  <div class="critic-info">
-                    <div class="critic-name">The Guardian</div>
-                  </div>
-                </div>
-              </div>
+              {% endfor %}
             </div>
+
+            <div class="swiper-pagination"></div>
           </div>
 
-          <div class="testimonials-container">
-            <div class="swiper testimonials-slider init-swiper" data-aos="fade-up" data-aos-delay="400">
-              <script type="application/json" class="swiper-config">
-                  {
-                    "loop": true,
-                    "speed": 600,
-                    "autoplay": {
-                      "delay": 5000
-                    },
-                    "slidesPerView": 1,
-                    "spaceBetween": 30,
-                    "pagination": {
-                      "el": ".swiper-pagination",
-                      "type": "bullets",
-                      "clickable": true
-                    },
-                    "breakpoints": {
-                      "768": {
-                        "slidesPerView": 2
-                      },
-                      "992": {
-                        "slidesPerView": 3
-                      }
-                    }
-                  }
-                </script>
+          <!-- Right Arrow -->
+          <button id="testimonialNextBtn" aria-label="Next testimonial">
+            <i class="bi bi-chevron-right"></i>
+          </button>
 
-              <div class="swiper-wrapper">
-                <div class="swiper-slide">
-                  <div class="testimonial-item">
-                    <div class="stars">
-                      <i class="bi bi-star-fill"></i>
-                      <i class="bi bi-star-fill"></i>
-                      <i class="bi bi-star-fill"></i>
-                      <i class="bi bi-star-fill"></i>
-                      <i class="bi bi-star-fill"></i>
-                    </div>
-                    <p>
-                      Proin eget tortor risus. Vestibulum ac diam sit amet quam vehicula elementum sed sit amet dui.
-                      Nulla quis lorem ut libero malesuada feugiat.
-                    </p>
-                    <div class="testimonial-profile">
-                      <img src="{% static 'img/person/person-f-1.webp' %}" alt="Reviewer"
-                        class="img-fluid rounded-circle">
-                      <div>
-                        <h3>Jane Smith</h3>
-                        <h4>Book Enthusiast</h4>
-                      </div>
-                    </div>
-                  </div>
-                </div><!-- End testimonial item -->
-
-                <div class="swiper-slide">
-                  <div class="testimonial-item">
-                    <div class="stars">
-                      <i class="bi bi-star-fill"></i>
-                      <i class="bi bi-star-fill"></i>
-                      <i class="bi bi-star-fill"></i>
-                      <i class="bi bi-star-fill"></i>
-                      <i class="bi bi-star-fill"></i>
-                    </div>
-                    <p>
-                      Curabitur arcu erat, accumsan id imperdiet et, porttitor at sem. Cras ultricies ligula sed magna
-                      dictum porta. Vestibulum ante ipsum primis in faucibus orci luctus.
-                    </p>
-                    <div class="testimonial-profile">
-                      <img src="{% static 'img/person/person-m-2.webp' %}" alt="Reviewer"
-                        class="img-fluid rounded-circle">
-                      <div>
-                        <h3>Michael Johnson</h3>
-                        <h4>Sci-Fi Blogger</h4>
-                      </div>
-                    </div>
-                  </div>
-                </div><!-- End testimonial item -->
-
-                <div class="swiper-slide">
-                  <div class="testimonial-item">
-                    <div class="stars">
-                      <i class="bi bi-star-fill"></i>
-                      <i class="bi bi-star-fill"></i>
-                      <i class="bi bi-star-fill"></i>
-                      <i class="bi bi-star-fill"></i>
-                      <i class="bi bi-star-half"></i>
-                    </div>
-                    <p>
-                      Quisque velit nisi, pretium ut lacinia in, elementum id enim. Cras ultricies ligula sed magna
-                      dictum porta. Donec sollicitudin molestie malesuada.
-                    </p>
-                    <div class="testimonial-profile">
-                      <img src="{% static 'img/person/person-f-3.webp' %}" alt="Reviewer"
-                        class="img-fluid rounded-circle">
-                      <div>
-                        <h3>Emily Davis</h3>
-                        <h4>Book Club President</h4>
-                      </div>
-                    </div>
-                  </div>
-                </div><!-- End testimonial item -->
-
-                <div class="swiper-slide">
-                  <div class="testimonial-item">
-                    <div class="stars">
-                      <i class="bi bi-star-fill"></i>
-                      <i class="bi bi-star-fill"></i>
-                      <i class="bi bi-star-fill"></i>
-                      <i class="bi bi-star-fill"></i>
-                      <i class="bi bi-star-fill"></i>
-                    </div>
-                    <p>
-                      Mauris blandit aliquet elit, eget tincidunt nibh pulvinar a. Curabitur aliquet quam id dui posuere
-                      blandit. Lorem ipsum dolor sit amet, consectetur.
-                    </p>
-                    <div class="testimonial-profile">
-                      <img src="{% static 'img/person/person-m-4.webp' %}" alt="Reviewer"
-                        class="img-fluid rounded-circle">
-                      <div>
-                        <h3>Robert Wilson</h3>
-                        <h4>Literary Reviewer</h4>
-                      </div>
-                    </div>
-                  </div>
-                </div><!-- End testimonial item -->
-
-              </div>
-              <div class="swiper-pagination"></div>
-            </div>
-          </div>
         </div>
-      </div>
+        {% else %}
+        <div class="text-center py-5">
+          <p>No testimonials available.</p>
+        </div>
+        {% endif %}
 
-      <div class="row">
-        <div class="col-12 text-center" data-aos="fade-up">
-          <div class="overall-rating">
-            <div class="rating-number">4.8</div>
-            <div class="rating-stars">
-              <i class="bi bi-star-fill"></i>
-              <i class="bi bi-star-fill"></i>
-              <i class="bi bi-star-fill"></i>
-              <i class="bi bi-star-fill"></i>
-              <i class="bi bi-star-half"></i>
-            </div>
-            <p>Based on 230+ reviews</p>
-            <div class="rating-platforms">
-              <span>Goodreads</span>
-              <span>Amazon</span>
-              <span>Barnes &amp; Noble</span>
-            </div>
+      </div>
+    </div>
+
+    {% if testimonials and avg_rating %}
+    <div class="row mt-5">
+      <div class="col-12">
+        <div class="overall-rating">
+          <div class="rating-number">{{ avg_rating|floatformat:1 }}</div>
+          <div class="rating-stars">
+            {% for i in "12345" %}
+              {% if forloop.counter <= avg_rating|floatformat:0 %}
+                <i class="bi bi-star-fill"></i>
+              {% elif forloop.counter == avg_rating|floatformat:0|add:1 and avg_rating|floatformat:1|slice:"-1" >= "5" %}
+                <i class="bi bi-star-half"></i>
+              {% else %}
+                <i class="bi bi-star"></i>
+              {% endif %}
+            {% endfor %}
           </div>
+          <p>Based on {{ total_reviews }}+ reviews</p>
         </div>
       </div>
     </div>
-  </section><!-- /Testimonials Section -->
+    {% endif %}
+
+  </div>
+</section>
+
+<!-- Testimonial Modal -->
+<div class="modal fade" id="testModal" tabindex="-1">
+  <div class="modal-dialog modal-dialog-centered modal-lg">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">Testimonial</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+      </div>
+      <div class="modal-body" id="modalContent"></div>
+    </div>
+  </div>
+</div>
 
   <!-- Recent Blog Posts Section -->
   <section id="recent-blog-posts" class="recent-blog-posts section">
@@ -588,7 +594,7 @@
 
             <!-- Card Header -->
             <div class="card-top d-flex align-items-center">
-              <img src="{% static 'img/gu-logo.png' %}" alt="Gujarat University" class="rounded-circle me-2"
+              <img src="{% static 'img/logo.png' %}" alt="Gujarat University" class="rounded-circle me-2"
                 style="width:40px;height:40px;">
               <span class="author-name">@gujaratuniversity</span>
 
@@ -914,5 +920,29 @@
     console.error('JavaScript Error:', e.message);
     return true; // Prevents error from showing in console
   });
+
+  document.addEventListener("DOMContentLoaded", function () {
+
+  document.body.addEventListener("click", function (e) {
+    const btn = e.target.closest(".read-more-btn");
+    if (!btn) return;
+
+    const targetId = btn.getAttribute("data-target");
+    const content = document.getElementById(targetId);
+
+    if (!content) {
+      console.error("Testimonial content not found:", targetId);
+      return;
+    }
+
+    document.getElementById("modalContent").innerHTML = content.innerHTML;
+
+    const modalEl = document.getElementById("testModal");
+    const modal = new bootstrap.Modal(modalEl);
+    modal.show();
+  });
+
+});
 </script>
 {% endblock extra_js %}
+

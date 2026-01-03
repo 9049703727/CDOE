@@ -3226,12 +3226,38 @@ Notification
   position: absolute;
   top: 15px;
   right: 15px;
-  background-color: #28a745;
-  color: var(--contrast-color);
+  background: linear-gradient(
+    to right, 
+    #FF9933 33%,       /* Saffron */
+    #FFFFFF 33% 66%,   /* White */
+    #138808 66%        /* Green */
+  );
+  color: black; /* Text readable on white */
   padding: 8px 15px;
-  border-radius: 20px;
+  border-radius: 25px; /* slightly more rounded for pill shape */
   font-size: 14px;
   font-weight: 600;
+  text-align: center;
+  font-family: sans-serif;
+  border: 1px solid #000; /* optional: adds subtle border for better visibility */
+}
+.courses-2 .courses-grid .course-image .course-price-international {
+  position: absolute;
+  top: 59px;
+  right: 15px;
+  background: linear-gradient(
+    135deg,
+    #1E90FF 33%,    /* Blue */
+    #FF0000 33% 66%, /* Red */
+    #FFD700 66%       /* Yellow */
+  );
+  color: #fff; /* white text for better contrast */
+ padding: 7px 30px 8px 15px; /* top, right, bottom, left */  border-radius: 25px;
+  font-size: 14px;
+  font-weight: 600;
+  text-align: center;
+  font-family: sans-serif;
+  border: 1px solid #000; /* optional */
 }
 
 .courses-2 .courses-grid .course-content {
@@ -5443,6 +5469,40 @@ Notification
     position: static;
     top: auto;
   }
+}
+
+
+.section-title {
+  font-size: 1.8rem;
+  font-weight: 600;
+  color: #0d3b66; /* matching your UI */
+}
+
+.video-card {
+  border: 1px solid #e0e0e0;
+  border-radius: 8px;
+  transition: transform 0.3s, box-shadow 0.3s;
+}
+
+.video-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 8px 20px rgba(0,0,0,0.15);
+}
+
+.video-icon {
+  width: 50px;
+  height: 50px;
+}
+
+.video-title {
+  font-size: 1rem;
+  font-weight: 600;
+  color: #0d3b66;
+}
+
+.video-lang {
+  font-size: 0.85rem;
+  color: #555;
 }
 
 /*--------------------------------------------------------------
@@ -8400,4 +8460,306 @@ Notification
 /* Fix section being hidden under sticky header */
 section {
   scroll-margin-top: 110px; /* adjust if header height changes */
+}
+
+/* Rankings Section */
+.rankings-wrapper {
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+
+.rankings-viewport {
+  overflow: hidden;
+  width: 100%;
+}
+
+.rankings-track {
+  display: flex;
+  transition: transform 0.4s ease;
+}
+
+.ranking-item {
+  flex: 0 0 300px;
+  margin: 0 10px;
+  background: #fff;
+  border-radius: 12px;
+  padding: 20px;
+  text-align: center;
+}
+
+/* Logo container – SAME SIZE FOR ALL IMAGES */
+.rank-logo {
+  height: 90px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.rank-logo img {
+  max-height: 100px;
+  max-width: 120px;
+  object-fit: contain;
+}
+
+/* Label */
+.rank-label {
+  font-size: 13px;
+  font-weight: 600;
+  color: #0d6efd;
+  margin-bottom: 10px;
+}
+
+/* Title */
+.rank-title {
+  font-size: 15px;
+  font-weight: 500;
+}
+
+/* Navigation arrows */
+.nav-arrow {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  background: #0d6efd;
+  border: none;
+  color: white;
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  cursor: pointer;
+  z-index: 100;
+}
+
+.prev-arrow {
+  left: -20px;
+}
+
+.next-arrow {
+  right: -20px;
+}
+
+.nav-arrow i {
+  font-size: 18px;
+}
+
+/* Mobile */
+@media (max-width: 768px) {
+  .ranking-item {
+    min-width: 260px;
+    max-width: 260px;
+  }
+
+  .prev-arrow {
+    left: 0;
+  }
+
+  .next-arrow {
+    right: 0;
+  }
+}
+
+/* ===============================
+   TESTIMONIALS SECTION
+================================ */
+
+.testimonials {
+  background: #f9fafb;
+}
+
+.testimonial-item {
+  background: #fff;
+  border-radius: 16px;
+  padding: 30px;
+  height: 100%;
+  box-shadow: 0 10px 30px rgba(0,0,0,0.06);
+  transition: transform 0.3s ease;
+}
+
+.testimonial-item:hover {
+  transform: translateY(-5px);
+}
+
+/* Stars */
+.testimonial-item .stars i {
+  color: #ffc107;
+  margin-right: 2px;
+}
+
+/* Text */
+.testimonial-item p {
+  color: #666;
+  line-height: 1.7;
+  font-size: 15px;
+}
+
+/* Read More Button */
+.testimonial-item button {
+  background: none;
+  border: none;
+  color: #007bff;
+  font-weight: 600;
+  font-size: 14px;
+  cursor: pointer;
+  padding: 0;
+}
+
+/* Profile */
+.testimonial-profile {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-top: 20px;
+}
+
+.testimonial-profile img {
+  width: 55px;
+  height: 55px;
+  border-radius: 50%;
+  object-fit: cover;
+}
+
+.testimonial-profile h3 {
+  font-size: 16px;
+  margin: 0;
+}
+
+.testimonial-profile h4 {
+  font-size: 14px;
+  color: #777;
+  margin: 0;
+}
+
+/* ===============================
+   SWIPER NAVIGATION
+================================ */
+
+#testimonialPrevBtn,
+#testimonialNextBtn {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+  background: #ffffff;
+  border: 2px solid #e0e0e0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  z-index: 10;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+  transition: all 0.3s ease;
+}
+
+#testimonialPrevBtn {
+  left: 0;
+}
+
+#testimonialNextBtn {
+  right: 0;
+}
+
+#testimonialPrevBtn i,
+#testimonialNextBtn i {
+  font-size: 22px;
+  color: #333;
+}
+
+/* Hover Effect */
+#testimonialPrevBtn:hover,
+#testimonialNextBtn:hover {
+  background: #007bff;
+  border-color: #007bff;
+  transform: translateY(-50%) scale(1.1);
+}
+
+#testimonialPrevBtn:hover i,
+#testimonialNextBtn:hover i {
+  color: #fff;
+}
+
+/* ===============================
+   OVERALL RATING
+================================ */
+
+.overall-rating {
+  text-align: center;
+}
+
+.overall-rating .rating-number {
+  font-size: 48px;
+  font-weight: 700;
+  color: #333;
+}
+
+.overall-rating .rating-stars i {
+  color: #ffc107;
+  font-size: 20px;
+}
+
+.overall-rating p {
+  color: #777;
+  margin-top: 8px;
+}
+
+/* ===============================
+   MODAL
+================================ */
+
+#testModal .modal-content {
+  border-radius: 12px;
+  border: none;
+}
+
+#testModal .modal-header {
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  color: #fff;
+  border-radius: 12px 12px 0 0;
+}
+
+#testModal .modal-body {
+  font-size: 16px;
+  line-height: 1.8;
+}
+
+/* ===============================
+   RESPONSIVE
+================================ */
+
+@media (max-width: 768px) {
+  .testimonials [style*="padding: 0 70px"] {
+    padding: 0 50px !important;
+  }
+
+  #testimonialPrevBtn,
+  #testimonialNextBtn {
+    width: 42px;
+    height: 42px;
+  }
+}
+
+.testimonial-wrapper {
+  position: relative;
+}
+
+.testimonials-slider {
+  padding: 0 70px;
+}
+
+@media (max-width: 768px) {
+  .testimonials-slider {
+    padding: 0 40px;
+  }
+}
+
+.rankings-track {
+  display: flex;
+  transition: transform 0.5s ease;
+  will-change: transform;
+}
+
+.ranking-item {
+  flex: 0 0 auto;   /* VERY IMPORTANT */
 }

@@ -12,7 +12,7 @@
     <!-- Page Title -->
     <div class="page-title light-background">
       <div class="container d-lg-flex justify-content-between align-items-center">
-        <h1 class="mb-2 mb-lg-0">Enrollment</h1>
+        <h1 class="mb-2 mb-lg-0">Inquiry</h1>
         <nav class="breadcrumbs">
           <ol>
             <li><a href="index.html">Home</a></li>
@@ -38,11 +38,11 @@
 
               <form class="enrollment-form" method="POST" action="{% url 'inquiry' %}" data-aos="fade-up"
                 data-aos-delay="300">
-                <h4 class="mb-4">Select Your Course</h4>
+                <h4 class="mb-4">Select Your Program</h4>
                 <div class="row mb-4">
                   <div class="col-12">
                     <div class="form-group">
-                      <label for="course" class="form-label">Choose Course *</label>
+                      <label for="course" class="form-label">Choose Program *</label>
                       <select id="course" name="course" class="form-select" required="">
                         <option value="">Select a course...</option>
                         <option value="web-development">Full Stack Web Development</option>
@@ -91,7 +91,7 @@
                       </select>
                     </div>
                   </div>
-                  <div class="col-md-4">
+                  <!-- <div class="col-md-4">
                     <div class="form-group">
                       <label for="category" class="form-label">Category *</label>
                       <select id="category" name="category" class="form-select" required="">
@@ -103,13 +103,14 @@
                         <option value="other">Other</option>
                       </select>
                     </div>
-                  </div>
+                  </div> -->
                   <div class="col-md-4">
                     <div class="form-group">
                       <label for="dob" class="form-label">Date of Birth *</label>
                       <input type="date" id="dob" name="dob" class="form-control" required="">
                     </div>
                   </div>
+
                 </div>
 
                 <div class="row mb-3">
@@ -120,7 +121,6 @@
                         pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,}$">
 
                     </div>
-                      <span class="text-danger" id="emailError" >Please enter a valid email</span>
 
                   </div>
                   <div class="col-md-6">
@@ -141,7 +141,7 @@
                     </div>
                   </div>
 
-                  <div class="row mb-3">
+                  <!-- <div class="row mb-3">
                     <div class="col-md-6">
                       <div class="form-group">
                         <label for="address" class="form-label">Address *</label>
@@ -154,32 +154,68 @@
                         <input type="text" id="city" name="city" class="form-control" required="">
                       </div>
                     </div>
-                  </div>
+                  </div> -->
 
                   <div class="row mb-4">
+                    <div class="form-group">
+                      <label for="category" class="form-label">Nationality *</label>
+                      <select id="category" name="category" class="form-select" required="">
+                        <option value="">Select</option>
+                        <option value="general">Indian</option>
+                        <option value="obc">Non-Indian</option>
+
+                      </select>
+                    </div>
+                    <div class="form-group">
+                      <label for="country" class="form-label">Country *</label>
+                      <select id="country" name="country" class="form-select" required>
+                        <option value="">Select</option>
+                        <option value="India">India</option>
+                        <option value="United States">United States</option>
+                        <option value="United Kingdom">United Kingdom</option>
+                        <option value="Canada">Canada</option>
+                        <option value="Australia">Australia</option>
+                        <option value="Germany">Germany</option>
+                        <option value="France">France</option>
+                        <option value="China">China</option>
+                        <option value="Japan">Japan</option>
+                        <option value="Russia">Russia</option>
+                        <option value="Brazil">Brazil</option>
+                        <option value="South Africa">South Africa</option>
+                        <option value="New Zealand">New Zealand</option>
+                        <option value="Pakistan">Pakistan</option>
+                        <option value="Bangladesh">Bangladesh</option>
+                        <option value="Nepal">Nepal</option>
+                        <option value="Sri Lanka">Sri Lanka</option>
+                        <option value="Mexico">Mexico</option>
+                        <option value="Italy">Italy</option>
+                        <option value="Spain">Spain</option>
+                        <option value="Netherlands">Netherlands</option>
+                        <option value="Saudi Arabia">Saudi Arabia</option>
+                        <option value="UAE">United Arab Emirates</option>
+                        <option value="Other">Other</option>
+                      </select>
+                    </div>
+
+
                     <div class="col-md-4">
                       <div class="form-group">
-                        <label for="state" class="form-label">State *</label>
-                        <input type="text" id="state" name="state" class="form-control" required="">
+                        <label for="state" class="form-label">State/Province</label>
+                        <input type="text" id="state" name="state" class="form-control">
                       </div>
                     </div>
                     <div class="col-md-4">
                       <div class="form-group">
-                        <label for="pin" class="form-label">Pin Code *</label>
+                        <label for="pin" class="form-label">Pin Code/Zip Code *</label>
                         <input type="text" id="pin" name="pin" class="form-control" required="">
                       </div>
                     </div>
-                    <div class="col-md-4">
-                      <div class="form-group">
-                        <label for="country" class="form-label">Country *</label>
-                        <input type="text" id="country" name="country" class="form-control" required="">
-                      </div>
-                    </div>
+
                   </div>
 
                   <!-- Part 2: Education Details -->
-                  <h4 class="mb-4 mt-5">Education Details</h4>
-                  <div class="row mb-3">
+                  <!-- <h4 class="mb-4 mt-5">Education Details</h4> -->
+                  <!-- <div class="row mb-3">
                     <div class="col-md-6">
                       <div class="form-group">
                         <label for="qualification" class="form-label">Highest Qualification *</label>
@@ -192,9 +228,9 @@
                         <input type="number" id="passingYear" name="passingYear" class="form-control" required="">
                       </div>
                     </div>
-                  </div>
+                  </div> -->
 
-                  <div class="row mb-3">
+                  <!-- <div class="row mb-3">
                     <div class="col-md-6">
                       <div class="form-group">
                         <label for="stream" class="form-label">Stream / Specialization *</label>
@@ -213,7 +249,7 @@
                         </select>
                       </div>
                     </div>
-                  </div>
+                  </div> -->
 
                   <!-- Submit Button -->
                   <div class="row">
