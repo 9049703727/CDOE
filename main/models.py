@@ -149,68 +149,6 @@ class Course(models.Model):
             return "Free"
         return f"₹{self.price:,.0f}"
 
-class Inquiry(models.Model):
-    course = models.ForeignKey(Course, on_delete=models.CASCADE)
-    COURSE_CHOICES = [
-        ('web-development', 'Full Stack Web Development'),
-        ('data-science', 'Data Science & Analytics'),
-        ('digital-marketing', 'Digital Marketing Mastery'),
-        ('ui-ux-design', 'UI/UX Design Fundamentals'),
-        ('cybersecurity', 'Cybersecurity Essentials'),
-        ('mobile-development', 'Mobile App Development'),
-    ]
-
-    GENDER_CHOICES = [
-        ('male', 'Male'),
-        ('female', 'Female'),
-        ('other', 'Other'),
-    ]
-
-    CATEGORY_CHOICES = [
-        ('general', 'General'),
-        ('obc', 'OBC'),
-        ('sc', 'SC'),
-        ('st', 'ST'),
-        ('other', 'Other'),
-    ]
-
-    STATUS_CHOICES = [
-        ('student', 'Student'),
-        ('employed', 'Employed'),
-        ('unemployed', 'Unemployed'),
-        ('other', 'Other'),
-    ]
-
-    # Course
-    course = models.CharField(max_length=50, choices=COURSE_CHOICES)
-
-    # Personal Details
-    first_name = models.CharField(max_length=100)
-    middle_name = models.CharField(max_length=100, blank=True, null=True)
-    last_name = models.CharField(max_length=100)
-    gender = models.CharField(max_length=10, choices=GENDER_CHOICES)
-    category = models.CharField(max_length=10, choices=CATEGORY_CHOICES)
-    dob = models.DateField()
-    email = models.EmailField()
-    mobile = models.CharField(max_length=15)
-
-    address = models.TextField()
-    city = models.CharField(max_length=100)
-    state = models.CharField(max_length=100)
-    pin = models.CharField(max_length=10)
-    country = models.CharField(max_length=100)
-
-    # Education Details
-    qualification = models.CharField(max_length=150)
-    passing_year = models.IntegerField()
-    stream = models.CharField(max_length=150)
-    current_status = models.CharField(max_length=20, choices=STATUS_CHOICES)
-
-    created_at = models.DateTimeField(auto_now_add=True)
-   
-
-    def __str__(self):
-        return f"{self.first_name} {self.last_name} - {self.course}"
 
 class Testimonial(models.Model):
     # Basic Information

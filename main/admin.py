@@ -1,6 +1,5 @@
 from django.contrib import admin
 from .models import Subscriber
-from .models import Inquiry 
 from .models import Notification  # <-- Add this line
 from .models import TechnicalStaff
 
@@ -60,10 +59,6 @@ class CourseAdmin(admin.ModelAdmin):
 
    
 
-@admin.register(Inquiry)
-class InquiryAdmin(admin.ModelAdmin):
-    list_display = ('first_name', 'last_name', 'course','gender','category','dob','email', 'mobile','city','state','country', 'created_at')
-    search_fields = ('first_name', 'last_name', 'email', 'mobile')
 
 @admin.register(Notification)
 class NotificationAdmin(admin.ModelAdmin):

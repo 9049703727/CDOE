@@ -1,6 +1,6 @@
 from django.urls import path
 from . import views
-from .views import inquiry_form, inquiry_success
+from .views import  inquiry_success
 
 
 urlpatterns = [
@@ -13,12 +13,14 @@ urlpatterns = [
     path('instructors.html', views.instructors_list, name='instructors_list'),
     path('instructor-profile.html/<int:id>/', views.instructor_detail, name='instructor_detail'),
     path('<path:filename>.html', views.serve_html, name='serve_html'),
-    path('inquiry/', inquiry_form, name='inquiry'),
     path('inquiry-success/', inquiry_success, name='inquiry_success'),
     path('iks-course/<slug:slug>/', views.iks_course_registration, name='iks_course_registration'),
   
     path('notifications/', views.notifications_view, name='notifications'),
     path('technical-staff/', views.technical_staff, name='technical_staff'),
+    # path("send-otp/", views.send_otp, name="send_otp"),
+    # path("verify-otp/", views.verify_otp, name="verify_otp"),
+
     path('<path:filename>.html', views.serve_html, name='serve_html'),
 
 ]

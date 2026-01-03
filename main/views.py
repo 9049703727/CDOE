@@ -8,7 +8,7 @@ from django.core.mail import send_mail
 from django.conf import settings
 from .models import Notification
 
-from .models import Course, Category, Instructor, Inquiry
+from .models import Course, Category, Instructor
 from .forms import ContactForm
 from .models import TechnicalStaff
 
@@ -25,6 +25,7 @@ def index(request):
 
      # Get featured courses (active courses, ordered by newest)
     featured_courses = Course.objects.filter(is_active=True).order_by('-created_at')[:3]
+    notifications = Notification.objects.all().order_by('-date')[:5]
         
     # Get all categories with course count
     # categories = Category.objects.annotate(
@@ -37,9 +38,11 @@ def index(request):
     )[:4]
 
     context = {
+        'notifications' : notifications,
         'featured_courses': featured_courses,
         # 'categories': categories,
         'featured_instructors': featured_instructors,
+              
     }
     return render(request, 'index.html',context)
 
@@ -179,14 +182,28 @@ def course_detail(request, slug):
 # =========================
 # Course Enrollment Page
 # =========================
+# def course_enroll(request, slug):
+#     course = get_object_or_404(Course, slug=slug, is_active=True)
+
+#     if request.method == 'POST':
+#         messages.success(request, f'Successfully enrolled in {course.title}!')
+#         return redirect('course_detail', slug=course.slug)
+
+#     return render(request, 'enroll.html', {'course': course})
+
 def course_enroll(request, slug):
     course = get_object_or_404(Course, slug=slug, is_active=True)
+    courses = Course.objects.filter(is_active=True).order_by("title")
 
-    if request.method == 'POST':
-        messages.success(request, f'Successfully enrolled in {course.title}!')
-        return redirect('course_detail', slug=course.slug)
+    return render(
+        request,
+        "enroll.html",
+        {
+            "course": course,     # for auto-selection
+            "courses": courses,   # for dropdown
+        }
+    )
 
-    return render(request, 'enroll.html', {'course': course})
 
 def instructors_list(request):
     """View for listing all instructors"""
@@ -268,99 +285,29 @@ def instructor_detail(request, id):
     
     return render(request, 'instructor-profile.html', context)
 # =========================
-# Inquiry Form (UPDATED)
+# Inquiry Form (FINAL FIXED)
 # =========================
-   
-
 from django.shortcuts import render, redirect, get_object_or_404
 from django.core.mail import send_mail
 from django.conf import settings
-from .models import Inquiry, Course
+from django.http import JsonResponse
+from django.views.decorators.http import require_POST
+import json, random, time
 
-def inquiry_form(request):
-    # Fetch courses dynamically for the form
-    courses = Course.objects.filter(is_active=True).order_by('title')
+from .models import  Course
 
-    if request.method == "POST":
-        # Get the course object instead of just the string
-        course_slug = request.POST.get('course')
-        course_obj = get_object_or_404(Course, slug=course_slug)
-
-        # Create Inquiry
-        inquiry = Inquiry.objects.create(
-            course=course_obj,  # store as ForeignKey
-            first_name=request.POST.get('firstName'),
-            middle_name=request.POST.get('middleName'),
-            last_name=request.POST.get('lastName'),
-            gender=request.POST.get('gender'),
-            category=request.POST.get('category'),
-            dob=request.POST.get('dob'),
-            email=request.POST.get('email'),
-            mobile=request.POST.get('mobile'),
-            address=request.POST.get('address'),
-            city=request.POST.get('city'),
-            state=request.POST.get('state'),
-            pin=request.POST.get('pin'),
-            country=request.POST.get('country'),
-            qualification=request.POST.get('qualification'),
-            passing_year=request.POST.get('passingYear'),
-            stream=request.POST.get('stream'),
-            current_status=request.POST.get('currentStatus'),
-        )
-
-        # =========================
-        # Email to USER
-        # =========================
-        send_mail(
-            subject="Inquiry Received – Gujarat University Online Education",
-            message=f"""
-Dear {inquiry.first_name} {inquiry.last_name},
-
-Thank you for your inquiry for the "{inquiry.course.title}" course.
-
-We have received your request successfully.
-Our team will contact you shortly with further details.
-
-Regards,
-Gujarat University Online Education Team
-""",
-            from_email=settings.DEFAULT_FROM_EMAIL,
-            recipient_list=[inquiry.email],
-            fail_silently=False,
-        )
-
-        # =========================
-        # Email to ADMIN
-        # =========================
-        send_mail(
-            subject="New Inquiry Submitted",
-            message=f"""
-New Inquiry Details:
-
-Name: {inquiry.first_name} {inquiry.last_name}
-Email: {inquiry.email}
-Mobile: {inquiry.mobile}
-Course: {inquiry.course.title}
-""",
-            from_email=settings.DEFAULT_FROM_EMAIL,
-            recipient_list=[settings.DEFAULT_FROM_EMAIL],
-            fail_silently=False,
-        )
-
-        return redirect('inquiry_success')
-
-    return render(request, 'inquiry.html', {'courses': courses})
-
-
+OTP_EXPIRY_SECONDS = 300  # 5 minutes
 
 # =========================
-# Inquiry Success Page
+# SUCCESS PAGE
 # =========================
 def inquiry_success(request):
-    return render(request, 'inquiry_success.html')
+    return render(request, "inquiry_success.html")
+
 
 def iks_course_registration(request):
-    return render(request,'iks_course_registration')
+    return render(request, 'iks_course_registration.html')
+
 
 
 # View all notifications page

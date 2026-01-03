@@ -125,6 +125,60 @@
 
   </section><!-- /Courses Hero Section -->
 
+  <section class="notifications-section section light-background">
+    <div class="container">
+
+      <div class="section-title text-center">
+        <h2>News & Latest Notifications</h2>
+        <p>Stay updated with admissions, courses & announcements</p>
+      </div>
+
+      <div class="row justify-content-center">
+        <div class="col-lg-8">
+          <div class="notification-card">
+
+            <ul class="notification-list">
+              {% if notifications %}
+              {% for notif in notifications %}
+              <li class="notification-item {% if notif.is_new %}new{% endif %}">
+                <div class="notif-icon">
+                  <i class="bi bi-mortarboard-fill"></i>
+                </div>
+                <div class="notif-content">
+                  <h6>{{ notif.title|default:"No Title" }}</h6>
+                  <small>
+                    <i class="bi bi-calendar"></i>
+                    {{ notif.date|date:"d M Y"|default:"No Date" }}
+                  </small>
+                  {% if notif.pdf %}
+                  <br>
+                  <a href="{{ notif.pdf.url }}" target="_blank" class="pdf-link">
+                    <i class="bi bi-file-earmark-pdf"></i> View PDF
+                  </a>
+                  {% endif %}
+                </div>
+                {% if notif.is_new %}
+                <span class="badge-new">NEW</span>
+                {% endif %}
+              </li>
+              {% endfor %}
+              {% else %}
+              <li class="notification-item">No notifications found.</li>
+              {% endif %}
+            </ul>
+
+            <div class="text-center mt-3">
+              <a href="{% url 'notifications' %}" class="btn-view-all">
+                <i class="bi bi-list-ul"></i> View All Notifications
+              </a>
+            </div>
+
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </section>
 <!-- Featured Courses Section -->
   <!-- Featured Courses Section -->
     <section id="featured-courses" class="featured-courses section">

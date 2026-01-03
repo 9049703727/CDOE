@@ -234,3 +234,78 @@ document.addEventListener("DOMContentLoaded", function () {
   iksCourse.dispatchEvent(new Event("change"));
 
 });
+
+function getCookie(name) {
+  let cookieValue = null;
+  if (document.cookie && document.cookie !== '') {
+    document.cookie.split(';').forEach(cookie => {
+      cookie = cookie.trim();
+      if (cookie.startsWith(name + '=')) {
+        cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+      }
+    });
+  }
+  return cookieValue;
+}
+
+const csrftoken = getCookie('csrftoken');
+let timerInterval;
+
+function sendOtp() {
+  fetch("/send-otp/", {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+      "X-CSRFToken": csrftoken
+    },
+    body: JSON.stringify({
+      email: document.getElementById("email").value,
+      
+    })
+  })
+  .then(res => res.json())
+  .then(data => {
+    if (data.status === "success") {
+      new bootstrap.Modal(document.getElementById("otpModal")).show();
+      startTimer(300);
+    }
+  });
+}
+
+function verifyOtp() {
+  fetch("/verify-otp/", {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+      "X-CSRFToken": csrftoken
+    },
+    body: JSON.stringify({
+      emailOtp: document.getElementById("emailOtp").value,
+     
+    })
+  })
+  .then(res => res.json())
+  .then(data => {
+    if (data.status === "verified") {
+      document.querySelector(".enrollment-form").submit();
+    } else if (data.status === "expired") {
+      document.getElementById("otpError").innerText = "OTP expired. Please resend.";
+    } else {
+      document.getElementById("otpError").innerText = "Invalid OTP";
+    }
+  });
+}
+
+function startTimer(seconds) {
+  clearInterval(timerInterval);
+  let time = seconds;
+
+  timerInterval = setInterval(() => {
+    let min = Math.floor(time / 60);
+    let sec = time % 60;
+    document.getElementById("timer").innerText =
+      `${min}:${sec < 10 ? '0' : ''}${sec}`;
+    time--;
+    if (time < 0) clearInterval(timerInterval);
+  }, 1000);
+}
