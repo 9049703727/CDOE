@@ -7,32 +7,41 @@
 <div class="modal fade" id="otpModal" tabindex="-1">
   <div class="modal-dialog modal-dialog-centered">
     <div class="modal-content">
+
       <div class="modal-header">
-        <h5 class="modal-title">Verify Email & Mobile</h5>
+        <h5 class="modal-title">Email Verification</h5>
         <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
       </div>
 
       <div class="modal-body">
-        <div class="mb-3">
-          <label>Email OTP</label>
-          <input type="text" id="emailOtp" class="form-control" placeholder="Enter Email OTP">
+
+        <!-- OTP input -->
+        <input type="text" id="emailOtp" class="form-control" placeholder="Enter OTP" maxlength="6" autocomplete="off">
+
+        <!-- 🔹 ADD TIMER HERE -->
+        <div class="mb-2 text-muted">
+          OTP expires in <strong><span id="timer">05:00</span></strong>
         </div>
 
-        <!-- <div class="mb-3">
-          <label>Mobile OTP</label>
-          <input type="text" id="mobileOtp" class="form-control" placeholder="Enter Mobile OTP">
-        </div> -->
+        <div id="otpError" class="text-danger small"></div>
+        
+        <!-- Resend OTP Link -->
+        <div class="mt-2">
+          <a href="#" onclick="resendOtp(); return false;" id="resendLink" style="display: none;">Resend OTP</a>
+        </div>
 
-        <div class="text-danger" id="otpError"></div>
       </div>
 
       <div class="modal-footer">
-        <!-- <button class="btn btn-primary" onclick="verifyOtp()">Verify & Submit</button> -->
-         <button type="button" class="btn btn-enroll" onclick="sendOtp()"></button>
+        <button type="button" class="btn btn-enroll" onclick="verifyOtp()">
+          Verify OTP
+        </button>
       </div>
+
     </div>
   </div>
 </div>
+
 
 <body class="enroll-page">
 
@@ -67,23 +76,24 @@
                 <p>Start Your Learning Journey – Get in Touch</p>
               </div>
 
-              <form class="enrollment-form" method="POST" data-aos="fade-up"
-                data-aos-delay="300">
+              <form class="enrollment-form" method="POST" data-aos="fade-up" data-aos-delay="300"
+              action="{% url 'inquiry_form' %}"> {% csrf_token %}
                 <h4 class="mb-4">Select Your Program</h4>
                 <div class="row mb-4">
                   <div class="col-12">
                     <div class="form-group">
                       <label for="courses" class="form-label">Choose Program *</label>
-                      <select name="course" class="form-select" id="courses" required>
-  {% if courses %}
-    <option value="" selected disabled>Select a program</option>
-    {% for c in courses %}
-      <option value="{{ c.slug }}">{{ c.title }}</option>
-    {% endfor %}
-  {% else %}
-    <option value="" disabled>No courses available</option>
-  {% endif %}
-</select>
+                      <select name="courses" class="form-select" id="courses" required>
+
+                        {% if courses %}
+                        <option value="" selected disabled>Select a program</option>
+                        {% for c in courses %}
+                        <option value="{{ c.slug }}">{{ c.title }}</option>
+                        {% endfor %}
+                        {% else %}
+                        <option value="" disabled>No courses available</option>
+                        {% endif %}
+                      </select>
                     </div>
                   </div>
                 </div>
@@ -117,9 +127,10 @@
                       <label for="gender" class="form-label">Gender *</label>
                       <select id="gender" name="gender" class="form-select" required="">
                         <option value="">Select Gender</option>
-                        <option value="male">Male</option>
-                        <option value="female">Female</option>
-                        <option value="other">Other</option>
+                        <option value="Male">Male</option>
+                        <option value="Female">Female</option>
+                        <option value="Other">Other</option>
+
                       </select>
                     </div>
                   </div>
@@ -139,7 +150,7 @@
                   <div class="col-md-4">
                     <div class="form-group">
                       <label for="dob" class="form-label">Date of Birth *</label>
-                      <input type="date" id="dob" name="dob" class="form-control" required="">
+                      <input type="date" id="dob" name="date_of_birth" class="form-control" required="">
                     </div>
                   </div>
 
@@ -167,8 +178,8 @@
                           <option value="+61">🇦🇺 +61</option>
                           <option value="+971">🇦🇪 +971</option>
                         </select>
-                        <input type="tel" id="mobile" name="mobile" class="form-control" required pattern="[0-9]{10}"
-                          maxlength="10" placeholder="Enter 10-digit mobile number">
+                        <input type="tel" id="mobile" name="mobile_number" class="form-control" required
+                          pattern="[0-9]{10}" maxlength="10" placeholder="Enter 10-digit mobile number">
                       </div>
                     </div>
                   </div>
@@ -191,10 +202,10 @@
                   <div class="row mb-4">
                     <div class="form-group">
                       <label for="category" class="form-label">Nationality *</label>
-                      <select id="category" name="category" class="form-select" required="">
+                      <select id="category" name="nationality" class="form-select" required="">
                         <option value="">Select</option>
-                        <option value="general">Indian</option>
-                        <option value="obc">Non-Indian</option>
+                        <option value="Indian">Indian</option>
+                        <option value="Non-Indian">Non-Indian</option>
 
                       </select>
                     </div>
@@ -239,7 +250,7 @@
                     <div class="col-md-4">
                       <div class="form-group">
                         <label for="pin" class="form-label">Pin Code/Zip Code *</label>
-                        <input type="text" id="pin" name="pin" class="form-control" required="">
+                        <input type="text" id="pin" name="pincode" class="form-control" required="">
                       </div>
                     </div>
 
@@ -286,17 +297,18 @@
                   <!-- Submit Button -->
                   <div class="row">
                     <div class="col-12 text-center">
-                      <button type="submit" class="btn btn-enroll">
+                      <button type="button" class="btn btn-enroll" onclick="openOtpModal()">
                         <i class="bi bi-check-circle me-2"></i>
                         Submit Inquiry
                       </button>
+
                       <p class="enrollment-note mt-3">
                         <i class="bi bi-shield-check"></i>
                         Your information is secure and will never be shared with third parties
                       </p>
                     </div>
                   </div>
-                  {% csrf_token %}
+
 
               </form>
 

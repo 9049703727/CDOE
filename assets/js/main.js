@@ -287,6 +287,22 @@ const csrftoken = getCookie('csrftoken');
 let timerInterval;
 
 function sendOtp() {
+  const emailInput = document.getElementById("email");
+  const email = emailInput.value;
+  const errorDiv = document.getElementById("otpError");
+  
+  // Clear previous errors
+  if (errorDiv) {
+    errorDiv.innerText = "";
+  }
+  
+  if (!email) {
+    if (errorDiv) {
+      errorDiv.innerText = "Please enter your email address first.";
+    }
+    return;
+  }
+  
   fetch("/send-otp/", {
     method: "POST",
     headers: {
@@ -294,20 +310,72 @@ function sendOtp() {
       "X-CSRFToken": csrftoken
     },
     body: JSON.stringify({
-      email: document.getElementById("email").value,
-      
+      email: email
     })
   })
   .then(res => res.json())
   .then(data => {
     if (data.status === "success") {
-      new bootstrap.Modal(document.getElementById("otpModal")).show();
-      startTimer(300);
+      // Clear OTP input and error
+      const otpInput = document.getElementById("emailOtp");
+      if (otpInput) {
+        otpInput.value = "";
+      }
+      if (errorDiv) {
+        errorDiv.innerText = "";
+      }
+      // Hide resend link
+      const resendLink = document.getElementById("resendLink");
+      if (resendLink) {
+        resendLink.style.display = "none";
+      }
+      // Show modal and start timer
+      const modalElement = document.getElementById("otpModal");
+      if (modalElement) {
+        const modal = new bootstrap.Modal(modalElement);
+        modal.show();
+        startTimer(300);
+      }
+    } else {
+      // Show error message
+      if (errorDiv) {
+        errorDiv.innerText = data.message || "Failed to send OTP. Please try again.";
+      }
+    }
+  })
+  .catch(error => {
+    console.error("Error sending OTP:", error);
+    if (errorDiv) {
+      errorDiv.innerText = "An error occurred. Please try again.";
     }
   });
 }
 
 function verifyOtp() {
+  const otpInput = document.getElementById("emailOtp");
+  const userOtp = otpInput ? otpInput.value.trim() : "";
+  const errorDiv = document.getElementById("otpError");
+  const modalElement = document.getElementById("otpModal");
+  
+  // Clear previous errors
+  if (errorDiv) {
+    errorDiv.innerText = "";
+  }
+  
+  if (!userOtp) {
+    if (errorDiv) {
+      errorDiv.innerText = "Please enter the OTP.";
+    }
+    return;
+  }
+  
+  if (userOtp.length !== 6) {
+    if (errorDiv) {
+      errorDiv.innerText = "Please enter a valid 6-digit OTP.";
+    }
+    return;
+  }
+  
   fetch("/verify-otp/", {
     method: "POST",
     headers: {
@@ -315,33 +383,105 @@ function verifyOtp() {
       "X-CSRFToken": csrftoken
     },
     body: JSON.stringify({
-      emailOtp: document.getElementById("emailOtp").value,
-     
+      emailOtp: userOtp
     })
   })
   .then(res => res.json())
   .then(data => {
     if (data.status === "verified") {
-      document.querySelector(".enrollment-form").submit();
+      // Close the modal
+      if (modalElement) {
+        const modal = bootstrap.Modal.getInstance(modalElement);
+        if (modal) {
+          modal.hide();
+        }
+      }
+      // Clear timer
+      clearInterval(timerInterval);
+      // Submit the form
+      const form = document.querySelector(".enrollment-form");
+      if (form) {
+        form.submit();
+      }
     } else if (data.status === "expired") {
-      document.getElementById("otpError").innerText = "OTP expired. Please resend.";
+      if (errorDiv) {
+        errorDiv.innerText = data.message || "OTP expired. Please resend.";
+      }
+      // Show resend link
+      const resendLink = document.getElementById("resendLink");
+      if (resendLink) {
+        resendLink.style.display = "block";
+      }
+      clearInterval(timerInterval);
+    } else if (data.status === "invalid") {
+      if (errorDiv) {
+        errorDiv.innerText = data.message || "Invalid OTP. Please try again.";
+      }
+    } else if (data.status === "error") {
+      if (errorDiv) {
+        errorDiv.innerText = data.message || "An error occurred. Please try again.";
+      }
     } else {
-      document.getElementById("otpError").innerText = "Invalid OTP";
+      if (errorDiv) {
+        errorDiv.innerText = data.message || "Invalid OTP. Please try again.";
+      }
+    }
+  })
+  .catch(error => {
+    console.error("Error verifying OTP:", error);
+    if (errorDiv) {
+      errorDiv.innerText = "An error occurred. Please try again.";
     }
   });
+}
+
+function resendOtp() {
+  const errorDiv = document.getElementById("otpError");
+  const resendLink = document.getElementById("resendLink");
+  
+  // Clear previous errors
+  if (errorDiv) {
+    errorDiv.innerText = "";
+  }
+  
+  // Hide resend link temporarily
+  if (resendLink) {
+    resendLink.style.display = "none";
+  }
+  
+  // Clear OTP input
+  const otpInput = document.getElementById("emailOtp");
+  if (otpInput) {
+    otpInput.value = "";
+  }
+  
+  // Send new OTP
+  sendOtp();
 }
 
 function startTimer(seconds) {
   clearInterval(timerInterval);
   let time = seconds;
+  const timerElement = document.getElementById("timer");
+  const resendLink = document.getElementById("resendLink");
 
   timerInterval = setInterval(() => {
     let min = Math.floor(time / 60);
     let sec = time % 60;
-    document.getElementById("timer").innerText =
-      `${min}:${sec < 10 ? '0' : ''}${sec}`;
+    if (timerElement) {
+      timerElement.innerText = `${min}:${sec < 10 ? '0' : ''}${sec}`;
+    }
     time--;
-    if (time < 0) clearInterval(timerInterval);
+    if (time < 0) {
+      clearInterval(timerInterval);
+      // Show resend link when timer expires
+      if (resendLink) {
+        resendLink.style.display = "block";
+      }
+      if (timerElement) {
+        timerElement.innerText = "00:00";
+      }
+    }
   }, 1000);
 }
 
@@ -421,4 +561,52 @@ document.addEventListener('DOMContentLoaded', function () {
             enrollmentStar.classList.add('d-none');
         }
     });
+});
+function openOtpModal() {
+  // Validate form before sending OTP
+  const form = document.querySelector(".enrollment-form");
+  if (!form) {
+    alert("Form not found. Please refresh the page.");
+    return;
+  }
+  
+  // Check if form is valid
+  if (!form.checkValidity()) {
+    // Trigger HTML5 validation
+    form.reportValidity();
+    return;
+  }
+  
+  // Validate email field specifically
+  const emailInput = document.getElementById("email");
+  if (!emailInput || !emailInput.value) {
+    alert("Please enter your email address.");
+    if (emailInput) {
+      emailInput.focus();
+    }
+    return;
+  }
+  
+  // Send OTP (this will show the modal)
+  sendOtp();
+}
+document.getElementById("verify-btn").addEventListener("click", function() {
+  const otp = document.getElementById("otp").value;
+
+  fetch("/verify-otp/", {
+      method: "POST",
+      headers: {
+          "Content-Type": "application/json",
+          "X-CSRFToken": getCookie("csrftoken")
+      },
+      body: JSON.stringify({ otp: otp })
+  })
+  .then(res => res.json())
+  .then(data => {
+      if (data.success) {
+          window.location.href = "/success/";
+      } else {
+          alert("Invalid OTP");
+      }
+  });
 });

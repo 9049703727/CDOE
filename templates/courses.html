@@ -35,15 +35,18 @@
                   <h5>Category</h5>
                   <div class="filter-options">
                     <label class="filter-checkbox">
-                      <input type="checkbox" name="category" value="all" {% if not selected_categories %}checked{% endif %} onchange="this.form.submit()">
+                      <input type="checkbox" name="category" value="all" id="allCategories" 
+                             {% if not selected_categories %}checked{% endif %}
+                             onchange="handleAllCategories(this)">
                       <span class="checkmark"></span>
                       All Categories
                     </label>
                     {% for category in all_categories %}
                     <label class="filter-checkbox">
                       <input type="checkbox" name="category" value="{{ category.slug }}" 
+                             class="category-checkbox"
                              {% if category.slug in selected_categories %}checked{% endif %}
-                             onchange="this.form.submit()">
+                             onchange="handleCategoryChange(this)">
                       <span class="checkmark"></span>
                       {{ category.name }}
                     </label>
@@ -176,8 +179,8 @@
                       <div class="course-badge {{ course.get_badge_class }}">{{ course.get_badge_display_text }}</div>
                       {% endif %}
                       {% if not course.is_free %}
-                      <div class="course-price">{{ course.get_price_display  }}</div>
-                      <div class="course-price-international">{{ course.price_international }}</div>
+                      <div class="course-price">{{ course.get_price_display }}</div>
+                      <div class="course-price-international">{{ course.get_price_international_display }}</div>
                       {% endif %}
                     </div>
                     <div class="course-content">
@@ -316,40 +319,39 @@
   <!-- Main JS File -->
   <script src="{% static 'js/main.js' %}"></script>
 
+  <script>
+  function handleAllCategories(checkbox) {
+      const form = document.getElementById('filterForm');
+      const categoryCheckboxes = document.querySelectorAll('.category-checkbox');
+      
+      if (checkbox.checked) {
+          // Uncheck all other categories
+          categoryCheckboxes.forEach(cb => cb.checked = false);
+          form.submit();
+      }
+  }
+
+  function handleCategoryChange(checkbox) {
+      const form = document.getElementById('filterForm');
+      const allCategoriesCheckbox = document.getElementById('allCategories');
+      const categoryCheckboxes = document.querySelectorAll('.category-checkbox');
+      
+      if (checkbox.checked) {
+          // Uncheck "All Categories" when any specific category is selected
+          if (allCategoriesCheckbox) {
+              allCategoriesCheckbox.checked = false;
+          }
+      } else {
+          // If no categories are selected, check "All Categories"
+          const anyChecked = Array.from(categoryCheckboxes).some(cb => cb.checked);
+          if (!anyChecked && allCategoriesCheckbox) {
+              allCategoriesCheckbox.checked = true;
+          }
+      }
+      form.submit();
+  }
+  </script>
+
 </body>
 
 {% endblock content %}
-
-<script>
-document.addEventListener('DOMContentLoaded', function() {
-    const form = document.getElementById('filterForm');
-    const allCategoriesCheckbox = document.getElementById('allCategories');
-    const categoryCheckboxes = document.querySelectorAll('.category-checkbox');
-    
-    // Handle "All Categories" checkbox
-    allCategoriesCheckbox.addEventListener('change', function() {
-        if (this.checked) {
-            // Uncheck all other categories
-            categoryCheckboxes.forEach(cb => cb.checked = false);
-            form.submit();
-        }
-    });
-    
-    // Handle individual category checkboxes
-    categoryCheckboxes.forEach(checkbox => {
-        checkbox.addEventListener('change', function() {
-            if (this.checked) {
-                // Uncheck "All Categories"
-                allCategoriesCheckbox.checked = false;
-            } else {
-                // If no categories are selected, check "All Categories"
-                const anyChecked = Array.from(categoryCheckboxes).some(cb => cb.checked);
-                if (!anyChecked) {
-                    allCategoriesCheckbox.checked = true;
-                }
-            }
-            form.submit();
-        });
-    });
-});
-</script>

@@ -3,8 +3,8 @@ from .models import Subscriber
 from .models import Notification  # <-- Add this line
 from .models import TechnicalStaff, Testimonial
 from .models import AdminStaff
-from .models import FAQ
-
+from .models import FAQ,Inquiry
+# from .models import IKSRegistration
 
 
 @admin.register(Subscriber)
@@ -31,7 +31,7 @@ class InstructorAdmin(admin.ModelAdmin):
 
 @admin.register(Course)
 class CourseAdmin(admin.ModelAdmin):
-    list_display = ['title', 'category', 'instructor', 'price','price_international','is_free', 'students_enrolled', 'rating', 'is_active']
+    list_display = ['id','title', 'category', 'instructor', 'price','price_international','is_free', 'students_enrolled', 'rating', 'is_active']
     list_filter = ['category', 'is_free', 'is_active']
     search_fields = ['title', 'description']
     prepopulated_fields = {'slug': ('title',)}
@@ -77,7 +77,11 @@ class InquiryAdmin(admin.ModelAdmin):
         'mobile_number',
         'nationality',
         'created_at',
+        'course_name'
     )
+    @admin.display(description='Course')
+    def course_name(self, obj):
+        return obj.courses.title if obj.courses else "-"
 
 @admin.register(Notification)
 class NotificationAdmin(admin.ModelAdmin):
@@ -111,3 +115,10 @@ class AdminStaffAdmin(admin.ModelAdmin):
 class FAQAdmin(admin.ModelAdmin):
     list_display = ('question', 'is_active', 'order')
     list_editable = ('is_active', 'order')
+
+
+
+# @admin.register(IKSRegistration)
+# class IKSRegistrationAdmin(admin.ModelAdmin):
+#     list_display = ('first_name', 'last_name', 'iks_course', 'email', 'created_at')
+#     search_fields = ('first_name', 'last_name', 'email', 'abc_number')

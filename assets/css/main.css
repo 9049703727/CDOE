@@ -1587,6 +1587,57 @@ Notification
   font-size: 14px;
 }
 
+/* Price badges in featured courses */
+.featured-courses .course-image .course-price {
+  position: absolute;
+  top: 15px;
+  right: 15px;
+  /* India Flag: Horizontal stripes - Saffron, White, Green */
+  background: linear-gradient(
+    to bottom,
+    #FF9933 0% 33.33%,    /* Saffron (top stripe) */
+    #FFFFFF 33.33% 66.66%, /* White (middle stripe) */
+    #138808 66.66% 100%    /* Green (bottom stripe) */
+  );
+  color: #000;
+  padding: 8px 18px;
+  border-radius: 25px;
+  font-size: 14px;
+  font-weight: 600;
+  font-family: sans-serif;
+  text-align: center;
+  border: 1px solid rgba(0, 0, 0, 0.2);
+  box-shadow: 0 4px 10px rgba(0,0,0,0.15);
+  z-index: 2;
+}
+
+.featured-courses .course-image .course-price-international {
+  position: absolute;
+  top: 58px;
+  right: 15px;
+  /* Multi-country flag colors: Mix of colors from various flags */
+  background: linear-gradient(
+    135deg,
+    #DC143C 0% 16.66%,      /* Red */
+    #FFFFFF 16.66% 33.33%,  /* White */
+    #0039A6 33.33% 50%,     /* Blue */
+    #FFD700 50% 66.66%,     /* Gold/Yellow */
+    #008000 66.66% 83.33%,  /* Green */
+    #FF0000 83.33% 100%     /* Red */
+  );
+  color: #000;
+  padding: 7px 18px;
+  border-radius: 25px;
+  font-size: 14px;
+  font-weight: 600;
+  font-family: sans-serif;
+  text-align: center;
+  border: 1px solid rgba(0, 0, 0, 0.2);
+  box-shadow: 0 4px 10px rgba(0,0,0,0.18);
+  z-index: 2;
+  text-shadow: 0 1px 2px rgba(255, 255, 255, 0.8);
+}
+
 .featured-courses .course-content {
   padding: 25px;
   flex: 1;
@@ -3226,50 +3277,61 @@ Notification
   position: absolute;
   top: 15px;
   right: 15px;
+  /* India Flag: Horizontal stripes - Saffron, White, Green */
   background: linear-gradient(
-    to right, 
-    #FF9933 33%,       /* Saffron */
-    #FFFFFF 33% 66%,   /* White */
-    #138808 66%        /* Green */
+    to bottom,
+    #FF9933 0% 33.33%,    /* Saffron (top stripe) */
+    #FFFFFF 33.33% 66.66%, /* White (middle stripe) */
+    #138808 66.66% 100%    /* Green (bottom stripe) */
   );
-  color: black; /* Text readable on white */
+  color: black;
   padding: 8px 15px;
-  border-radius: 25px; /* slightly more rounded for pill shape */
+  border-radius: 25px;
   font-size: 14px;
   font-weight: 600;
   text-align: center;
   font-family: sans-serif;
-  border: 1px solid #000; /* optional: adds subtle border for better visibility */
+  border: 1px solid rgba(0, 0, 0, 0.2);
+  box-shadow: 0 4px 10px rgba(0,0,0,0.15);
 }
+
 .courses-2 .courses-grid .course-image .course-price-international {
   position: absolute;
   top: 59px;
   right: 15px;
+  /* Multi-country flag colors pattern */
   background: linear-gradient(
     135deg,
-    #1E90FF 33%,    /* Blue */
-    #FF0000 33% 66%, /* Red */
-    #FFD700 66%       /* Yellow */
+    #DC143C 0% 16.66%,      /* Red */
+    #FFFFFF 16.66% 33.33%,  /* White */
+    #0039A6 33.33% 50%,     /* Blue */
+    #FFD700 50% 66.66%,     /* Gold/Yellow */
+    #008000 66.66% 83.33%,  /* Green */
+    #FF0000 83.33% 100%     /* Red */
   );
-  color: #fff; /* white text for better contrast */
- padding: 7px 30px 8px 15px; /* top, right, bottom, left */  border-radius: 25px;
+  color: #000;
+  padding: 7px 15px;
+  border-radius: 25px;
   font-size: 14px;
   font-weight: 600;
   text-align: center;
   font-family: sans-serif;
-  border: 1px solid #000; /* optional */
+  border: 1px solid rgba(0, 0, 0, 0.2);
+  box-shadow: 0 4px 10px rgba(0,0,0,0.18);
+  text-shadow: 0 1px 2px rgba(255, 255, 255, 0.8);
 }
-/* Indian Price Badge */
+/* Indian Price Badge - India Flag Pattern (Horizontal Stripes) */
 .course-card .course-image .course-price {
   position: absolute;
   top: 15px;
   right: 15px;
 
+  /* India Flag: Horizontal stripes - Saffron, White, Green */
   background: linear-gradient(
-    to right,
-    #FF9933 33%,        /* Saffron */
-    #FFFFFF 33% 66%,    /* White */
-    #138808 66%         /* Green */
+    to bottom,
+    #FF9933 0% 33.33%,    /* Saffron (top stripe) */
+    #FFFFFF 33.33% 66.66%, /* White (middle stripe) */
+    #138808 66.66% 100%    /* Green (bottom stripe) */
   );
 
   color: #000;
@@ -3279,40 +3341,39 @@ Notification
   font-weight: 600;
   font-family: sans-serif;
   text-align: center;
-
-  border: 1px solid #000;
+  border: 1px solid rgba(0, 0, 0, 0.2);
   box-shadow: 0 4px 10px rgba(0,0,0,0.15);
   z-index: 2;
 }
 
-/* International Price Badge */
+/* International Price Badge - Multi-Country Flags Pattern */
 .course-card .course-image .course-price-international {
   position: absolute;
   top: 58px;
   right: 15px;
 
-  /* Multi-flag colors gradient */
+  /* Multi-country flag colors: Mix of colors from various flags (Red, White, Blue, Yellow, Green) */
   background: linear-gradient(
     135deg,
-    #FF0000 0% 16.66%,    /* Red */
-    #FF9933 16.66% 33.33%,/* Saffron/Orange */
-    #FFFF00 33.33% 50%,    /* Yellow */
-    #008000 50% 66.66%,    /* Green */
-    #0000FF 66.66% 83.33%, /* Blue */
-    #FFFFFF 83.33% 100%    /* White */
+    #DC143C 0% 16.66%,      /* Red (USA, China, UK, France, etc.) */
+    #FFFFFF 16.66% 33.33%,  /* White (Multiple flags) */
+    #0039A6 33.33% 50%,     /* Blue (USA, UK, France, etc.) */
+    #FFD700 50% 66.66%,     /* Gold/Yellow (Multiple flags) */
+    #008000 66.66% 83.33%,  /* Green (Multiple flags) */
+    #FF0000 83.33% 100%     /* Red (Multiple flags) */
   );
 
-  color: #000; /* black text stands out on light flags */
-  padding: 7px 30px 8px 15px;
+  color: #000;
+  padding: 7px 18px;
   border-radius: 25px;
   font-size: 14px;
   font-weight: 600;
   font-family: sans-serif;
   text-align: center;
-
-  border: 1px solid #000;
+  border: 1px solid rgba(0, 0, 0, 0.2);
   box-shadow: 0 4px 10px rgba(0,0,0,0.18);
   z-index: 2;
+  text-shadow: 0 1px 2px rgba(255, 255, 255, 0.8);
 }
 
 /* Free badge (optional consistency) */

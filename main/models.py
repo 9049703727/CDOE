@@ -154,6 +154,12 @@ class Course(models.Model):
         if self.is_free:
             return "Free"
         return f"₹{self.price:,.0f}"
+    
+    def get_price_international_display(self):
+        """Return international price in USD format"""
+        if self.is_free:
+            return "Free"
+        return f"${self.price_international:,.0f}"
 
 class Inquiry(models.Model):
 
@@ -179,10 +185,12 @@ class Inquiry(models.Model):
     pincode = models.CharField(max_length=10)
 
     # 🔥 Student can choose multiple courses
-    courses = models.ManyToManyField(
-        Course,
-        related_name="inquiries"
-    )
+    # courses = models.ManyToManyField(
+    #     Course,
+    #     related_name="inquiries"
+    # )
+
+    courses = models.ForeignKey(Course, on_delete=models.CASCADE, null=True, blank=True)
 
     created_at = models.DateTimeField(auto_now_add=True)
 

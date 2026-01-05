@@ -27,6 +27,8 @@
 
   <!-- Main CSS -->
   <link href="{% static 'css/main.css' %}" rel="stylesheet">
+  <!-- Chatbot CSS -->
+  <link href="{% static 'css/chatbot.css' %}" rel="stylesheet">
 
   {% block extra_head %}{% endblock %}
 </head>
@@ -35,7 +37,7 @@
 
 <!-- Top Buttons -->
 <div class="top-buttons-bar">
-  <a class="top-btn" href="{% url 'inquiry' %}">Inquiry</a>
+  <a class="top-btn" href="{% url 'inquiry_form' %}">Inquiry</a>
   <a class="top-btn" href="https://online.gujaratuniversity.ac.in/admission/Registration">Registration</a>
   <a class="top-btn" href="iks_course_registration.html">IKS Course Registration</a>
   <a class="top-btn" href="https://www.online-gu.com/">LMS Login</a>
@@ -105,6 +107,8 @@
 
   <!-- Main JS -->
   <script src="{% static 'js/main.js' %}"></script>
+  <!-- Chatbot JS -->
+  <script src="{% static 'js/chatbot.js' %}"></script>
 
   <!-- Page Specific JS -->
   {% block extra_js %}

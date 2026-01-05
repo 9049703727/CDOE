@@ -107,7 +107,7 @@ AUTH_PASSWORD_VALIDATORS = [
 
 LANGUAGE_CODE = 'en-us'
 
-TIME_ZONE = 'UTC'
+TIME_ZONE = 'Asia/Kolkata'
 
 USE_I18N = True
 
@@ -137,4 +137,8 @@ EMAIL_USE_TLS = True
 EMAIL_HOST_USER = 'gajjarurvi2310@gmail.com'      # sender email
 EMAIL_HOST_PASSWORD = 'mwaf mbat eiyg zlnp'    # Gmail App Password
 
-DEFAULT_FROM_EMAIL = 'Gujarat University Online <gajjarurvi2310@gmail.com>'
+DEFAULT_FROM_EMAIL = 'Gujarat University Online <patilbhagyashri.cdoe@gujratuniversity.ac.in>'
+
+SESSION_ENGINE = 'django.contrib.sessions.backends.db'  # or 'cache'
+SESSION_COOKIE_HTTPONLY = True
+SESSION_SAVE_EVERY_REQUEST = True  # Helps with session persistence

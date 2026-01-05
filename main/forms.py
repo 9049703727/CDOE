@@ -28,5 +28,7 @@ class InquiryForm(forms.ModelForm):
         model = Inquiry
         fields = "__all__"
         widgets = {
-            "courses": forms.CheckboxSelectMultiple
+            "courses": forms.Select(attrs={
+                "class": "form-select"
+            })
         }

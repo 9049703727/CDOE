@@ -13,7 +13,7 @@ from .forms import ContactForm
 from .models import TechnicalStaff
 from .models import AdminStaff
 from .models import FAQ
-from .models import IKSRegistration
+# from .models import IKSRegistration
 
 
 
@@ -92,10 +92,6 @@ def serve_html(request, filename):
 # Course List Page
 # =========================
 def courses_list(request):
-    courses = Course.objects.filter(is_active=True).select_related(
-        'category', 'instructor'
-    )
-
     categories = request.GET.getlist('category')
     levels = request.GET.getlist('level')
     durations = request.GET.getlist('duration')
@@ -103,12 +99,14 @@ def courses_list(request):
     search_query = request.GET.get('search', '')
     sort_by = request.GET.get('sort', 'popular')
 
+    # Filter courses - start with active courses only
+    courses = Course.objects.filter(is_active=True).select_related('category', 'instructor')
+    
+    # Handle "All Categories" - if 'all' is in categories, ignore it
     if 'all' in categories:
-        categories = []
+        categories = [c for c in categories if c != 'all']
     
-    # Filter courses
-    courses = Course.objects.all()
-    
+    # Apply category filter if any categories are selected
     if categories:
         courses = courses.filter(category__slug__in=categories)
 
@@ -139,16 +137,20 @@ def courses_list(request):
             Q(instructor__last_name__icontains=search_query)
         )
 
+    # Apply sorting
     if sort_by == 'popular':
-        courses = courses.order_by('-students_enrolled')
+        courses = courses.order_by('-students_enrolled', '-created_at')
     elif sort_by == 'newest':
         courses = courses.order_by('-created_at')
     elif sort_by == 'price_low':
-        courses = courses.order_by('price')
+        courses = courses.order_by('price', '-created_at')
     elif sort_by == 'price_high':
-        courses = courses.order_by('-price')
+        courses = courses.order_by('-price', '-created_at')
     elif sort_by == 'duration_short':
-        courses = courses.order_by('duration_hours')
+        courses = courses.order_by('duration_hours', '-created_at')
+    else:
+        # Default ordering
+        courses = courses.order_by('-created_at')
 
     paginator = Paginator(courses, 6)
     page_number = request.GET.get('page', 1)
@@ -326,6 +328,7 @@ from django.conf import settings
 from django.views.decorators.http import require_POST
 from django.http import JsonResponse
 from django.views.decorators.csrf import csrf_exempt
+# from .models import IKSRegistration
 
 def inquiry_form(request):
     courses = Course.objects.filter(is_active=True).order_by("title")
@@ -360,10 +363,12 @@ def inquiry_form(request):
                 }
             )
 
-        # Multiple courses selection
-        course_slugs = request.POST.getlist("courses")
+        # Course selection
+        course_slug = request.POST.get("courses")
+        course = Course.objects.get(slug=course_slug)
 
-        if not course_slugs:
+
+        if not course_slug:
             return render(
                 request,
                 "enroll.html",
@@ -373,8 +378,9 @@ def inquiry_form(request):
                 }
             )
 
+        # Handle single course selection (convert to list for __in lookup)
         course_objs = Course.objects.filter(
-            slug__in=course_slugs,  # Fixed: use __in for multiple values
+            slug__in=[course_slug],  # Convert single value to list for __in lookup
             is_active=True
         )
 
@@ -394,9 +400,9 @@ def inquiry_form(request):
             middle_name=request.POST.get("middleName"),
             last_name=request.POST.get("lastName"),
             gender=request.POST.get("gender"),
-            date_of_birth=request.POST.get("dateOfBirth"),
+            date_of_birth=request.POST.get("date_of_birth"),
             email=request.POST.get("email"),
-            mobile_number=request.POST.get("mobileNumber"),
+            mobile_number=request.POST.get("mobile_number"),
             nationality=request.POST.get("nationality"),
             country=request.POST.get("country"),
             state=request.POST.get("state"),
@@ -404,7 +410,7 @@ def inquiry_form(request):
         )
 
         # Save ManyToMany courses
-        inquiry.courses.add(*course_objs)
+        # inquiry.courses.add(*course_objs)
 
         # Course names for email
         course_titles = ", ".join(course.title for course in course_objs)
